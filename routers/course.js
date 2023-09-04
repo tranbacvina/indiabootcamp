@@ -4,8 +4,8 @@ const course = require("../controllers/course")
 
 
 Routers.post("/check", [
-    check('email', 'Không được để trống email').not().isEmpty(),
-    check('email', 'Vui lòng điền đúng định dạng email').isEmail()
+    check('email', 'Email cannot be left blank.').not().isEmpty(),
+    check('email', 'Please enter a valid email format.').isEmail()
 ], course.check);
 
 module.exports = Routers
