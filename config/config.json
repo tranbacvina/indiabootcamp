@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "india_bootcampshop",
+    "password": "fySRBwtyhhAhNpDi",
+    "database": "india_bootcampshop",
+    "host": "185.111.159.193",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "185.111.159.193",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "india_bootcampshop",
+    "password": "fySRBwtyhhAhNpDi",
+    "database": "india_bootcampshop",
+    "host": "185.111.159.193",
+    "dialect": "mysql"
+  }
+}

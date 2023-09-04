@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <title>Sửa <%=blog.title%>
+    </title>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+    <!-- barba container start -->
+    <div class="barba-container" data-barba="container">
+
+
+        <main class="main-content">
+
+
+            <header class="header -dashboard -dark-bg-dark-1 js-header">
+                <div class="header__container py-20 px-30">
+                    <div class="row justify-between items-center">
+                        <div class="col-auto">
+                            <div class="d-flex items-center">
+                                <div class="header__explore text-dark-1">
+                                    <button class="d-flex items-center js-dashboard-home-9-sidebar-toggle">
+                                        <i class="icon -dark-text-white icon-explore"></i>
+                                    </button>
+                                </div>
+
+                                <div class="header__logo ml-30 md:ml-20">
+                                    <a data-barba href="/admin">
+                                        <img class="-light-d-none" src="/img/general/logo.svg" alt="logo">
+                                        <img class="-dark-d-none" src="/img/general/logo-dark.svg" alt="logo">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </header>
+
+
+            <div class="content-wrapper js-content-wrapper">
+                <div class="dashboard -home-9 js-dashboard-home-9">
+                    <%- include('../nav'); %>
+                        <div class="dashboard__main">
+                            <div class="dashboard__content bg-light-4">
+                                <div class="row pb-50 mb-10">
+                                    <div class="col-auto">
+
+                                        <h1 class="text-30 lh-12 fw-700">Sửa <%=blog.title%>
+                                        </h1>
+                                        <div class="mt-10">Cập nhật lần cuối <%= blog.updatedAt.toLocaleString()%>.
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row y-gap-60">
+                                    <div class="col-12">
+                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
+                                            </div>
+
+                                            <div class="py-30 px-30">
+                                                <form class="contact-form row y-gap-30" action="/" method="POST">
+
+                                                    <div class="col-12">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
+
+                                                        <input type="text" value="<%=blog.title%>" name="title"
+                                                            id="title">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug*</label>
+
+                                                        <input type="text" value="<%=blog.slug%>" name="slug" id="slug">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh
+                                                            mục*</label>
+
+                                                        <select name="" id="categoryId" class=" form-select">
+                                                            <option value="">Chọn</option>
+                                                            <% for (let category of categories) { %>
+                                                                <option value="<%= category.id %>" <%-
+                                                                    category.id===blog.categoryId ? 'selected' : '' %> >
+                                                                    <%= category.name %>
+                                                                </option>
+                                                                <% } %>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Trạng
+                                                            thái*</label>
+
+                                                        <select name="" id="status" class=" form-select">
+                                                            <option value="true">
+                                                                Delete
+                                                            </option>
+                                                            <option value="false" <%- blog.isDeleted ? '' : 'selected'
+                                                                %>>
+                                                                Hiển thị
+                                                            </option>
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
+                                                            ngắn*</label>
+
+                                                        <textarea rows="7" value=""
+                                                            id="description"><%= blog.description %></textarea>
+                                                    </div>
+
+
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
+                                                            chính*</label>
+                                                        <div class="editor" id="content">
+                                                            <%- blog.content %>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="d-flex lg:flex-column">
+                                                            <div class="relative shrink-0">
+                                                                <img class="w-1\/4" src="/<%= blog.thumbnail %>"
+                                                                    alt="image">
+
+                                                                <div
+                                                                    class="absolute-full-center d-flex justify-end py-20 px-20">
+                                                                    <a href="#"
+                                                                        class="d-flex justify-center items-center bg-white size-40 rounded-8 shadow-1">
+                                                                        <i class="icon-bin text-16"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="w-1/1 ml-30 lg:ml-0 lg:mt-20">
+
+                                                                <div class="form-upload col-12">
+                                                                    <label
+                                                                        class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình
+                                                                        đại diện*</label>
+                                                                    <div class="form-upload__wrap">
+                                                                        <input type="file"
+                                                                            class="button -dark-3 text-white"
+                                                                            id="thumbnail" placeholder="Cover-1.png">
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <p class="mt-10">Upload your course image here. It must
+                                                                    meet our course image
+                                                                    quality standards to be accepted. Important
+                                                                    guidelines: 750x440 pixels;
+                                                                    .jpg, .jpeg,. gif, or .png. no text on the image.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-6">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">ID</label>
+
+                                                        <%= blog.id %>
+                                                    </div>
+                                                    <div class="col-6">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Tạo
+                                                            lúc</label>
+
+                                                        <%= blog.createdAt.toLocaleString()%>
+                                                    </div>
+
+                                                </form>
+                                                <div class="row y-gap-20 justify-between pt-15">
+
+                                                    <div class="col-auto">
+                                                        <button class="button -md -purple-1 text-white"
+                                                            id="updateButton" onclick="updateBlog()">Cập
+                                                            nhật</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <footer class="footer -dashboard py-30">
+                                <div class="row items-center justify-between">
+                                    <div class="col-auto">
+                                        <div class="text-13 lh-1">© 2022 Educrat. All Right Reserved.</div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="d-flex items-center">
+                                            <div class="d-flex items-center flex-wrap x-gap-20">
+                                                <div>
+                                                    <a href="help-center.html" class="text-13 lh-1">Help</a>
+                                                </div>
+                                                <div>
+                                                    <a href="terms.html" class="text-13 lh-1">Privacy Policy</a>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="text-13 lh-1">Cookie Notice</a>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="text-13 lh-1">Security</a>
+                                                </div>
+                                                <div>
+                                                    <a href="terms.html" class="text-13 lh-1">Terms of Use</a>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                class="button -md -rounded bg-light-4 text-light-1 ml-30">English</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    <!-- barba container end -->
+
+    <!-- JavaScript -->
+    <%- include('../../layout/footerjs'); %>
+        <script src="/js/ckeditor.js"></script>
+        <script>
+            moment.locale('vi')
+            const timeClass = document.getElementsByClassName("datesTime")
+            const orderStatus = document.querySelectorAll('.orderStatus')
+            for (let itemTime of timeClass) {
+                itemTime.textContent = moment(itemTime.textContent).fromNow()
+
+
+            }
+
+            for (let orStt of orderStatus) {
+                const textStt = orStt.innerText
+                if (textStt === 'Paid') {
+                    orStt.classList.add("bg-blue-1")
+                } else {
+                    orStt.classList.add("bg-warning-2")
+                }
+            }
+        </script>
+
+        <script>
+            let editor;
+            ClassicEditor
+                .create(document.querySelector('.editor'), {
+
+                    licenseKey: '',
+
+
+
+
+                })
+                .then(newEditor => {
+                    editor = newEditor;
+
+
+
+
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
+                    console.error(error);
+                });
+            const updateBlog = async () => {
+                const title = document.getElementById('title').value
+                const description = document.getElementById('description').value
+                const slug = document.getElementById('slug').value
+                const content = editor.getData()
+                const categoryId = document.getElementById('categoryId').value
+                const statusId = document.getElementById('status').value
+                const image = document.getElementById('thumbnail').files[0];
+                const formData = new FormData();
+                formData.append("title", title);
+                formData.append("description", description);
+                formData.append("slug", slug);
+                formData.append("content", content);
+                formData.append("categoryId", categoryId);
+                formData.append("statusId", statusId);
+                formData.append("image", image);
+                try {
+                    const response = await axios.patch('/admin/blogs/<%=blog.id%>',
+                        formData
+                    );
+                    const { success, data } = response.data;
+                    console.log(response);
+                    if (success) {
+                        toastr.success(data);
+                        // setTimeout(() => {
+                        //     window.location.href = '/admin/blogs/<%=blog.id%>/update';
+                        // }, 1000);
+                    } else {
+                        toastr.error(data);
+                    }
+                } catch (error) {
+                    console.log(error);
+                    toastr.error(error.response.data);
+                }
+
+            }
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{
+  "name": "bootcamp-shop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/msal-node": "^1.17.1",
+    "@stripe/stripe-js": "^1.54.1",
+    "axios": "^0.27.2",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.10",
+    "coinbase-commerce-node": "^1.0.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-paginate": "^1.0.2",
+    "express-validator": "^6.14.0",
+    "googleapis": "^39.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "latinize": "^0.5.0",
+    "lodash": "^4.17.21",
+    "microtime": "^3.1.0",
+    "moment-timezone": "^0.5.34",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
+    "next": "^13.4.12",
+    "node-cron": "^3.0.1",
+    "nodemon": "^2.0.22",
+    "redis": "^4.2.0",
+    "sequelize": "^6.19.0",
+    "sequelize-cursor-pagination": "^3.0.2",
+    "sequelize-slugify": "^1.6.1",
+    "stripe": "^12.16.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2"
+  }
+}

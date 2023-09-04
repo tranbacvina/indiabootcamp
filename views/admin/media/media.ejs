@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+        .custom-drop-file {
+            position: relative;
+            padding: 24px 16px;
+            border: 1px solid black;
+            cursor: pointer;
+            min-height: 200px;
+            border-style: dashed;
+            border-width: 3px;
+            line-height: 200px;
+        }
+
+        .custom-drop-file input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .custom-drop-file img {
+            margin-bottom: 8px;
+            width: 40px;
+        }
+
+        .custom-drop-file p {
+            margin: 0;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="" style="background-color: rgb(245, 244, 248)">
+    <div id="root">
+        <div class="App">
+            <%- include('../nav'); %>
+                <div class="container-fluid">
+                    <div class="card mt-5 p-5">
+                        <div class="row mt-5">
+                            <div class="col">
+                                <p>Media Library <button class="btn btn-light border-primary btn-add">Add new</button>
+                                </p>
+                                <div class="form-group d-none custom-drop-file text-center">
+                                    <input type="file" class="form-control" name="upload" id="img-upload"
+                                        placeholder="Upload a picture">
+                                    <button class="btn btn-light border-primary">Select file</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <% media.forEach(item=> { %>
+                                <div class="col-6 col-md-2  mt-2">
+                                    <img src="<%= item.fileUrl %>" width="100%" style="object-fit: cover"
+                                        alt="img not found" data-id="<%= item.id %>" class="openModal">
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+                </div>
+                <!-- The Modal -->
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit Media</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <div class="row p-5">
+                                    <div class="col-md-8 col-12 display-img">
+
+                                    </div>
+                                    <div class="col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="">Alternative Text</label>
+                                            <input type="text" class="form-control" id="alternativeText">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Title</label>
+                                            <input type="text" class="form-control" id="title">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Caption</label>
+                                            <Textarea class="form-control" rows="2" id="caption"></Textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Description</label>
+                                            <Textarea class="form-control" rows="2" id="description"></Textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">File URL:</label>
+                                            <input type="text" class="form-control" id="url">
+                                            <!-- <button class="btn btn-light border-primary mt-3 btn-copy"
+                                                data-clipboard-text="Just because you can doesn't mean you should — clipboard.js">Copy
+                                                URL to
+                                                clipboard</button> -->
+                                        </div>
+                                        <div class="row mt-3 text-center">
+                                            <div class="col-6">
+                                                <button class="btn btn-danger btn-del">Delete</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <button class="btn btn-primary btn-update">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <%- include('../../layout/footerjs'); %>
+                        <script>
+                            // var clipboard = new ClipboardJS('.btn');
+
+                            // clipboard.on('success', function (e) {
+                            //     console.info('Action:', e.action);
+                            //     console.info('Text:', e.text);
+                            //     console.info('Trigger:', e.trigger);
+
+                            //     e.clearSelection();
+                            // });
+
+                            $('.btn-add').click(e => {
+                                $('.custom-drop-file').toggleClass('d-none');
+                            })
+
+                            $('#img-upload').change(async e => {
+                                const file = e.target.files[0];
+                                const formData = new FormData();
+                                formData.append('image', file);
+
+                                try {
+                                    const response = await axios.post('/admin/media', formData, {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data'
+                                        }
+                                    });
+                                    const { success, data } = response.data;
+                                    console.log(response);
+                                    if (success) {
+                                        toastr.success(data);
+                                        location.reload();
+                                    } else {
+                                        toastr.error(data);
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            })
+
+                            $('.openModal').click(async e => {
+                                e.preventDefault();
+                                const id = e.target.dataset.id;
+                                const url = `/admin/media/${id}`;
+                                const response = await axios.get(url)
+                                const { success, data } = response.data;
+                                try {
+                                    if (success) {
+                                        $('.display-img').html(`<img src="${data.fileUrl}" alt="" width="100%" >`);
+                                        $('#alternativeText').val(data.alternativeText);
+                                        $('#title').val(data.title);
+                                        $('#caption').val(data.caption);
+                                        $('#description').val(data.description);
+                                        $('#url').val(location.origin + data.fileUrl);
+                                        $('#myModal').modal('show');
+                                        $('.btn-update, .btn-del').attr('data-id', id);
+                                    } else {
+                                        toastr.error(data);
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                    toastr.error('Something went wrong');
+                                }
+                            })
+
+                            $('.btn-del').click(async e => {
+                                e.preventDefault();
+                                const id = e.target.dataset.id;
+                                const url = `/admin/media/${id}`;
+                                const response = await axios.delete(url)
+                                const { success, data } = response.data;
+                                try {
+                                    if (success) {
+                                        toastr.success(data);
+                                        location.reload();
+                                    } else {
+                                        toastr.error(data);
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                    toastr.error('Something went wrong');
+                                }
+                            })
+
+                            $('.btn-update').click(async e => {
+                                e.preventDefault();
+                                const id = e.target.dataset.id;
+
+                                console.log(id);
+
+                                const url = `/admin/media/${id}`;
+                                try {
+                                    const response = await axios.patch(url, {
+                                        alternativeText: $('#alternativeText').val().trim(),
+                                        title: $('#title').val().trim(),
+                                        caption: $('#caption').val().trim(),
+                                        description: $('#description').val().trim(),
+                                        fileUrl: $('#url').val().trim()
+                                    });
+                                    const { success, data } = response.data;
+                                    if (success) {
+                                        toastr.success(data);
+                                        $('#myModal').modal('hide');
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000);
+                                    } else {
+                                        toastr.error(data);
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                    toastr.error('Something went wrong');
+                                }
+                            })
+                        </script>

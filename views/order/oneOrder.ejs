@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <%- include('../layout/analytics'); %>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+
+    <main class="main-content ">
+        <%- include('../layout/header'); %>
+            <div class="content-wrapper  js-content-wrapper">
+
+                <section class="page-header -type-1 mt-60">
+                    <div class="container ">
+                        <div class="col-xl-8 col-lg-9 col-md-11"></div>
+                        <div class="page-header__content">
+                            <div class="row justify-content-center text-center ">
+                                <%if ( order.status=='Paid' ) {%>
+                                    <div class="col-12">
+                                        <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                            <h1 class="page-header__title">Thanks for ordering</h1>
+
+                                        </div>
+
+                                        <div data-anim="slide-up delay-2" class="is-in-view">
+                                            <p class="masthead-info__title lh-1  text-purple-1">Payment successful</p>
+                                            <p class="page-header__text">We appreciate your order, we’re currently
+                                                processing it. So hang tight and We will send the course through email
+                                                after
+                                                2 working hours.</p>
+
+                                        </div>
+
+                                    </div>
+                                    <%} else { %>
+                                        <div class="col-12">
+                                            <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                                <h1 class="page-header__title">Thanks for ordering</h1>
+
+                                            </div>
+
+                                            <div data-anim="slide-up delay-2" class="is-in-view">
+                                                <p class="page-header__text">The order has not been paid for
+                                                    yet.</p>
+                                                <p class="page-header__text">The order has been created, and the course
+                                                    will be sent to your email after you make the payment.</p>
+
+
+                                            </div>
+
+                                        </div>
+                                        <% } %>
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
+            </section>
+            <section class="layout-pt-md layout-pb-lg">
+                <div class="container">
+                    <div class="row no-gutters justify-content-center">
+                        <div class="col-xl-8 col-lg-9 col-md-11">
+                            <div class="shopCompleted-info">
+                                <div class="row no-gutters y-gap-32">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="shopCompleted-info__item">
+                                            <div class="subtitle">ID</div>
+                                            <div class="title text-purple-1 mt-5">
+                                                <%=order.id%>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="shopCompleted-info__item">
+                                            <div class="subtitle">Create At</div>
+                                            <div class="title text-purple-1 mt-5">
+                                                <%=order.createdAt%>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="shopCompleted-info__item">
+                                            <div class="subtitle">Price</div>
+                                            <div class="title text-purple-1 mt-5">
+                                                <%=(order.priceindia / 100).toLocaleString('en-IN', {
+                                                    maximumFractionDigits: 2, style: 'currency' , currency: 'INR' });%>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="shopCompleted-info__item">
+                                            <div class="subtitle">Status</div>
+                                            <div class="title text-purple-1 mt-5">
+                                                <%if ( order.status=='Chua thanh toan' ) {%>
+                                                    Not paid yet.
+                                                    <%} else{%>
+
+                                                        Paid
+                                                        <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="shopCompleted-footer bg-light-4 border-light rounded-8">
+                                <div class="shopCompleted-footer__wrap">
+                                    <h5 class="title">
+                                        Order details
+                                    </h5>
+                                    <span class="">
+                                        <%=order.email%>
+                                    </span>
+                                    <div class="item mt-5">
+                                        <span class="text-18 lh-1 text-dark-1 fw-500 mb-10">Course</span>
+                                        <span class="text-18 lh-1 text-dark-1 fw-500 mb-10">Download</span>
+                                    </div>
+                                    <%for (let item of order.orderItems){ %>
+                                        <div class="item p-3">
+                                            <span class=""><a href="<%= item.course.url %>" target="_blank"
+                                                    rel="<%= item.course.name %>">
+                                                    <%= item.course.name %>
+                                                </a></span>
+
+                                            <span class="">
+                                                <%if (item.driveDaGui) {%>
+                                                    <%if (item.isOneDrive) { %>
+
+                                                        <a href="<%=item.driveDaGui%>"
+                                                            class="button -md -green-1 text-dark-1" target="_blank"
+                                                            rel="noopener noreferrer">Download</a>
+                                                        <%} else {%>
+                                                            <a class="button -md -green-1 text-dark-1"
+                                                                href="https://drive.google.com/drive/folders/<%=item.driveDaGui%>"
+                                                                target="_blank" rel="noopener noreferrer">Download</a>
+                                                            <%}%>
+                                                                <%} else {%>
+                                                                    <span>Loading.</span>
+                                                                    <%} %>
+
+                                            </span>
+                                        </div>
+                                        <%} %>
+                                </div>
+                            </div>
+                            <%if ( order.status=='Chua thanh toan' ) {%>
+                                <div class="col-12 shopCompleted-footer ">
+                                    <form method="POST" action="/order/cstripe">
+                                        <input type="hidden" id="custId" name="uuid" value="<%=order.uuid%>">
+                                        <button type="submit" class="button -md -green-1 text-dark-1 fw-500 w-1/1">Pay
+                                            <%=(order.priceindia / 100).toLocaleString('en-IN', { maximumFractionDigits:
+                                                2, style: 'currency' , currency: 'INR' });%>
+                                        </button>
+                                    </form>
+
+                                </div>
+                                <%} %>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+
+    </main>
+
+    <%- include('../layout/footerjs'); %>
+
+</body>
+
+</html>

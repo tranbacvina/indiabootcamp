@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <%- include('../layout/analytics'); %>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+
+    <main class="main-content bg-light-3 ">
+        <%- include('../layout/header'); %>
+            <div class="content-wrapper  js-content-wrapper">
+
+
+                <section data-anim="fade" class="breadcrumbs is-in-view">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="breadcrumbs__content">
+
+                                    <div class="breadcrumbs__item ">
+                                        <a href="/">Trang chủ</a>
+                                    </div>
+
+                                    <div class="breadcrumbs__item ">
+                                        <a href="/blog">Blog</a>
+                                    </div>
+
+                                    <div class="breadcrumbs__item ">
+                                        <a href="/category/<%=blogs[0].Category.slug%>">
+                                            <%=blogs[0].Category.name%>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="page-header -type-1">
+                    <div class="container">
+                        <div class="page-header__content">
+                            <div class="row justify-center text-center">
+                                <div class="col-auto">
+                                    <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                        <h1 class="page-header__title">Blog</h1>
+
+                                    </div>
+
+                                    <div data-anim="slide-up delay-2" class="is-in-view">
+
+                                        <p class="page-header__text">Hướng dẫn sử dụng, khoá học miễn phí được chia sẻ
+                                            tải đây</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="layout-pt-md layout-pb-lg">
+                    <div data-anim-wrap="" class="container animated">
+                        <div class="row y-gap-30 justify-center">
+                            <%for (let blog of blogs) {%>
+                                <div data-anim="slide-up delay-1" class="col-lg-10 col-md-11 is-in-view">
+                                    <div class="blogCard -type-3">
+                                        <div class="row y-gap-30 items-center">
+                                            <div class="col-lg-6">
+                                                <div class="blogCard__image">
+                                                    <img class="rounded-8" src="/<%=blog.thumbnail%>" alt="image">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="blogCard__content pl-60 lg:pl-40 md:pl-0">
+                                                    <a href="/category/<%=blog.Category.slug%>"
+                                                        class="blogCard__category text-14 lh-1 text-purple-1 fw-500">
+                                                        <%=blog.Category.name%>
+                                                    </a>
+                                                    <h4 class="blogCard__title text-24 lh-15 text-dark-4 fw-500 mt-15">
+                                                        <a href="/<%=blog.slug%>">
+                                                            <%=blog.title%>
+                                                        </a>
+                                                    </h4>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
+                        </div>
+
+                        <div class="row justify-center pt-90 lg:pt-50">
+                            <div class="col-auto">
+                                <div class="pagination -buttons">
+                                    <% if (paginate.hasPreviousPages) { %>
+                                        <button class="pagination__button -prev">
+                                            <i class="icon icon-chevron-left"></i>
+                                        </button>
+                                        <%}%>
+
+                                            <div class="pagination__count">
+                                                <% pages.forEach(function(page) { %>
+                                                    <a href="<%=page.url%>"
+                                                        class="<%- currentPage == page.number ? '-count-is-active' : '' %> ">
+                                                        <%=page.number%>
+                                                    </a>
+                                                    <% }); %>
+                                            </div>
+                                            <% if (paginate.hasNextPages(pageCount)) { %>
+                                                <button class="pagination__button -next">
+                                                    <i class="icon icon-chevron-right"></i>
+                                                </button>
+                                                <%}%>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <%- include('../layout/footerjs'); %>
+
+            </div>
+
+    </main>
+
+
+</body>
+
+</html>

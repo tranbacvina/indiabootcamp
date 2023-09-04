@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <%- include('../../layout/analytics'); %>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+
+    <main class="main-content ">
+        <%- include('../../layout/header'); %>
+            <div class="content-wrapper  js-content-wrapper">
+                <section class="page-header -type-1 mt-30 pt-16">
+                    <div class="container">
+                        <div class="page-header__content">
+                            <div class="row justify-center text-center">
+                                <div class="col-auto">
+                                    <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                        <h1 class="page-header__title">Đơn hàng</h1>
+
+                                    </div>
+
+                                    <div data-anim="slide-up delay-2" class="is-in-view">
+
+                                        <p class="page-header__text">Tất cả đơn hàng, các link khoá học của bạn tại đây
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="layout-pt-md layout-pb-lg">
+                    <div class="container">
+                        <div class="row justify-end">
+                            <div class="col-12">
+                                <div class="px-30 pr-60 py-25 rounded-8 bg-light-6">
+                                    <div class="row justify-between ">
+                                        <div class="col-1">
+                                            <div class="fw-500 text-purple-1">ID</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="fw-500 text-purple-1">UUID</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="fw-500 text-purple-1">Email</div>
+                                        </div>
+                                        <div class="col-1">
+                                            <div class="fw-500 text-purple-1">Price</div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="fw-500 text-purple-1">Trạng thái</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="px-30 pr-60">
+                                    <% orders.forEach(function(order) { %>
+                                        <div
+                                            class="row y-gap-20 justify-between items-center pt-30 pb-30 border-bottom-light">
+                                            <div class="col-1">
+                                                <div class="">
+                                                    <%= order.id%>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="d-flex items-center">
+                                                    <div class="fw-500 text-purple-1"><a href="/order/<%= order.uuid%>">
+                                                            <%= order.uuid%>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="">
+                                                    <p>
+                                                        <%= order.email%>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <div class="">
+                                                    <p>
+                                                        <%= order.price.toLocaleString('it-IT', {style : 'currency' ,
+                                                            currency : 'VND' })%>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <div class="">
+                                                    <p>
+                                                        <%= order.status%>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <% }); %>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                        <div class="row justify-center pt-90 lg:pt-50">
+                            <div class="col-auto">
+                                <div class="pagination -buttons">
+                                    <% if (paginate.hasPreviousPages) { %>
+                                        <button class="pagination__button -prev">
+                                            <i class="icon icon-chevron-left"></i>
+                                        </button>
+                                        <%}%>
+
+                                            <div class="pagination__count">
+                                                <% pages.forEach(function(page) { %>
+                                                    <a href="<%=page.url%>"
+                                                        class="<%- currentPage == page.number ? '-count-is-active' : '' %> ">
+                                                        <%=page.number%>
+                                                    </a>
+                                                    <% }); %>
+                                            </div>
+                                            <% if (paginate.hasNextPages(pageCount)) { %>
+                                                <button class="pagination__button -next">
+                                                    <i class="icon icon-chevron-right"></i>
+                                                </button>
+                                                <%}%>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <%- include('../../layout/footer'); %>
+            </div>
+
+    </main>
+
+    <%- include('../../layout/footerjs'); %>
+
+</body>
+
+</html>
