@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_51NT8FIHB0jT9ge3wkM5zhk26D2M8yt1OR0qkcjN0UMsyXE6MfIFlPE4o1Im0Oagb5WKP4pO0rkMW0qgw9XJVmDzs0027ubxzz1');
+const stripe = require('stripe')('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');
 const endpointSecret = "whsec_8017e25955ec281120d71e7df71fb710b746d70c03217759ad65a2cf4cc3c0b5";
 const db = require("../models");
 const botTelegram = require("./telegram_noti");
