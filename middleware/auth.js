@@ -8,13 +8,13 @@ const needLogin = (req, res, next) => {
     if (token) {
         jwt.verify(token, process.env.jwt, (err, decodeToken) => {
             if (err) {
-                res.redirect('/admin/login')
+                res.redirect('/login')
             } else {
                 next()
             }
         })
     } else {
-        res.redirect('/admin/login')
+        res.redirect('/login')
     }
 }
 

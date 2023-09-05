@@ -14,9 +14,11 @@ Routers.get("/", (req, res) => {
 
 Routers.use("/course", course)
 Routers.use("/order", order)
+Routers.get("/login", auth.getLogin)
+
 Routers.post("/login", auth.login)
 Routers.post("/adduser", auth.adduser)
-Routers.use("/admin", admin)
+Routers.use("/admin", middleware.needLogin, admin)
 
 
 Routers.get('*', function (req, res) {

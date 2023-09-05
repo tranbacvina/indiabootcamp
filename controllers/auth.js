@@ -16,16 +16,21 @@ const login = async (req, res) => {
         const isAuth = bcrypt.compareSync(password, user.password);
         if (isAuth) {
             const token = jwt.sign({ user: user.username }, process.env.jwt, { expiresIn: '7d' })
-            // res.cookie('jwt', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 })
-            res.send({ token })
+            res.cookie('jwt', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 })
+            res.redirect('/admin/order')
+            // res.send({ token })
         } else {
-            res.status(401).send("Unauthenticated")
+            res.redirect('/login')
+
+            // res.status(401).send("Unauthenticated")
         }
     } catch (error) {
         console.log(error)
     }
 }
-
+const getLogin = (req, res) => {
+    res.render('login')
+}
 const adduser = async (req, res) => {
     const { username, password } = req.body
     console.log(req.body)
@@ -43,4 +48,4 @@ const adduser = async (req, res) => {
 }
 
 
-module.exports = { login, adduser }
+module.exports = { login, adduser, getLogin }
