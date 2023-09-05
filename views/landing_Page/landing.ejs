@@ -735,7 +735,7 @@
             var codeHtml = ``
             if (checkCourseRequest.data[0].success) {
                 modalCheckCourse.open()
-                modalCheckCourse.setContent('"Fetching data, please wait...');
+                modalCheckCourse.setContent('Fetching data, please wait...');
                 for (let course of checkCourseRequest.data) {
                     if (!course.success) {
                         toastr.error(checkCourseRequest.data.messenger)

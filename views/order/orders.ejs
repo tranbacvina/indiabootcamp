@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <title>All order</title>
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,17 +75,20 @@
                                         <div class="col-1">
                                             <div class="fw-500 text-purple-1">ID</div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="fw-500 text-purple-1">UUID</div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="fw-500 text-purple-1">Email</div>
                                         </div>
                                         <div class="col-1">
                                             <div class="fw-500 text-purple-1">Price</div>
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-1">
                                             <div class="fw-500 text-purple-1">Status</div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="fw-500 text-purple-1">View</div>
                                         </div>
                                     </div>
                                 </div>
@@ -94,12 +97,12 @@
                                     <% orders.forEach(function(order) { %>
                                         <div
                                             class="row y-gap-20 justify-between items-center pt-30 pb-30 border-bottom-light">
-                                            <div class="col-1">
+                                            <div class="col-lg-1">
                                                 <div class="">
                                                     <%= order.id%>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <div class="d-flex items-center">
                                                     <div class="fw-500 text-purple-1"><a href="/order/<%= order.uuid%>">
                                                             <b>
@@ -110,23 +113,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-lg-3">
                                                 <div class="">
                                                     <p>
                                                         <%= order.email%>
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div class="col-1">
+                                            <div class="col-lg-1">
                                                 <div class="">
                                                     <p>
-                                                        <%= order.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                            currency : 'VND' })%>
+                                                        <%=(order.priceindia / 100).toLocaleString('en-IN', {
+                                                            maximumFractionDigits: 2, style: 'currency' ,
+                                                            currency: 'INR' });%>
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <div class="col-2">
+                                            <div class="col-lg-1">
                                                 <div class="">
                                                     <p>
                                                         <%if ( order.status=='Chua thanh toan' ) {%>
@@ -136,6 +140,16 @@
                                                                 Paid
                                                                 <% } %>
                                                     </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <div class="d-flex items-center">
+                                                    <div class="fw-500 text-purple-1"><a href="/order/<%= order.uuid%>"
+                                                            class="button -sm px-24 py-20 -outline-blue-3 text-blue-3 text-14">
+                                                            See details
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
 
