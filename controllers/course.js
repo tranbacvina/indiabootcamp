@@ -37,7 +37,7 @@ const courseChuaGui = async (req, res) => {
 
 const cawnCourseChuaGui = async (req, res) => {
     try {
-        const { id } = req.params
+        const { id } = req.query
         const orderItemChuaGui = await findManyCourse_ChuaGui(id)
         const links = orderItemChuaGui.map(item => item.course.url)
         const cawn_data = await getDriveUdemy(links)

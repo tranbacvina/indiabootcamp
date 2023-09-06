@@ -2,7 +2,7 @@
 const db = require("../models");
 const stripe = require("../service/stripe")
 const order = require("../service/order")
-const { oneCourseID } = require("../service/course")
+const { oneCourseID, findManyCourse_ChuaGui } = require("../service/course")
 const { check } = require('express-validator');
 const { validationResult } = require('express-validator');
 const { v4: uuidv4 } = require("uuid");
@@ -87,7 +87,7 @@ const oneOrder = async (req, res) => {
         const OneOrder = await order.findOne(id)
 
 
-        const courseChuaGui = await order.findManyCourse_ChuaGui(id)
+        const courseChuaGui = await findManyCourse_ChuaGui(id)
 
         if (OneOrder) {
             res.render('admin/order/order_deltail', { OneOrder: OneOrder, courseChuaGui: courseChuaGui })

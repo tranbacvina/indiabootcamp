@@ -43,27 +43,27 @@ const findMany = async (querys, limit, skip) => {
     return await db.order.findAndCountAll(query)
 }
 
-const findManyCourse_ChuaGui = async (id) => {
-    const query = {
-        attributes: ['id'],
-        order: [['id', 'DESC']],
-        include:
-            [{
-                model: db.course,
-                attributes: ['url', 'name'],
-            },
-            {
-                model: db.order,
-                where: { status: 'Paid' },
-                attributes: ['id', 'email', 'createdAt'],
-            }],
-        where: { status: 'Chua gui' }
-    }
-    if (id) { query.where.orderID = id }
+// const findManyCourse_ChuaGui = async (id) => {
+//     const query = {
+//         attributes: ['id'],
+//         order: [['id', 'DESC']],
+//         include:
+//             [{
+//                 model: db.course,
+//                 attributes: ['url', 'name'],
+//             },
+//             {
+//                 model: db.order,
+//                 where: { status: 'Paid' },
+//                 attributes: ['id', 'email', 'createdAt'],
+//             }],
+//         where: { status: 'Chua gui' }
+//     }
+//     if (id) { query.where.orderID = id }
 
-    return await db.orderItem.findAll(
-        query,
-    )
-}
+//     return await db.orderItem.findAll(
+//         query,
+//     )
+// }
 
-module.exports = { orderUUID, findMany, findOne, findManyCourse_ChuaGui }
+module.exports = { orderUUID, findMany, findOne, }
