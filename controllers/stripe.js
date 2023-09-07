@@ -1,5 +1,5 @@
-const stripe = require('stripe')('sk_test_51NT8FIHB0jT9ge3wkM5zhk26D2M8yt1OR0qkcjN0UMsyXE6MfIFlPE4o1Im0Oagb5WKP4pO0rkMW0qgw9XJVmDzs0027ubxzz1');
-const endpointSecret = "whsec_8017e25955ec281120d71e7df71fb710b746d70c03217759ad65a2cf4cc3c0b5";
+const stripe = require('stripe')(process.env.STRIPE_SECRET_LIVE_KEY);
+const endpointSecret = process.env.Signingsecret
 const db = require("../models");
 const botTelegram = require("../service/telegram_noti");
 
