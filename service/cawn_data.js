@@ -32,10 +32,27 @@ const getDriveUdemy = async (links) => {
 //     return error
 //   }
 // }
-const base_url = (link) => {
-  var parse = new URL(link);
-  var url = parse.origin + parse.pathname;
-  return url;
+const base_url = async (link) => {
+  try {
+    const haveShare = link.includes("/share/")
+    if (haveShare) {
+      const handleShareUrlUdemy = await axios.post(`${process.env.API_DOWNLOAD}handlerurludemy`, {
+        link
+      })
+      const parse = new URL(handleShareUrlUdemy.data);
+      var url = parse.origin + parse.pathname;
+      return url;
+    } else {
+      const parse = new URL(link);
+      var url = parse.origin + parse.pathname;
+      return url;
+    }
+
+
+  } catch (error) {
+    console.log(error)
+  }
+
 };
 const cawnUdemy = async (uri) => {
   const udemy = await axios.get(
@@ -44,7 +61,8 @@ const cawnUdemy = async (uri) => {
   return udemy
 }
 const udemy = async (uri) => {
-  const patch = base_url(uri).split('/')[4];
+  const urlfixshare_udemy = await base_url(uri)
+  const patch = urlfixshare_udemy.split('/')[4];
   const fixURL = new URL(uri).origin + '/course/' + patch
   try {
     const course = await oneCourseLink(fixURL)
