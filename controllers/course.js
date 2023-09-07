@@ -61,8 +61,8 @@ const coursedownload = async (req, res) => {
 }
 
 const all = async (req, res) => {
-    const { text, limit, skip } = req.query
-    const course = await findMany(text, limit, skip)
+    const { text, limit, } = req.query
+    const course = await findMany(text, limit, req.skip)
     // res.send(course)
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
