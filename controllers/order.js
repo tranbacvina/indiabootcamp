@@ -101,7 +101,7 @@ const oneOrder = async (req, res) => {
 const tracking = async (req, res) => {
     const { query, limit, skip } = req.query
     if (query) {
-        const orders = await order.findMany(query, limit, skip)
+        const orders = await order.findMany(query, limit, req.skip)
         if (orders.length === 0) {
 
             res.render('layout/404')
