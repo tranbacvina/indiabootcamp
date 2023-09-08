@@ -8,7 +8,7 @@ const cors = require("cors");
 // var cron = require('node-cron');
 // const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
-const stripe = require("./controllers/stripe")
+const stripe = require("./service/stripe")
 
 
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);

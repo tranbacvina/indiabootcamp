@@ -9,7 +9,7 @@ const createCheckOutSession = async (line_items, uuid, orderid, email) => {
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: 'payment',
-        success_url: `https://en.fullbootcamp.com/order/${uuid}`,
+        success_url: `https://en.fullbootcamp.com/order/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `https://en.fullbootcamp.com/order/${uuid}`,
         customer_email: email,
         metadata: {
@@ -63,4 +63,9 @@ const webhookStipe = async (request, response) => {
     // Return a 200 response to acknowledge receipt of the event
     response.send();
 };
-module.exports = { createCheckOutSession, webhookStipe }
+
+const striperetrieve = async (id) => {
+    const session = await stripe.checkout.sessions.retrieve(id);
+    return session
+}
+module.exports = { createCheckOutSession, webhookStipe, striperetrieve }

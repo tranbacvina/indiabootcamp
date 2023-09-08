@@ -8,6 +8,7 @@ Routers.post("/createapi", [
     check('email', 'Vui lòng điền đúng định dạng email').isEmail()
 ], order.createindia);
 Routers.get("/", order.tracking)
+Routers.get('/success', order.stripeSuccess);
 Routers.post("/cstripe", order.cstripe)
 
 Routers.get("/:uuid", order.getuuid)

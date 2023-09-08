@@ -153,8 +153,8 @@ const cstripe = async (req, res) => {
                 quantity: 1,
                 price_data:
                 {
-                    currency: "INR",
-                    unit_amount: item.course.priceindia,
+                    currency: "USD",
+                    unit_amount: item.course.priceus,
                     product_data: {
                         name: item.course.name,
                         images: [item.course.image],
@@ -174,4 +174,11 @@ const cstripe = async (req, res) => {
 
 
 }
-module.exports = { createindia, oneOrder, getuuid, tracking, getorders, cstripe, }
+
+const stripeSuccess = async (req, res) => {
+    const session = await stripe.striperetrieve(req.query.session_id);
+    const orderid = session.metadata.orderid
+    const orderdata = await order.findOne(orderid)
+    res.render('order/order_success', { order: orderdata });
+}
+module.exports = { createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess }
