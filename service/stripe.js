@@ -1,5 +1,5 @@
-const stripe = require('stripe')('sk_test_51NT8FIHB0jT9ge3wkM5zhk26D2M8yt1OR0qkcjN0UMsyXE6MfIFlPE4o1Im0Oagb5WKP4pO0rkMW0qgw9XJVmDzs0027ubxzz1');
-const endpointSecret = "whsec_8017e25955ec281120d71e7df71fb710b746d70c03217759ad65a2cf4cc3c0b5";
+const stripe = require('stripe')(process.env.STRIPE_SECRET_LIVE_KEY);
+const endpointSecret = process.env.Signingsecret;
 const db = require("../models");
 const botTelegram = require("./telegram_noti");
 
@@ -9,8 +9,8 @@ const createCheckOutSession = async (line_items, uuid, orderid, email) => {
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: 'payment',
-        success_url: `http://localhost:3008/order/${uuid}`,
-        cancel_url: `http://localhost:3008/order/${uuid}`,
+        success_url: `https://india.fullbootcamp.com/order/${uuid}`,
+        cancel_url: `https://india.fullbootcamp.com/order/${uuid}`,
         customer_email: email,
         metadata: {
             orderid
@@ -45,7 +45,7 @@ const webhookStipe = async (request, response) => {
                 },
             });
             if (OrderDetail) {
-                const url = `https://fullbootcamp.com/admin/order/${orderid}`;
+                const url = `https://india.fullbootcamp.com/admin/order/${orderid}`;
                 await botTelegram.sendMessage(
                     `Đơn hàng ${orderid} đã được thanh toán qua Stripe`,
                     url
