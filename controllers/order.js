@@ -51,8 +51,8 @@ const createindia = async (req, res) => {
                 quantity: 1,
                 price_data:
                 {
-                    currency: "INR",
-                    unit_amount: item.priceindia,
+                    currency: "USD",
+                    unit_amount: item.priceus,
                     product_data: {
                         name: item.name,
                         images: [item.image],

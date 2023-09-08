@@ -120,8 +120,8 @@
                                         <div class="shopCompleted-info__item">
                                             <div class="subtitle">Price</div>
                                             <div class="title text-purple-1 mt-5">
-                                                <%=(order.priceindia / 100).toLocaleString('en-IN', {
-                                                    maximumFractionDigits: 2, style: 'currency' , currency: 'INR' });%>
+                                                <%=(order.priceus / 100).toLocaleString('en-US', {
+                                                    maximumFractionDigits: 2, style: 'currency' , currency: 'USD' });%>
                                             </div>
                                         </div>
                                     </div>
@@ -187,8 +187,8 @@
                                     <form method="POST" action="/order/cstripe">
                                         <input type="hidden" id="custId" name="uuid" value="<%=order.uuid%>">
                                         <button type="submit" class="button -md -green-1 text-dark-1 fw-500 w-1/1">Pay
-                                            <%=(order.priceindia / 100).toLocaleString('en-IN', { maximumFractionDigits:
-                                                2, style: 'currency' , currency: 'INR' });%>
+                                            <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
+                                                style: 'currency' , currency: 'USD' });%>
                                         </button>
                                     </form>
 

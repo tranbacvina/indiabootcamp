@@ -9,8 +9,8 @@ const createCheckOutSession = async (line_items, uuid, orderid, email) => {
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: 'payment',
-        success_url: `https://india.fullbootcamp.com/order/${uuid}`,
-        cancel_url: `https://india.fullbootcamp.com/order/${uuid}`,
+        success_url: `https://en.fullbootcamp.com/order/${uuid}`,
+        cancel_url: `https://en.fullbootcamp.com/order/${uuid}`,
         customer_email: email,
         metadata: {
             orderid
@@ -45,9 +45,9 @@ const webhookStipe = async (request, response) => {
                 },
             });
             if (OrderDetail) {
-                const url = `https://india.fullbootcamp.com/admin/order/${orderid}`;
+                const url = `https://en.fullbootcamp.com/admin/order/${orderid}`;
                 await botTelegram.sendMessage(
-                    `Đơn hàng ${orderid} đã được thanh toán qua Stripe`,
+                    `Đơn hàng ${orderid} đã được thanh toán qua Stripe US`,
                     url
                 );
                 OrderDetail.status = "Paid";
