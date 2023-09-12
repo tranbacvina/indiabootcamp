@@ -22,7 +22,7 @@ const oneCourseID = async (id) => {
     });
 }
 
-const createNewCourse = async (name, url, description, image, price, is_practice_test_course) => {
+const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements) => {
     const course = await db.course.create(
         {
             name,
@@ -31,6 +31,7 @@ const createNewCourse = async (name, url, description, image, price, is_practice
             image,
             price,
             is_practice_test_course,
+            description_log, whatyouwilllearn, requirements
         },
     );
     return course

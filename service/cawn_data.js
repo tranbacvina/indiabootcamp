@@ -1,5 +1,9 @@
 const axios = require("axios");
 const { oneCourseLink, createNewCourse } = require("../service/course")
+const { gotScraping } = require('got-scraping');
+
+const cheerio = require("cheerio");
+
 const getDriveUdemy = async (links) => {
   const unica = await axios.post(`${process.env.API_CHECK_COURSE}/checkcourseudemy`,
     { links: links }
@@ -36,10 +40,10 @@ const base_url = async (link) => {
   try {
     const haveShare = link.includes("/share/")
     if (haveShare) {
-      const handleShareUrlUdemy = await axios.post(`${process.env.API_DOWNLOAD}handlerurludemy`, {
-        link
-      })
-      const parse = new URL(handleShareUrlUdemy.data);
+      const res = await gotScraping
+        .get(link)
+
+      const parse = new URL(res.url);
       var url = parse.origin + parse.pathname;
       return url;
     } else {
@@ -54,9 +58,22 @@ const base_url = async (link) => {
   }
 
 };
+
+const scrapingUdemy = async (link) => {
+  const response = await gotScraping({
+    url: link,
+
+  });
+  let $ = cheerio.load(response.body);
+  const requirements = $("h2[data-purpose='requirements-title']").next().children().map((i, e) => { return $(e).text() }).get()
+  const whatyouwilllearn = $(".what-you-will-learn--content-spacing--3n5NU").children().children().map((i, e) => { return $(e).text() }).get()
+  const data = { requirements, whatyouwilllearn }
+  return data
+}
+
 const cawnUdemy = async (uri) => {
   const udemy = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=title,locale,headline,is_practice_test_course,url,published_title,image_480x270,is_in_any_ufb_content_collection`
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=title,locale,headline,is_practice_test_course,url,published_title,image_480x270,is_in_any_ufb_content_collection,description`
   )
   return udemy
 }
@@ -74,8 +91,8 @@ const udemy = async (uri) => {
       return { success: true, data: course }
     } else {
       const data_course = await cawnUdemy(patch)
-
-      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course)
+      const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
+      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements)
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
       }

@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const SequelizeSlugify = require('sequelize-slugify')
+
 module.exports = (sequelize, DataTypes) => {
   class course extends Model {
     /**
@@ -17,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       url: DataTypes.STRING,
+      slug: { type: DataTypes.STRING, unique: true },
       description: DataTypes.TEXT,
+      description_log: DataTypes.TEXT('long'),
+      whatyouwilllearn: DataTypes.JSON,
+      requirements: DataTypes.JSON,
       image: DataTypes.STRING,
       price: DataTypes.FLOAT,
       priceindia: {
@@ -35,5 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "course",
     }
   );
+  SequelizeSlugify.slugifyModel(course, {
+    source: ['name']
+  });
   return course;
 };

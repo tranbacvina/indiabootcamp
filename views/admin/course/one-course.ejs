@@ -24,6 +24,8 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/vendors.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Sửa <%=course.name%>
     </title>
@@ -115,6 +117,14 @@
                                                     <div class="col-12">
 
                                                         <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
+
+                                                        <input type="text" value="<%=course.slug%>" name="url"
+                                                            id="slug">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label
                                                             class="text-16 lh-1 fw-500 text-dark-1 mb-10">Price*</label>
 
                                                         <input type="text" value="<%=course.price%>" name="price"
@@ -122,10 +132,39 @@
                                                     </div>
                                                     <div class="col-12">
 
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">whatyouwilllearn</label>
+                                                        <pre class="" id="whatyouwilllearn" name="whatyouwilllearn">
+                                                    <code class="language-json languages.javascript">
+                                                            <%- JSON.stringify(course.whatyouwilllearn )%>
+                                                    </code>
+                                                    </pre>
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">requirements</label>
+                                                        <pre class="" id="requirements" name="whatyouwilllearn">
+                                                            <code class="language-json languages.javascript">
+                                                                <%= JSON.stringify(course.requirements )%>
+                                                            </code>
+                                                                                                        </pre>
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
+                                                            ngắn*</label>
+                                                        <textarea class="" id="description" name="description">
+                                                    <%- course.description %>
+                                                </textarea>
+
+                                                    </div>
+                                                    <div class="col-12">
+
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
                                                             chính*</label>
                                                         <textarea class="editor" id="content" name="content">
-                                                            <%- course.description %>
+                                                            <%- course.description_log %>
                                                         </textarea>
 
                                                     </div>

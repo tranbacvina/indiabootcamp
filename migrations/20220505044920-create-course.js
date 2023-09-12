@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       image: {
         type: Sequelize.STRING
@@ -39,7 +39,19 @@ module.exports = {
       },
       is_practice_test_course: {
         type: Sequelize.BOOLEAN
-      }
+      },
+      slug: {
+        type: Sequelize.STRING
+      },
+      description_log: {
+        type: Sequelize.TEXT('long')
+      },
+      whatyouwilllearn: {
+        type: Sequelize.JSON
+      },
+      requirements: {
+        type: Sequelize.JSON
+      },
     });
   },
   async down(queryInterface, Sequelize) {

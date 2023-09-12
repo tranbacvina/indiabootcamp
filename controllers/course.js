@@ -105,4 +105,36 @@ const sendEmailCourse = async (req, res) => {
         res.status(200).send([{ text: 'Gửi Mail Không thành công' }])
     }
 }
-module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse }
+
+const publicall = async (req, res) => {
+    const { text, limit, } = req.query
+    const course = await findMany(text, limit, req.skip)
+    // res.send(course)
+    // const itemCount = course.count;
+    // const pageCount = Math.ceil(course.count / req.query.limit);
+
+
+    if (course.length === 0) {
+
+        res.render('layout/404')
+    } else {
+        const itemCount = course.count;
+        const pageCount = Math.ceil(course.count / req.query.limit);
+        res.render('course/course', {
+            course: course.rows,
+            pageCount,
+            itemCount,
+            currentPage: req.query.page,
+            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        });
+
+    }
+};
+
+const onePublic = async (req, res) => {
+    const { id } = req.params;
+    const course = await oneCourseID(id);
+    // res.send(course)
+    res.render("course/one-course", { course });
+};
+module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic }
