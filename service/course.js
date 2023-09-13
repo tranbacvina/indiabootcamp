@@ -21,7 +21,14 @@ const oneCourseID = async (id) => {
         include: { model: db.driveCourse }
     });
 }
-
+const oneCourseSlug = async (slug) => {
+    return await db.course.findOne({
+        where: {
+            slug
+        },
+        include: { model: db.driveCourse }
+    });
+}
 const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements) => {
     const course = await db.course.create(
         {
@@ -181,5 +188,5 @@ const promiseCourse = async (drive) => {
 
 }
 module.exports = {
-    oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, promiseCourse
+    oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, promiseCourse, oneCourseSlug
 };

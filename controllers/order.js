@@ -7,7 +7,7 @@ const { check } = require('express-validator');
 const { validationResult } = require('express-validator');
 const { v4: uuidv4 } = require("uuid");
 const paginate = require('express-paginate');
-
+const axios = require('axios')
 const createindia = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -71,11 +71,68 @@ const createindia = async (req, res) => {
     }
 };
 
+const createVN = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ error: errors.array() });
+    }
+    try {
+        const { email, courseID } = req.body;
+        let items = new Array(courseID)
+        const orderItem = [];
+        for (let item of items) {
+            const Course = await oneCourseID(item)
+            orderItem.push(Course);
+        }
+        console.log('items', items)
+        console.log('orderItem', orderItem)
+
+        const price = orderItem.reduce((acc, obj) => acc + obj.price, 0)
+        const priceindia = orderItem.reduce((acc, obj) => acc + obj.priceindia || 9900, 0)
+        const priceus = orderItem.reduce((acc, obj) => acc + obj.priceus || 300, 0)
+
+        const order = await db.order.create(
+            {
+                email,
+                price,
+                priceck: 0,
+                priceindia,
+                priceus,
+                status: "Chua thanh toan",
+                orderItems: items.map(i => { return { courseID: i } }),
+                uuid: uuidv4()
+            },
+            {
+                include: {
+                    model: db.orderItem,
+                    include: {
+                        model: db.course
+                    }
+                },
+            }
+        );
+
+
+        res.redirect(`/order/${order.uuid}`)
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const getuuid = async (req, res) => {
     const { uuid } = req.params;
     const orderid = await order.findOne(uuid)
+    const qrcode = await axios.post('https://api.vietqr.io/v2/generate', {
+        "accountNo": "0141000836982",
+        "accountName": "TRAN DUY BAC",
+        "acqId": "970436",
+        "addInfo": `bootcamp ${orderid.id}`,
+        "amount": `${orderid.price}`,
+        "template": "qr_only"
+    })
+    // res.send(qrcode.data)
     if (orderid) {
-        res.render('order/oneOrder', { order: orderid })
+        res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data })
     } else {
         res.render('layout/404')
     }
@@ -181,4 +238,4 @@ const stripeSuccess = async (req, res) => {
     const orderdata = await order.findOne(orderid)
     res.render('order/order_success', { order: orderdata });
 }
-module.exports = { createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess }
+module.exports = { createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }

@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const course = require("../controllers/course")
 
 Routers.get("/", course.publicall)
-Routers.get("/:id", course.onePublic)
+Routers.get("/:slug", course.onePublic)
 
 Routers.post("/check", [
     check('email', 'Email cannot be left blank.').not().isEmpty(),

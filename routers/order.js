@@ -7,6 +7,12 @@ Routers.post("/createapi", [
     check('email', 'Không được để trống email').not().isEmpty(),
     check('email', 'Vui lòng điền đúng định dạng email').isEmail()
 ], order.createindia);
+Routers.post("/createvn", [
+    check('email', 'Không được để trống email').not().isEmpty(),
+    check('email', 'Vui lòng điền đúng định dạng email').isEmail(),
+    check('courseID', 'Không được để trống Course').not().isEmpty(),
+    order.createVN
+])
 Routers.get("/", order.tracking)
 Routers.get('/success', order.stripeSuccess);
 Routers.post("/cstripe", order.cstripe)

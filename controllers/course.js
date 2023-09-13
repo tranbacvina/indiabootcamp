@@ -1,6 +1,6 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug } = require("../service/course")
 const { getDriveUdemy } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 
@@ -132,8 +132,8 @@ const publicall = async (req, res) => {
 };
 
 const onePublic = async (req, res) => {
-    const { id } = req.params;
-    const course = await oneCourseID(id);
+    const { slug } = req.params;
+    const course = await oneCourseSlug(slug);
     // res.send(course)
     res.render("course/one-course", { course });
 };
