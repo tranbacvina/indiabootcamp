@@ -125,7 +125,9 @@
                                         <%= item.lastUpdate %>
                                       </td>
                                       <td role="cell" class="text-inherit">
-                                        <%= item.transId %>
+                                        <a href="/admin/bank/momo/detail?id=<%= item.transId %>">
+                                          <%= item.transId %>
+                                        </a>
                                       </td>
                                       <td role="cell" class="text-inherit">
                                         <%= item.transCategory %>
@@ -195,11 +197,11 @@
           )}&end=${end.format("X")}`;
         }
       );
-    // var datesTime = document.getElementsByClassName('datesTime')
-    // for (let dateC of datesTime) {
+      // var datesTime = document.getElementsByClassName('datesTime')
+      // for (let dateC of datesTime) {
 
-    //     dateC.innerText = moment(dateC.innerText.substr(0, 10), 'X').format('DD/MM/YYYY hh:mm:ss a')
-    // }
+      //     dateC.innerText = moment(dateC.innerText.substr(0, 10), 'X').format('DD/MM/YYYY hh:mm:ss a')
+      // }
 
     </script>
 </body>
