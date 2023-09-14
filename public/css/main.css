@@ -15741,3 +15741,12 @@ table.table td {
   border-radius: 100%;
   background: white;
 }
+.-outline-green-1 {
+  border: 2px solid var(--color-green-1);
+}
+
+.-outline-green-1:hover {
+  background-color: var(--color-green-1);
+  border-color: transparent;
+  color: white !important;
+}
