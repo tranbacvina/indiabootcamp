@@ -5,8 +5,8 @@ const cookieParser = require('cookie-parser')
 const Routers = require("./routers");
 const { sequelize } = require("./models");
 const cors = require("cors");
-// var cron = require('node-cron');
-// const cronBank = require('./controllers/cron_bank')
+var cron = require('node-cron');
+const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
 
@@ -37,9 +37,9 @@ app.use(
 
 app.use("/", Routers);
 
-// cron.schedule('* * * * *', async () => {
-//   await cronBank.cron()
-// });
+cron.schedule('* * * * *', async () => {
+  await cronBank.cron()
+});
 
 app.listen(port, async () => {
   console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
