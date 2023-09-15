@@ -1,8 +1,10 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic } = require("../service/course")
 const { getDriveUdemy } = require("../service/cawn_data")
 const paginate = require('express-paginate');
+const topic = require("../service/topic")
+
 
 const check = async (req, res) => {
     const errors = validationResult(req);
@@ -63,6 +65,8 @@ const coursedownload = async (req, res) => {
 const all = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
+    const topics = await topic.findAll()
+
     // res.send(course)
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
@@ -76,6 +80,38 @@ const all = async (req, res) => {
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('admin/course/course', {
             course: course.rows,
+            topics,
+            pageCount,
+            itemCount,
+            currentPage: req.query.page,
+            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        });
+
+    }
+};
+
+const allCourseTopic = async (req, res) => {
+    const { text, limit, } = req.query
+    const { slug } = req.params
+    const topics = await topic.findAll()
+
+    const course = await findManyCourseTopic(text, limit, req.skip, slug)
+
+    // res.send(course)
+    const itemCount = course.count;
+    const pageCount = Math.ceil(course.count / req.query.limit);
+
+
+    if (course.length === 0) {
+
+        res.render('layout/404')
+    } else {
+        const itemCount = course.count;
+        const pageCount = Math.ceil(course.count / req.query.limit);
+
+        res.render('admin/course/course', {
+            course: course.rows,
+            topics,
             pageCount,
             itemCount,
             currentPage: req.query.page,
@@ -88,7 +124,9 @@ const all = async (req, res) => {
 const one = async (req, res) => {
     const { id } = req.params;
     const course = await oneCourseID(id);
-    res.render("admin/course/one-course", { course });
+    const topics = await topic.findAll()
+    // res.send(course)
+    res.render("admin/course/one-course", { course, topics });
 };
 
 const sendEmailCourse = async (req, res) => {
@@ -137,4 +175,4 @@ const onePublic = async (req, res) => {
     // res.send(course)
     res.render("course/one-course", { course });
 };
-module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic }
+module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic }

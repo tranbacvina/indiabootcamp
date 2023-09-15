@@ -738,16 +738,17 @@
             const uri = document.getElementById("links").value
             const email = document.getElementById("email").value
 
-            const links = Array.from(uri.match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig))
+            let links = Array.from(uri.match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig))
+            links = links.map(item => { return { uri: item, topicId: null } })
 
-
+            modalCheckCourse.open()
+            modalCheckCourse.setContent('Fetching data, please wait...');
             const checkCourseRequest = await axios.post('/course/check', {
                 email, links
             })
             var codeHtml = ``
             if (checkCourseRequest.data[0].success) {
-                modalCheckCourse.open()
-                modalCheckCourse.setContent('Fetching data, please wait...');
+
                 for (let course of checkCourseRequest.data) {
                     if (!course.success) {
                         toastr.error(checkCourseRequest.data.messenger)

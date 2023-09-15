@@ -65,8 +65,8 @@ const scrapingUdemy = async (link) => {
 
   });
   let $ = cheerio.load(response.body);
-  const requirements = $("h2[data-purpose='requirements-title']").next().children().map((i, e) => { return $(e).text() }).get()
-  const whatyouwilllearn = $(".what-you-will-learn--content-spacing--3n5NU").children().children().map((i, e) => { return $(e).text() }).get()
+  const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
+  const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
   const data = { requirements, whatyouwilllearn }
   return data
 }
@@ -78,9 +78,10 @@ const cawnUdemy = async (uri) => {
   return udemy
 }
 const udemy = async (uri) => {
-  const urlfixshare_udemy = await base_url(uri)
+  console.log(uri)
+  const urlfixshare_udemy = await base_url(uri.uri)
   const patch = urlfixshare_udemy.split('/')[4];
-  const fixURL = new URL(uri).origin + '/course/' + patch
+  const fixURL = new URL(uri.uri).origin + '/course/' + patch
   try {
     const course = await oneCourseLink(fixURL)
 
@@ -92,7 +93,7 @@ const udemy = async (uri) => {
     } else {
       const data_course = await cawnUdemy(patch)
       const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
-      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements)
+      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements, uri.topicId)
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
       }

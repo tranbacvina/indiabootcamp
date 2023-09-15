@@ -52,6 +52,13 @@ module.exports = {
       requirements: {
         type: Sequelize.JSON
       },
+      topicId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Topics",
+          key: "id"
+        }
+      },
     });
   },
   async down(queryInterface, Sequelize) {

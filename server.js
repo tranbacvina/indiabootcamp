@@ -37,9 +37,9 @@ app.use(
 
 app.use("/", Routers);
 
-cron.schedule('* * * * *', async () => {
-  await cronBank.cron()
-});
+// cron.schedule('* * * * *', async () => {
+//   await cronBank.cron()
+// });
 
 app.listen(port, async () => {
   console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
