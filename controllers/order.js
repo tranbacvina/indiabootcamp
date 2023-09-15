@@ -73,7 +73,7 @@ const createindia = async (req, res) => {
 
 const getuuid = async (req, res) => {
     const { uuid } = req.params;
-    const orderid = await order.findOne(uuid)
+    const orderid = await order.orderUUID(uuid)
     if (orderid) {
         res.render('order/oneOrder', { order: orderid })
     } else {

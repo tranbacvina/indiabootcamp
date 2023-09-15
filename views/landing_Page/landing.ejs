@@ -737,7 +737,8 @@
             event.preventDefault()
             const uri = document.getElementById("links").value
             const email = document.getElementById("email").value
-
+            modalCheckCourse.open()
+            modalCheckCourse.setContent('Fetching data, please wait...');
             const links = Array.from(uri.match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig))
 
 
