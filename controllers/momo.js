@@ -41,8 +41,32 @@ const getdetailTransaction = async (req, res) => {
     res.send(Trans);
 };
 
+const index = async (req, res) => {
+    res.render('admin/bank/paymentsetting')
+}
+const momo_send_opt = async (req, res) => {
+    const { phone } = req.body
+    console.log(phone)
+    const send_otp_msg = await momo.SEND_OTP_MSG(phone)
+    res.render('admin/bank/momo_opt', { send_otp_msg: send_otp_msg })
+
+}
+
+const momo_very_opt = async (req, res) => {
+    const { phone, otp } = req.body
+
+    await momo.ImportOTP(phone, otp)
+    const data_reg_drive = await momo.REG_DEVICE_MSG(phone)
+    res.render('admin/bank/momo_login', { data_reg_drive })
+}
+
+const momo_login = async (req, res) => {
+    const { phone, password } = req.body
+    const Login = await momo.LoginUser(phone, password)
+    res.send(Login)
+}
 module.exports = {
 
-    getLSGD2, getdetailTransaction
+    getLSGD2, getdetailTransaction, index, momo_send_opt, momo_very_opt, momo_login
 
 };

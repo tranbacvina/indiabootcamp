@@ -836,5 +836,5 @@ async function GENERATE_TOKEN_AUTH_MSG(phoneMOMO) {
 module.exports = {
 
 
-    detailTransaction, QUERY_TRAN_HIS_MSG
+    detailTransaction, QUERY_TRAN_HIS_MSG, SEND_OTP_MSG, REG_DEVICE_MSG, LoginUser
 };
