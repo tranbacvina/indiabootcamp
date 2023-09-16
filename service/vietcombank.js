@@ -127,7 +127,7 @@ const encryptRequest = (e) => {
 };
 
 function getBase64(url) {
-    return axios
+    return instance
         .get(url, {
             responseType: "arraybuffer",
         })

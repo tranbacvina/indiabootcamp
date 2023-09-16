@@ -5,6 +5,7 @@ const orderitem = require("./orderitem")
 const bank = require("./bank")
 const topic = require("./topic")
 
+Routers.get("/", (req, res) => { res.redirect("/admin/order") })
 Routers.use("/course", course)
 Routers.use("/order", order)
 Routers.use("/orderitem", orderitem)
