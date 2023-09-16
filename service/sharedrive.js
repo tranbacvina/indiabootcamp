@@ -12,6 +12,7 @@ const sendEmailOneDrive = async (email, fileID, OneDriveParentReferenceId) => {
     const sendEmail = await axios.post(`${process.env.API_CHECK_COURSE}/sendonedrive`, {
       email, fileID, OneDriveParentReferenceId
     })
+    console.log(sendEmail.data)
     return sendEmail.data
   } catch (error) {
     console.log(error)
