@@ -238,4 +238,23 @@ const stripeSuccess = async (req, res) => {
     const orderdata = await order.findOne(orderid)
     res.render('order/order_success', { order: orderdata });
 }
-module.exports = { createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }
+
+const updateOrder = async (req, res) => {
+    const { id } = req.params
+    const updateOder = req.body
+    console.log(updateOder)
+    try {
+        const orderupdate = await order.updateOrder(id, updateOder)
+
+        res.redirect(`/admin/order/${id}`)
+
+    } catch (error) {
+        console.log(error)
+
+        return res.status(500).json({
+            success: false,
+            data: 'Internal Server Error'
+        })
+    }
+}
+module.exports = { updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }

@@ -244,6 +244,19 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
     })
     return newCourse
 }
+
+const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image) => {
+    const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
+    const converJsonwhatrequirements = JSON.parse(requirements)
+    const updateCourse = await db.course.update({
+        id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image
+    }, {
+        where: {
+            id
+        }
+    })
+    return updateCourse
+}
 module.exports = {
-    createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic
+    createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
 };

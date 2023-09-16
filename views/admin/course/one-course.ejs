@@ -97,7 +97,7 @@
 
                                             <div class="py-30 px-30">
                                                 <form class="contact-form row y-gap-30"
-                                                    action="/admin/course/<%=course.id%>" method="POST">
+                                                    action="/admin/course/update/<%=course.id%>" method="POST">
 
                                                     <div class="col-12">
 
@@ -119,7 +119,7 @@
                                                         <label
                                                             class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
 
-                                                        <input type="text" value="<%=course.slug%>" name="url"
+                                                        <input type="text" value="<%=course.slug%>" name="slug"
                                                             id="slug">
                                                     </div>
                                                     <div class="col-12">
@@ -129,6 +129,22 @@
 
                                                         <input type="text" value="<%=course.price%>" name="price"
                                                             id="price">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Price
+                                                            US*</label>
+
+                                                        <input type="text" value="<%=course.priceus%>" name="priceus"
+                                                            id="priceus">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Price
+                                                            India*</label>
+
+                                                        <input type="text" value="<%=course.priceindia%>"
+                                                            name="priceindia" id="priceindia">
                                                     </div>
                                                     <div class="col-12">
 
@@ -145,44 +161,40 @@
                                                                 <% } %>
                                                         </select>
                                                     </div>
-                                                    <div class="col-12">
 
+                                                    <div class="col-12">
                                                         <label
                                                             class="text-16 lh-1 fw-500 text-dark-1 mb-10">whatyouwilllearn</label>
-                                                        <pre class="" id="whatyouwilllearn" name="whatyouwilllearn">
-                                                    <code class="language-json languages.javascript">
-                                                            <%- JSON.stringify(course.whatyouwilllearn )%>
-                                                    </code>
-                                                    </pre>
+                                                        <input type="text" class="" id="whatyouwilllearn"
+                                                            value="<%= JSON.stringify(course.whatyouwilllearn )%>"
+                                                            name="whatyouwilllearn">
                                                     </div>
-                                                    <div class="col-12">
 
+                                                    <div class="col-12">
                                                         <label
                                                             class="text-16 lh-1 fw-500 text-dark-1 mb-10">requirements</label>
-                                                        <pre class="" id="requirements" name="whatyouwilllearn">
-                                                            <code class="language-json languages.javascript">
-                                                                <%= JSON.stringify(course.requirements )%>
-                                                            </code>
-                                                                                                        </pre>
+                                                        <input type="text"
+                                                            value="<%= JSON.stringify(course.requirements )%>" class=""
+                                                            id="requirements" name="requirements">
                                                     </div>
-                                                    <div class="col-12">
 
+                                                    <div class="col-12">
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
                                                             ngắn*</label>
                                                         <textarea class="" id="description" name="description">
-                                                    <%- course.description %>
-                                                </textarea>
-
+                                                                <%- course.description %>
+                                                        </textarea>
                                                     </div>
-                                                    <div class="col-12">
 
+                                                    <div class="col-12">
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
                                                             chính*</label>
-                                                        <textarea class="editor" id="content" name="content">
+                                                        <textarea class="editor" id="description_log"
+                                                            name="description_log">
                                                             <%- course.description_log %>
                                                         </textarea>
-
                                                     </div>
+
                                                     <div class="col-12">
                                                         <div class="d-flex lg:flex-column">
                                                             <div class="relative shrink-0">

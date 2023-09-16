@@ -58,6 +58,33 @@ const checkcourse = async (e) => {
 
 }
 
+const checkcoursebyname = async (e) => {
+    const orderID = e.getAttribute("orderID")
+    modalSendCourse.open()
+    modalSendCourse.setContent('Đang lấy dữ liệu');
+    const URIapi = orderID ? `/admin/course/cawnnamecoursechuagui?id=${orderID}` : '/admin/course/cawnnamecoursechuagui'
+    const dataCourseChuaGui = await axios.get(URIapi)
+
+    let codeHtml = ``
+    for (let item of dataCourseChuaGui.data) {
+
+        const renderGoogleOneDrive = renderGoogleOneDriveFC(item.cawnData.OneDrive, item.cawnData.DriveFolder, item.orderData.order.email, item.orderData.id)
+        const html = `
+                        <div class="py-20">
+                            <div class="text-20 lh-1 text-purple-1 fw-500 mb-15">${item.orderData.course.name}</div>
+                            <div class="text-18 mb-30">${item.orderData.course.url}</div>
+                            <div id="renderDriveItems">
+                                ${renderGoogleOneDrive}
+                            </div>
+
+                        </div>
+                    `
+        codeHtml += html
+    }
+    modalSendCourse.setContent(codeHtml);
+
+}
+
 const renderGoogleOneDriveFC = (OneDrives, DriveFolders, email, orderIdItemChuaGui) => {
     var renderDriveItems = ``
     for (let OneDrive of OneDrives) {

@@ -154,7 +154,7 @@
                                                                     <%= OneOrder.status %>
                                                                 </option>
                                                                 <option value="Paid">Paid</option>
-                                                                <option value="Pending">Pending</option>
+                                                                <option value="Chua thanh toan">Chua thanh toan</option>
                                                             </select>
                                                         </div>
 
@@ -230,6 +230,12 @@
                                                             onClick="checkcourse(this)"
                                                             orderID="<%= OneOrder.id %>">Check
                                                             khoá học</button>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button class="button -sm -purple-1 text-white"
+                                                            onClick="checkcoursebyname(this)"
+                                                            orderID="<%= OneOrder.id %>">Check
+                                                            khoá học theo tên</button>
                                                     </div>
                                                 </div>
 

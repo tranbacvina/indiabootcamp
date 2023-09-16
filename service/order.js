@@ -43,6 +43,16 @@ const findMany = async (querys, limit, skip) => {
     return await db.order.findAndCountAll(query)
 }
 
+const updateOrder = async (id, updateOder) => {
+    const order = await db.order.update(
+        updateOder,
+        {
+            where: {
+                id
+            }
+        })
+    return order
+}
 // const findManyCourse_ChuaGui = async (id) => {
 //     const query = {
 //         attributes: ['id'],
@@ -66,4 +76,4 @@ const findMany = async (querys, limit, skip) => {
 //     )
 // }
 
-module.exports = { orderUUID, findMany, findOne, }
+module.exports = { orderUUID, findMany, findOne, updateOrder }

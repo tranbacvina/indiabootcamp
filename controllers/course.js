@@ -1,7 +1,7 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse } = require("../service/course")
-const { getDriveUdemy } = require("../service/cawn_data")
+const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update } = require("../service/course")
+const { getDriveUdemy, givenamereturndrive } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
 
@@ -43,6 +43,19 @@ const cawnCourseChuaGui = async (req, res) => {
         const orderItemChuaGui = await findManyCourse_ChuaGui(id)
         const links = orderItemChuaGui.map(item => item.course.url)
         const cawn_data = await getDriveUdemy(links)
+        const result = orderItemChuaGui.map((item, index) => { return { orderData: item, cawnData: cawn_data[index] } })
+        res.send(result)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const cawnNameCourseChuaGui = async (req, res) => {
+    try {
+        const { id } = req.query
+        const orderItemChuaGui = await findManyCourse_ChuaGui(id)
+        const names = orderItemChuaGui.map(item => item.course.name.replace(/[<>:"\/\\|?*#&.']+/g, ''))
+        const cawn_data = await givenamereturndrive(names)
         const result = orderItemChuaGui.map((item, index) => { return { orderData: item, cawnData: cawn_data[index] } })
         res.send(result)
     } catch (error) {
@@ -181,4 +194,14 @@ const create = async (req, res) => {
     const newCourse = await createCourse(name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId)
     res.redirect(`/admin/course/${newCourse.id}`)
 }
-module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create }
+
+const updateCourse = async (req, res) => {
+    const { id } = req.params
+    const {
+        name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image
+    } = req.body
+    console.log(name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image)
+    const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image)
+    res.redirect(`/admin/course/${id}`)
+}
+module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse }

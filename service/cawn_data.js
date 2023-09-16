@@ -10,7 +10,12 @@ const getDriveUdemy = async (links) => {
   )
   return unica.data
 }
-
+const givenamereturndrive = async (names) => {
+  const unica = await axios.post(`${process.env.API_CHECK_COURSE}/givenamereturndrive`,
+    { names: names }
+  )
+  return unica.data
+}
 // const sendEmailOneDrive = async (email, fileID, OneDriveParentReferenceId) => {
 
 //   try {
@@ -108,5 +113,5 @@ const udemy = async (uri) => {
   }
 };
 module.exports = {
-  getDriveUdemy, udemy
+  getDriveUdemy, udemy, givenamereturndrive
 };
