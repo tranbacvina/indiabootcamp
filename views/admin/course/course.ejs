@@ -266,7 +266,7 @@
               <button data-sidebar-menu-button="contacts" data-sidebar-menu-target="messages"
                 class="d-flex items-center text-17 text-dark-1 fw-500">
                 <i class="icon-chevron-left text-11 text-purple-1 mr-10"></i>
-                Contacts
+                Tạo kiểu nhập
               </button>
             </div>
           </div>
@@ -404,43 +404,134 @@
             </div>
           </div>
           <div data-sidebar-menu-open="contacts" class="sidebar-menu__item -sidebar-menu">
-            <div class="tabs -pills js-tabs">
-              <div class="tabs__controls d-flex js-tabs-controls">
+            <form class="contact-form row y-gap-30" action="/admin/course/" method="POST">
 
-                <button class="tabs__button px-15 py-8 rounded-8 text-dark-1 js-tabs-button is-active"
-                  data-tab-target=".-tab-item-1" type="button">Contacts</button>
+              <div class="col-12">
 
-                <button class="tabs__button px-15 py-8 rounded-8 text-dark-1 js-tabs-button "
-                  data-tab-target=".-tab-item-2" type="button">Request</button>
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Name*</label>
+
+                <input type="text" value="" name="name" id="name">
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">URI*</label>
+
+                <input type="text" value="" name="url" id="URI">
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
+
+                <input type="text" value="" name="slug" id="slug">
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Price VN*</label>
+
+                <input type="text" value="50000" name="price" id="price">
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Price US*</label>
+
+                <input type="text" value="300" name="priceus" id="priceus">
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Price India*</label>
+
+                <input type="text" value="9900" name="priceindia" id="priceindia">
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh
+                  mục*</label>
+
+                <select name="topicId" id="topicId" class=" form-select">
+                  <option value="">Chọn</option>
+                  <% for (let topic of topics) { %>
+                    <option value="<%= topic.id %>">
+                      <%= topic.name %>
+                    </option>
+                    <% } %>
+                </select>
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">whatyouwilllearn</label>
+                <textarea class="" id="whatyouwilllearn" name="whatyouwilllearn"></textarea>
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">requirements</label>
+                <textarea class="" id="requirements" name="requirements"></textarea>
+
+                </pre>
+              </div>
+              <div class="col-12">
+
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
+                  ngắn*</label>
+                <textarea class="" id="description" name="description"></textarea>
 
               </div>
+              <div class="col-12">
 
-              <div class="tabs__content pt-30 js-tabs-content">
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
+                  chính*</label>
+                <textarea class="editor" id="description_log" name="description_log"></textarea>
 
-                <div class="tabs__pane -tab-item-1 is-active">
-                  <div class="row x-gap-10 y-gap-10 items-center">
-                    <div class="col-auto">
-                      <img src="img/dashboard/right-sidebar/contacts/1.png" alt="image">
+              </div>
+              <div class="col-12">
+                <div class="d-flex lg:flex-column">
+                  <div class="relative shrink-0">
+
+                    <div class="absolute-full-center d-flex justify-end py-20 px-20">
+                      <a href="#" class="d-flex justify-center items-center bg-white size-40 rounded-8 shadow-1">
+                        <i class="icon-bin text-16"></i>
+                      </a>
                     </div>
-                    <div class="col-auto">
-                      <div class="text-15 lh-12 fw-500 text-dark-1">Darlene Robertson</div>
+                  </div>
+                  <div class="w-1/1 ml-30 lg:ml-0 lg:mt-20">
+
+                    <div class="form-upload col-12">
+                      <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình
+                        đại diện*</label>
+                      <div class="form-upload__wrap">
+                        <input type="text" class="" id="thumbnail" name="image" value="">
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                <div class="tabs__pane -tab-item-2 ">
-                  <div class="row x-gap-10 y-gap-10 items-center">
-                    <div class="col-auto">
-                      <img src="img/dashboard/right-sidebar/contacts/1.png" alt="image">
-                    </div>
-                    <div class="col-auto">
-                      <div class="text-15 lh-12 fw-500 text-dark-1">Darlene Robertson</div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
-            </div>
+              <div class="col-12">
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Drive Name</label>
+                <input type="text" name="drivecoursename" id="drivecoursename">
+              </div>
+              <div class="col-12">
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Drive ID</label>
+                <input type="text" name="drivecourID" id="drivecourseID">
+              </div>
+              <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">IS Onedrive?</label>
+
+              <select name="isOneDrive" id="isOneDrive" class=" form-select">
+                <option value="1">True</option>
+                <option value="2">False</option>
+              </select>
+              <div class="col-12">
+                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">OneDriveParentReferenceId</label>
+                <input type="text" name="OneDriveParentReferenceId"
+                  value="b!qgDqombFqkubynkeG1i_RRWiRLdBslFBrnm1zVuZTxf5NVcUoAPjRYwj8wpjk-NV"
+                  id="OneDriveParentReferenceId">
+              </div>
+
+              <div class="row y-gap-20 justify-between pt-15">
+
+                <div class="col-auto">
+                  <button class="button -md -purple-1 text-white" id="updateButton" type="submit">Tạo</button>
+                </div>
+              </div>
+            </form>
           </div>
 
 

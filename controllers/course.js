@@ -1,6 +1,6 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse } = require("../service/course")
 const { getDriveUdemy } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
@@ -175,4 +175,10 @@ const onePublic = async (req, res) => {
     // res.send(course)
     res.render("course/one-course", { course });
 };
-module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic }
+
+const create = async (req, res) => {
+    const { name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId } = req.body
+    const newCourse = await createCourse(name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId)
+    res.redirect(`/admin/course/${newCourse.id}`)
+}
+module.exports = { check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create }

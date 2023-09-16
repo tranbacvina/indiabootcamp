@@ -2,6 +2,7 @@ const Routers = require("express").Router();
 const course = require("../../controllers/course")
 
 Routers.get('/', course.all)
+Routers.post('/', course.create)
 
 Routers.get('/chuagui', course.courseChuaGui)
 Routers.get('/cawncoursechuagui', course.cawnCourseChuaGui)

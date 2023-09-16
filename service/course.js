@@ -118,112 +118,132 @@ const findManyCourseTopic = async (text, limit, skip, topic) => {
     return await db.course.findAndCountAll(query)
 }
 
-// const promiseCourse = async (drive) => {
-//     const email = drive.email
-//     const id = drive.id_Drive
-//     const idOrder = drive.idorderItems
-//     const drivename = drive.drivename
-//     const isOneDrive = drive.isOneDrive
-//     if (isOneDrive === 'True') {
-//         const OneDriveParentReferenceId = drive.OneDriveParentReferenceId
-//         const shareOneDrive = await sharedrive.sendEmailOneDrive(email, id, OneDriveParentReferenceId)
-//         if (shareOneDrive.value) {
-//             const orderItem = await db.orderItem.findOne({
-//                 where: {
-//                     id: idOrder
-//                 },
-//                 include: {
-//                     model: db.course,
-//                 }
-//             })
+const promiseCourse = async (drive) => {
+    const email = drive.email
+    const id = drive.id_Drive
+    const idOrder = drive.idorderItems
+    const drivename = drive.drivename
+    const isOneDrive = drive.isOneDrive
+    if (isOneDrive === 'True') {
+        const OneDriveParentReferenceId = drive.OneDriveParentReferenceId
+        const shareOneDrive = await sharedrive.sendEmailOneDrive(email, id, OneDriveParentReferenceId)
+        if (shareOneDrive.value) {
+            const orderItem = await db.orderItem.findOne({
+                where: {
+                    id: idOrder
+                },
+                include: {
+                    model: db.course,
+                }
+            })
 
-//             orderItem.status = 'Da gui'
-//             orderItem.driveDaGui = shareOneDrive.value[0].link.webUrl
-//             orderItem.isOneDrive = true
-//             await orderItem.save()
+            orderItem.status = 'Da gui'
+            orderItem.driveDaGui = shareOneDrive.value[0].link.webUrl
+            orderItem.isOneDrive = true
+            await orderItem.save()
 
 
-//             const [driveCourse, created] = await db.driveCourse.findOrCreate({
-//                 where: {
-//                     idCourse: orderItem.course.id,
-//                 },
-//                 defaults: {
-//                     name: drivename,
-//                     idDrive: id,
-//                     isOneDrive: true,
-//                     OneDriveParentReferenceId: OneDriveParentReferenceId
+            const [driveCourse, created] = await db.driveCourse.findOrCreate({
+                where: {
+                    idCourse: orderItem.course.id,
+                },
+                defaults: {
+                    name: drivename,
+                    idDrive: id,
+                    isOneDrive: true,
+                    OneDriveParentReferenceId: OneDriveParentReferenceId
 
-//                 }
+                }
 
-//             })
-//             if (!created) {
-//                 db.driveCourse.update({
-//                     name: drivename,
-//                     idDrive: id,
-//                     isOneDrive: true,
-//                     OneDriveParentReferenceId: OneDriveParentReferenceId
-//                 }, {
-//                     where: {
-//                         idCourse: orderItem.course.id,
-//                     },
-//                 })
-//             }
-//             return { status: 200, text: 'Gửi Mail thành công', email }
+            })
+            if (!created) {
+                db.driveCourse.update({
+                    name: drivename,
+                    idDrive: id,
+                    isOneDrive: true,
+                    OneDriveParentReferenceId: OneDriveParentReferenceId
+                }, {
+                    where: {
+                        idCourse: orderItem.course.id,
+                    },
+                })
+            }
+            return { status: 200, text: 'Gửi Mail thành công', email }
 
-//         } else {
-//             return { status: false, text: 'Gửi Mail không thành công', email }
-//         }
-//     } else {
-//         const resGGDrive = await sharedrive.sendgdrive(email, id)
-//         console.log(resGGDrive)
-//         //Update Order Item
-//         if (resGGDrive.statusText == 'OK') {
-//             const orderItem = await db.orderItem.findOne({
-//                 where: {
-//                     id: idOrder
-//                 },
-//                 include: {
-//                     model: db.course,
-//                 }
-//             })
+        } else {
+            return { status: false, text: 'Gửi Mail không thành công', email }
+        }
+    } else {
+        const resGGDrive = await sharedrive.sendgdrive(email, id)
+        console.log(resGGDrive)
+        //Update Order Item
+        if (resGGDrive.statusText == 'OK') {
+            const orderItem = await db.orderItem.findOne({
+                where: {
+                    id: idOrder
+                },
+                include: {
+                    model: db.course,
+                }
+            })
 
-//             orderItem.status = 'Da gui'
-//             orderItem.driveDaGui = id
-//             await orderItem.save()
+            orderItem.status = 'Da gui'
+            orderItem.driveDaGui = id
+            await orderItem.save()
 
-//             const [driveCourse, created] = await db.driveCourse.findOrCreate({
-//                 where: {
-//                     idCourse: orderItem.course.id,
-//                 },
-//                 defaults: {
-//                     name: drivename,
-//                     idDrive: id,
-//                     isOneDrive: false,
-//                 }
+            const [driveCourse, created] = await db.driveCourse.findOrCreate({
+                where: {
+                    idCourse: orderItem.course.id,
+                },
+                defaults: {
+                    name: drivename,
+                    idDrive: id,
+                    isOneDrive: false,
+                }
 
-//             })
+            })
 
-//             if (!created) {
-//                 db.driveCourse.update({
-//                     name: drivename,
-//                     idDrive: id,
-//                     isOneDrive: false,
-//                     OneDriveParentReferenceId: ''
-//                 }, {
-//                     where: {
-//                         idCourse: orderItem.course.id,
-//                     },
-//                 })
-//             }
+            if (!created) {
+                db.driveCourse.update({
+                    name: drivename,
+                    idDrive: id,
+                    isOneDrive: false,
+                    OneDriveParentReferenceId: ''
+                }, {
+                    where: {
+                        idCourse: orderItem.course.id,
+                    },
+                })
+            }
 
-//             return { status: resGGDrive.status, text: 'Gửi Mail thành công', email, role: resGGDrive.config.data.role, driveCourse: driveCourse }
-//         } else {
-//             return { status: false, text: resGGDrive.response.statusText }
-//         }
-//     }
-//     //send Email
+            return { status: resGGDrive.status, text: 'Gửi Mail thành công', email, role: resGGDrive.config.data.role, driveCourse: driveCourse }
+        } else {
+            return { status: false, text: resGGDrive.response.statusText }
+        }
+    }
+    //send Email
 
-// }
+}
+
+const createCourse = async (name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId) => {
+    const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
+    const converJsonwhatrequirements = JSON.parse(requirements)
+
+    const newCourse = await db.course.create({
+        name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,
+        driveCourses: [
+            {
+                name: drivecoursename,
+                idDrive: drivecourID,
+                isOneDrive: isOneDrive,
+                OneDriveParentReferenceId: OneDriveParentReferenceId
+            }
+        ]
+    }, {
+        include: [{ model: db.Topic }, { model: db.driveCourse }]
+    })
+    return newCourse
+}
 module.exports = {
-    oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic
+    createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic
 };
