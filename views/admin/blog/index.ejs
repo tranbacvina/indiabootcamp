@@ -121,7 +121,7 @@
                                                                     </td>
                                                                     <td role="cell" class="align-middle">
                                                                         <a class="text-inherit text-purple-1"
-                                                                            href="/admin/blogs/<%= blog.id %>/update">
+                                                                            href="/admin/blogs/<%= blog.id %>/">
                                                                             <%=blog.title%>
                                                                         </a>
                                                                     </td>
@@ -213,6 +213,19 @@
                 } else {
                     orStt.classList.add("bg-warning-2")
                 }
+            }
+
+            const deleteOrder = async (e) => {
+                const orderId = e.getAttribute("data-id")
+                try {
+                    const deleteOrder = await axios.delete(`/admin/blogs/${orderId}`)
+                    toastr.success(deleteOrder.data.data);
+                } catch (error) {
+                    toastr.error(error);
+
+                }
+
+
             }
         </script>
 </body>

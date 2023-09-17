@@ -164,8 +164,8 @@
                                                     <div class="col-12">
                                                         <div class="d-flex lg:flex-column">
                                                             <div class="relative shrink-0">
-                                                                <img class="w-1\/4" src="/<%= blog.thumbnail %>"
-                                                                    alt="image">
+                                                                <img class="w-1\/4" width="150" height="100"
+                                                                    src="/<%= blog.thumbnail %>" alt="image">
 
                                                                 <div
                                                                     class="absolute-full-center d-flex justify-end py-20 px-20">
@@ -184,7 +184,8 @@
                                                                     <div class="form-upload__wrap">
                                                                         <input type="file"
                                                                             class="button -dark-3 text-white"
-                                                                            id="thumbnail" placeholder="Cover-1.png">
+                                                                            id="thumbnail" name="hinhdaidien"
+                                                                            placeholder="Cover-1.png">
 
                                                                     </div>
                                                                 </div>
@@ -298,19 +299,13 @@
             let editor;
             ClassicEditor
                 .create(document.querySelector('.editor'), {
-
                     licenseKey: '',
-
-
-
-
+                    mediaEmbed: {
+                        previewsInData: true
+                    }
                 })
                 .then(newEditor => {
                     editor = newEditor;
-
-
-
-
                 })
                 .catch(error => {
                     console.error('Oops, something went wrong!');
@@ -333,7 +328,7 @@
                 formData.append("content", content);
                 formData.append("categoryId", categoryId);
                 formData.append("statusId", statusId);
-                formData.append("image", image);
+                formData.append("hinhdaidien", image);
                 try {
                     const response = await axios.patch('/admin/blogs/<%=blog.id%>',
                         formData
