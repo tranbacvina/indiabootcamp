@@ -206,15 +206,6 @@
 
             }
 
-            for (let orStt of orderStatus) {
-                const textStt = orStt.innerText
-                if (textStt === 'Paid') {
-                    orStt.classList.add("bg-blue-1")
-                } else {
-                    orStt.classList.add("bg-warning-2")
-                }
-            }
-
             const deleteOrder = async (e) => {
                 const orderId = e.getAttribute("data-id")
                 try {

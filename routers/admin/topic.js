@@ -1,7 +1,12 @@
 const Routers = require("express").Router();
-const course = require("../../controllers/course")
+const topic = require("../../controllers/topic")
 
-Routers.get('/:slug', course.allCourseTopic)
+Routers.get('/', topic.allTopicShow)
+Routers.post('/', topic.createTopic)
+Routers.get('/create', topic.createTopicView)
+
+Routers.patch('/:id', topic.updateTopic)
+Routers.delete('/:id', topic.deleteTopic)
 
 
 module.exports = Routers;
