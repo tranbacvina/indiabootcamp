@@ -667,58 +667,40 @@
                         <div class="row y-gap-60">
                             <% for (let item of course) { %>
 
-                                <div class="col-12 border-bottom-light">
-                                    <div class="coursesCard -type-1 row y-gap-20 flex-row items-center">
-                                        <div class="col-xl-3 col-lg-4">
-                                            <div class="coursesCard__image rounded-8 relative">
-                                                <img class="w-1/1 rounded-8" src="<%= item.image %>" alt="image">
+
+
+                                <div class="col-xl-3 col-lg-4 col-md-6">
+                                    <a href="/course/<%=item.slug%>" class="coursesCard -type-1 ">
+                                        <div class="relative">
+                                            <div class="coursesCard__image overflow-hidden rounded-8">
+                                                <img class="w-1/1" width="300" height="150" src="<%= item.image %>"
+                                                    alt="image">
                                                 <div class="coursesCard__image_overlay rounded-8"></div>
                                             </div>
-                                        </div>
+                                            <div class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
 
-                                        <div class="col">
-                                            <a href="/course/<%=item.slug%>">
-                                                <div class="text-24 lh-15 fw-700 text-dark-1 mt-10">
-                                                    <%= item.name %>
-                                                </div>
-                                                <div class="mt-8">
-                                                    <%= item.description %>
-                                                </div>
-                                            </a>
-                                        </div>
-
-                                        <div class="col-auto md:d-none">
-                                            <div class="line -vertical -h-120 bg-light-5 ml-60 lg:ml-20 md:ml-0"></div>
-                                        </div>
-
-                                        <div class="col-md-auto">
-                                            <div class="text-right md:text-left">
-                                                <div class="text-24 lh-1 fw-500 text-dark-1 ">
-                                                    <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                        currency : 'VND' }); %>
-                                                </div>
                                             </div>
-                                            <div class="row x-gap-20 y-gap-20 items-center pt-25">
-                                                <div class="col-auto">
-                                                    <button class="button h-50 px-30 -purple-3 text-purple-1">MUA
-                                                        NGAY</button>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <button class="button size-50 rounded-full -purple-3 text-light-1">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="feather feather-heart size-20">
-                                                            <path
-                                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
+                                        </div>
+
+                                        <div class="h-100 pt-15">
+
+                                            <div class="text-18 lh-15 fw-700 text-dark-1 mt-10">
+                                                <%= item.name %>
+                                            </div>
+
+
+                                            <div class="coursesCard-footer">
+
+                                                <div class="coursesCard-footer__price">
+                                                    <span>
+                                                        <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
+                                                            currency : 'VND' }); %>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
+
                                 </div>
                                 <% } %>
 

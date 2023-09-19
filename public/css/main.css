@@ -1771,7 +1771,6 @@ button:focus {
 .button.-outline-light-13 {
   border: 2px solid var(--color-light-2);
   color: var(--color-light-2) !important;
-
 }
 
 .button.-outline-light-13:hover {

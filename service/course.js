@@ -27,7 +27,7 @@ const oneCourseSlug = async (slug) => {
         where: {
             slug
         },
-        // include: { model: db.driveCourse }
+        include: { model: db.Topic }
     });
 }
 const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, topicId) => {
@@ -96,7 +96,7 @@ const findMany = async (text, limit, skip) => {
 }
 
 const findManyCourseTopic = async (text, limit, skip, topic) => {
-    const query = { limit: limit, offset: skip, order: [['id', 'DESC']] }
+    const query = { limit: limit, offset: skip, order: [['id', 'DESC']], attributes: ['name', 'url', 'slug', 'image', 'price',] }
     if (text) {
         query['where'] = {
             [Op.or]: [

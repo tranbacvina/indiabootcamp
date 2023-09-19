@@ -1,6 +1,7 @@
 const Routers = require("express").Router();
 const course = require("./course")
 const order = require("./order")
+const topic = require("./topic")
 const auth = require("../controllers/auth")
 const middleware = require('../middleware/auth')
 const admin = require("./admin")
@@ -13,6 +14,7 @@ Routers.get("/", (req, res) => {
 });
 
 Routers.use("/course", course)
+Routers.use("/topic", topic)
 Routers.use("/order", order)
 Routers.get("/login", auth.getLogin)
 
