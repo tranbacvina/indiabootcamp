@@ -40,7 +40,7 @@ const createNewCourse = async (name, url, description, image, price, is_practice
             price,
             is_practice_test_course,
             description_log, whatyouwilllearn, requirements,
-            topicId
+            topicId: 9
         },
         {
             include: {
@@ -248,12 +248,14 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
 const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image) => {
     const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
     const converJsonwhatrequirements = JSON.parse(requirements)
+
     const updateCourse = await db.course.update({
         id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image
     }, {
         where: {
             id
-        }
+        }, include: { model: db.Topic }
+
     })
     return updateCourse
 }

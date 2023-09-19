@@ -152,7 +152,7 @@
                                                             mục*</label>
 
                                                         <select name="topicId" id="topicId" class=" form-select">
-                                                            <option value="">Chọn</option>
+                                                            <option value="null">Chọn</option>
                                                             <% for (let topic of topics) { %>
                                                                 <option value="<%= topic.id %>" <%-
                                                                     topic.id===course.topicId ? 'selected' : '' %> >

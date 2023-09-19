@@ -20,7 +20,22 @@ const check = async (req, res) => {
     const { links } = req.body;
     const promises = []
     for (let link of links) {
-        promises.push(cawn_data.udemy(link))
+        const regex = /(udemy.com\/course|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
+        const expression = link.uri.match(regex);
+        switch (expression[0]) {
+            case "unica.vn":
+                promises.push(cawn_data.unica(link))
+                break;
+            case "udemy.com":
+                promises.push(cawn_data.udemy(link))
+                break;
+            case "gitiho.com/khoa-hoc":
+                promises.push(cawn_data.gitiho(link))
+                break;
+            default:
+                promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+
+        }
     }
     const result = await Promise.all(promises)
     return res.status(200).json(result)
