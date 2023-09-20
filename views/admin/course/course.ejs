@@ -125,9 +125,11 @@
                                 <div class="d-flex flex-wrap y-gap-10 x-gap-20">
                                   <div>
                                     <select name="" id="" class=" form-select" onchange="location = this.value;">
+                                      <option value="">
+                                        Chọn
+                                      </option>
                                       <% for (let topic of topics) { %>
-                                        <option value="/admin/topic/<%= topic.slug %>" <%- topic.id===course[0].topicId
-                                          ? 'selected' : '' %> >
+                                        <option value="/admin/course/topic/<%= topic.slug %>">
                                           <%= topic.name %>
                                         </option>
                                         <% } %>

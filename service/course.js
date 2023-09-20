@@ -40,7 +40,7 @@ const createNewCourse = async (name, url, description, image, price, is_practice
             price,
             is_practice_test_course,
             description_log, whatyouwilllearn, requirements,
-            topicId: 9
+            topicId: topicId || 9
         },
         {
             include: {
