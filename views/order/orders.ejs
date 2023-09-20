@@ -123,9 +123,8 @@
                                             <div class="col-lg-1">
                                                 <div class="">
                                                     <p>
-                                                        <%=(order.priceus / 100).toLocaleString('en-US', {
-                                                            maximumFractionDigits: 2, style: 'currency' ,
-                                                            currency: 'USD' });%>
+                                                        <%=order.price.toLocaleString('it-IT', {style: 'currency' ,
+                                                            currency : 'VND' });%>
                                                     </p>
                                                 </div>
                                             </div>

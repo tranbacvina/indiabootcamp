@@ -13,6 +13,11 @@ Routers.post("/createvn", [
     check('courseID', 'Không được để trống Course').not().isEmpty(),
     order.createVN
 ])
+Routers.post("/createvnapi", [
+    check('email', 'Không được để trống email').not().isEmpty(),
+    check('email', 'Vui lòng điền đúng định dạng email').isEmail(),
+    order.createvnapi
+])
 Routers.get("/", order.tracking)
 Routers.get('/success', order.stripeSuccess);
 Routers.post("/cstripe", order.cstripe)
