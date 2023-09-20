@@ -69,9 +69,15 @@
                                     </div>
 
                                     <div class="breadcrumbs__item ">
-                                        <a href="/blog">Blog</a>
+                                        <a href="/category/<%= blog.Category.slug %>">
+                                            <%= blog.Category.name %>
+                                        </a>
                                     </div>
-
+                                    <div class="breadcrumbs__item ">
+                                        <a>
+                                            <%= blog.title %>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

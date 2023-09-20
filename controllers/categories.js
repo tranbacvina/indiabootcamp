@@ -1,5 +1,7 @@
 const catgoriesServices = require("../service/catgories")
 const db = require("../models")
+const blogService = require("../service/blog")
+const paginate = require('express-paginate');
 
 const allcategoriesShow = async (req, res) => {
     const catgories = await catgoriesServices.findAll()
@@ -71,4 +73,34 @@ const deleteTopic = async (req, res) => {
         })
     }
 }
-module.exports = { createTopic, allcategoriesShow, deleteTopic, updateTopic, createCategoriesView }
+
+const findAllBlogBySlugcatgories = async (req, res) => {
+    const { text, limit, } = req.query
+    const { slug } = req.params
+
+    const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
+
+    if (blogs.length === 0) {
+
+        res.render('layout/404')
+    } else {
+        const itemCount = blogs.count;
+        const pageCount = Math.ceil(blogs.count / req.query.limit);
+        // res.send({
+        //     blogs: blogs.rows,
+        //     pageCount,
+        //     itemCount,
+        //     currentPage: req.query.page,
+        //     pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        // })
+        res.render('blog/category', {
+            blogs: blogs.rows,
+            pageCount,
+            itemCount,
+            currentPage: req.query.page,
+            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        });
+
+    }
+}
+module.exports = { createTopic, allcategoriesShow, deleteTopic, updateTopic, createCategoriesView, findAllBlogBySlugcatgories }

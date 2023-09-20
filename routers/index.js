@@ -5,8 +5,10 @@ const topic = require("./topic")
 const auth = require("../controllers/auth")
 const middleware = require('../middleware/auth')
 const admin = require("./admin")
-
+const category = require("./category")
+const blogController = require("../controllers/blog")
 // Routers.use("*", middleware.checkUser)
+const db = require("../models");
 
 
 Routers.get("/", (req, res) => {
@@ -21,6 +23,10 @@ Routers.get("/login", auth.getLogin)
 Routers.post("/login", auth.login)
 Routers.post("/adduser", auth.adduser)
 Routers.use("/admin", middleware.needLogin, admin)
+
+Routers.use("/category", category)
+Routers.get("/:slug", blogController.oneBlogPublic)
+
 
 
 Routers.get('*', function (req, res) {

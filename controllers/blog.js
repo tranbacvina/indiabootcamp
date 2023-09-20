@@ -186,4 +186,22 @@ const remove = async (req, res) => {
         })
     }
 }
-module.exports = { allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove }
+
+const oneBlogPublic = async (req, res) => {
+    const slug = req.params.slug
+    const blog = await db.Blog.findOne({
+        where: {
+            slug
+        },
+        include: {
+            model: db.Category
+        }
+    })
+    if (blog) {
+        res.render('blog/one-blog', { blog: blog })
+    }
+    else {
+        res.render('layout/404')
+    }
+}
+module.exports = { oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove }
