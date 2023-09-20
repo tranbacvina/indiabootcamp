@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+
+    <title>Quản lý Topics</title>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+    <!-- barba container start -->
+    <div class="barba-container" data-barba="container">
+
+
+        <main class="main-content">
+
+
+            <header class="header -dashboard -dark-bg-dark-1 js-header">
+                <div class="header__container py-20 px-30">
+                    <div class="row justify-between items-center">
+                        <div class="col-auto">
+                            <div class="d-flex items-center">
+                                <div class="header__explore text-dark-1">
+                                    <button class="d-flex items-center js-dashboard-home-9-sidebar-toggle">
+                                        <i class="icon -dark-text-white icon-explore"></i>
+                                    </button>
+                                </div>
+
+                                <div class="header__logo ml-30 md:ml-20">
+                                    <a data-barba href="/admin">
+                                        <img class="-light-d-none" src="/img/general/logo.svg" alt="logo">
+                                        <img class="-dark-d-none" src="/img/general/logo-dark.svg" alt="logo">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </header>
+
+
+            <div class="content-wrapper js-content-wrapper">
+                <div class="dashboard -home-9 js-dashboard-home-9">
+                    <%- include('../nav'); %>
+
+
+                        <div class="dashboard__main">
+                            <div class="dashboard__content bg-light-4">
+                                <div class="row pb-50 mb-10 justify-between">
+                                    <div class="col-auto">
+
+                                        <h1 class="text-30 lh-12 fw-700">Topics</h1>
+                                        <div class="mt-10">Tất cả Topics ở đây.</div>
+
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="/admin/topic/create" class="button -md -purple-1 text-white">Tạo
+                                            Topic</a>
+                                    </div>
+                                </div>
+
+                                <div class="row y-gap-30 pt-30">
+                                    <div class="col">
+                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                            <div
+                                                class="d-flex justify-between items-center py-20 px-30 border-bottom-light">
+                                                <form action="/admin/order" method="GET">
+                                                    <div class="header-search-field__group">
+                                                        <input type="text" placeholder="Tìm kiếm email, UUID..."
+                                                            name="query">
+                                                        <button type="submit">
+                                                            <i class="icon icon-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                            <div class="py-40 px-30">
+                                                <div style="overflow-x:auto;">
+                                                    <table role="table" class="text-nowrap table table-hover">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th colspan="1" role="columnheader">ID</th>
+                                                                <th colspan="1" role="columnheader">Tên</th>
+                                                                <th colspan="1" role="columnheader">slug</th>
+                                                                <th colspan="1" role="columnheader">Trạng thái</th>
+                                                                <th colspan="1" role="columnheader"></th>
+                                                                <th colspan="1" role="columnheader"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody role="rowgroup">
+                                                            <% for(let topic of topics){ %>
+                                                                <tr role="row">
+                                                                    <td role="cell" class="align-middle">
+                                                                        <%=topic.id%>
+                                                                    </td>
+                                                                    <td role="cell" class="align-middle">
+                                                                        <a class="text-inherit text-purple-1" href="">
+                                                                            <%=topic.name%>
+                                                                        </a>
+                                                                    </td>
+
+                                                                    <td role="cell" class="align-middle">
+                                                                        <%=topic.slug%>
+                                                                    </td>
+
+                                                                    <td role="cell" class="align-middle">
+                                                                        <% if (topic.isDeleted) { %>
+                                                                            Delete
+                                                                            <% } else { %>
+                                                                                Hiển thị
+                                                                                <%}%>
+                                                                    </td>
+
+                                                                    <td role="cell" class="align-middle"
+                                                                        data-id="<%=topic.id %>"
+                                                                        data-slug="<%=topic.slug%>"
+                                                                        data-name="<%=topic.name%>"
+                                                                        onclick="editTopic(this)">
+                                                                        <button type="button"
+                                                                            class="me-1 mb-2 btn btn-outline-danger btn-xs">Sửa</button>
+                                                                    </td>
+                                                                    <td role="cell" class="align-middle"
+                                                                        data-id="<%=topic.id %>"
+                                                                        onclick="deleteTopic(this)">
+                                                                        <button type="button"
+                                                                            class="me-1 mb-2 btn btn-outline-danger btn-xs">Xoá</button>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+    <!-- barba container end -->
+
+    <!-- JavaScript -->
+    <%- include('../../layout/footerjs'); %>
+        <script>
+            moment.locale('vi')
+            const timeClass = document.getElementsByClassName("datesTime")
+            const orderStatus = document.querySelectorAll('.orderStatus')
+            for (let itemTime of timeClass) {
+                itemTime.textContent = moment(itemTime.textContent).fromNow()
+
+
+            }
+            var modal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['custom-class-1', 'custom-class-2'],
+            });
+
+            modal.addFooterBtn('Cập nhật', 'tingle-btn tingle-btn--pull-right tingle-btn--primary', async function () {
+                const topicID = document.getElementById("topicID").value
+                const topicName = document.getElementById("topicName").value
+                const topicSlug = document.getElementById("topicSlug").value
+                try {
+                    const updateTopic = await axios.patch(`/admin/topic/${topicID}`, {
+                        topicName, topicSlug
+                    })
+                    console.log(updateTopic.data)
+                    toastr.success(updateTopic.data.data)
+                } catch (error) {
+                    toastr.error(error)
+                }
+
+                modal.close()
+
+            });
+            const deleteTopic = async (e) => {
+                const topicID = e.getAttribute("data-id")
+
+
+                try {
+                    const deleteOrder = await axios.delete(`/admin/topic/${topicID}`)
+                    toastr.success(deleteOrder.data.data);
+                } catch (error) {
+                    console.log(error)
+                    toastr.error(error);
+
+                }
+            }
+
+            const editTopic = async (e) => {
+                modal.open()
+                const topicID = e.getAttribute("data-id")
+                const topicName = e.getAttribute("data-name")
+                const topicSlug = e.getAttribute("data-slug")
+                console.log(topicID, topicName, topicSlug)
+
+                const html = `
+                            <form class="contact-form" id="updateTopicForm">
+                                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">ID</label>
+                            <div class="">
+                                <input type="text" name="name" id="topicID" value="${topicID}">
+                            </div>
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Name</label>
+                            <div class="">
+                                <input type="text" name="name" id="topicName" value="${topicName}">
+                            </div>
+
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug</label>
+                            <div class="">
+                            <input type="text" name="slug" id="topicSlug" value="${topicSlug}">
+                            </div>
+                        </form>
+                `
+                modal.setContent(html)
+            }
+        </script>
+</body>
+
+</html>
