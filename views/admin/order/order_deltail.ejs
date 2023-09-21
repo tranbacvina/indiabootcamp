@@ -195,15 +195,15 @@
                                                         <div class="row x-gap-10 y-gap-10">
                                                             <div class="col-auto"><button
                                                                     class="button -sm -outline-dark-1 text-dark-1"
-                                                                    id="sendURLtoDownload"
-                                                                    onclick="downloadAllCoursev2()">Download
+                                                                    id="sendURLtoDownload" idOrder="<%= OneOrder.id %>"
+                                                                    onclick="downloadAllCoursev2(this)">Download
                                                                     Non
                                                                     Business</button></div>
 
                                                             <div class="col-auto"><button
                                                                     class="button -sm -purple-3 text-purple-1"
-                                                                    id="sendURLtoDownload"
-                                                                    onclick="downloadAllCourse()">Download</button>
+                                                                    id="sendURLtoDownload" idOrder="<%= OneOrder.id %>"
+                                                                    onclick="downloadAllCourse(this)">Download</button>
                                                             </div>
 
                                                         </div>
@@ -213,13 +213,15 @@
                                                     <div class="col-12">
                                                         <div class="row x-gap-10 y-gap-10">
                                                             <div class="col-auto">
-                                                                <button onclick="downloadAllCoursev3()"
+                                                                <button onclick="downloadAllCoursev3(this)"
+                                                                    idOrder="<%= OneOrder.id %>"
                                                                     class="button -sm -green-1 text-dark-1">Download
                                                                     không đổi tên
                                                                 </button>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <button onclick="downloadAllCoursev4()"
+                                                                <button onclick="downloadAllCoursev4(this)"
+                                                                    idOrder="<%= OneOrder.id %>"
                                                                     class="button -sm -outline-green-1 text-green-1">Download
                                                                     không đổi tên Non Business</button>
                                                             </div>

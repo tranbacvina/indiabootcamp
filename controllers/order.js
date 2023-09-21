@@ -8,6 +8,7 @@ const { validationResult } = require('express-validator');
 const { v4: uuidv4 } = require("uuid");
 const paginate = require('express-paginate');
 const axios = require('axios')
+const courseService = require("../service/course")
 const createindia = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -303,4 +304,11 @@ const updateOrder = async (req, res) => {
         })
     }
 }
-module.exports = { createvnapi, updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }
+
+const needdowwnload = async (req, res) => {
+    const { id } = req.params
+    let links = await findManyCourse_ChuaGui(id)
+    links = links.map(item => { return item.course.url })
+    res.send(links)
+}
+module.exports = { needdowwnload, createvnapi, updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }

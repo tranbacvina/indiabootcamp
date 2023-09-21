@@ -1,3 +1,4 @@
+
 const modalSendCourse = new tingle.modal({
     footer: true,
     stickyFooter: true
@@ -136,13 +137,11 @@ const renderGoogleOneDriveFC = (OneDrives, DriveFolders, email, orderIdItemChuaG
 
 }
 
-const downloadAllCourse = async () => {
+const downloadAllCourse = async (e) => {
     const URI = 'https://udemy.fullbootcamp.com/'
-    const urls = document.getElementsByClassName("urlcourse")
-    const links = []
-    for (let item of urls) {
-        links.push(item.innerText.replace(/\s+/g, ' ').trim())
-    }
+    const id = e.getAttribute("idOrder")
+    let links = await axios.get(`/admin/order/needdowwnload/${id}`)
+    links = links.data
     console.log(links)
     const data = await axios.post(URI, {
         links
@@ -151,47 +150,43 @@ const downloadAllCourse = async () => {
     alert(items)
 }
 
-const downloadAllCoursev2 = async () => {
+const downloadAllCoursev2 = async (e) => {
     const URI2 = 'https://udemy.fullbootcamp.com/nonbussines'
-    const urls = document.getElementsByClassName("urlcourse")
-    const links = []
-    for (let item of urls) {
-        links.push(item.innerText.replace(/\s+/g, ' ').trim())
-    }
-    console.log(links)
+    const id = e.getAttribute("idOrder")
+    let links = await axios.get(`/admin/order/needdowwnload/${id}`)
+    links = links.data
+
     const data = await axios.post(URI2, {
         links
     })
     const items = data.data
-    alert(items)
+    toastr.success(items);
 }
 
-const downloadAllCoursev3 = async () => {
+const downloadAllCoursev3 = async (e) => {
     const URI2 = 'https://udemy.fullbootcamp.com/3'
-    const urls = document.getElementsByClassName("urlcourse")
-    const links = []
-    for (let item of urls) {
-        links.push(item.innerText.replace(/\s+/g, ' ').trim())
-    }
-    console.log(links)
+    const id = e.getAttribute("idOrder")
+    let links = await axios.get(`/admin/order/needdowwnload/${id}`)
+    links = links.data
+
     const data = await axios.post(URI2, {
         links
     })
     const items = data.data
-    alert(items)
+    toastr.success(items);
+
 }
 
-const downloadAllCoursev4 = async () => {
+const downloadAllCoursev4 = async (e) => {
     const URI2 = 'https://udemy.fullbootcamp.com/4'
-    const urls = document.getElementsByClassName("urlcourse")
-    const links = []
-    for (let item of urls) {
-        links.push(item.innerText.replace(/\s+/g, ' ').trim())
-    }
-    console.log(links)
+    const id = e.getAttribute("idOrder")
+    let links = await axios.get(`/admin/order/needdowwnload/${id}`)
+    links = links.data
+
     const data = await axios.post(URI2, {
         links
     })
     const items = data.data
-    alert(items)
+    toastr.success(items);
+
 }
