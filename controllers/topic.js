@@ -82,8 +82,7 @@ const topicSlugGetCourses = async (req, res) => {
     // res.send(course)
     // const itemCount = course.count;
     // const pageCount = Math.ceil(course.count / req.query.limit);
-
-
+    const structuredDataCourse = courseService.createStrucDataCourses(course.rows)
     if (course.length === 0) {
 
         res.render('layout/404')
@@ -92,6 +91,7 @@ const topicSlugGetCourses = async (req, res) => {
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('course/course', {
             course: course.rows,
+            structuredDataCourse,
             pageCount,
             itemCount,
             currentPage: req.query.page,

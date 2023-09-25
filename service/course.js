@@ -96,7 +96,7 @@ const findMany = async (text, limit, skip) => {
 }
 
 const findManyCourseTopic = async (text, limit, skip, topic) => {
-    const query = { limit: limit, offset: skip, order: [['id', 'DESC']], attributes: ['name', 'url', 'slug', 'image', 'price',] }
+    const query = { limit: limit, offset: skip, order: [['id', 'DESC']], attributes: ['name', 'url', 'slug', 'image', 'price', 'description'] }
     if (text) {
         query['where'] = {
             [Op.or]: [
@@ -259,6 +259,57 @@ const update = async (id, name, url, slug, price, priceus, priceindia, topicId, 
     })
     return updateCourse
 }
+
+const createStrucDataCourses = (courses) => {
+    let provider
+    const itemListElement = courses.map((item, index) => {
+        if (item.url.includes("unica")) {
+            provider = {
+                "@type": "Organization",
+                "name": "Unica",
+                "sameAs": "https://unica.vn/"
+            }
+        }
+        if (item.url.includes("udemy")) {
+            provider = {
+                "@type": "Organization",
+                "name": "Udemy",
+                "sameAs": "https://www.udemy.com/"
+            }
+        }
+        if (item.url.includes("cyberlearn")) {
+            provider = {
+                "@type": "Organization",
+                "name": "Cyberlearn",
+                "sameAs": "https://cyberlearn.vn/"
+            }
+        }
+        if (item.url.includes("gitiho")) {
+            provider = {
+                "@type": "Organization",
+                "name": "gitiho",
+                "sameAs": "https://gitiho.com/"
+            }
+        }
+        return {
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+                "@type": "Course",
+                "url": `${process.env.DOMAIN}/${item.slug}`,
+                "name": `${item.name}`,
+                "description": `${item.description}`,
+                provider
+            }
+        }
+    })
+    const structuredDataCourse = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        itemListElement
+    }
+    return structuredDataCourse
+}
 module.exports = {
-    createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
+    createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
 };

@@ -1,6 +1,6 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update } = require("../service/course")
 const { getDriveUdemy, givenamereturndrive } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
@@ -20,7 +20,7 @@ const check = async (req, res) => {
     const { links } = req.body;
     const promises = []
     for (let link of links) {
-        const regex = /(udemy.com\/course|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
+        const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
         const expression = link.uri.match(regex);
         switch (expression[0]) {
             case "unica.vn":
@@ -179,7 +179,7 @@ const publicall = async (req, res) => {
     // const itemCount = course.count;
     // const pageCount = Math.ceil(course.count / req.query.limit);
 
-
+    const structuredDataCourse = createStrucDataCourses(course.rows)
     if (course.length === 0) {
 
         res.render('layout/404')
@@ -188,6 +188,7 @@ const publicall = async (req, res) => {
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('course/course', {
             course: course.rows,
+            structuredDataCourse,
             pageCount,
             itemCount,
             currentPage: req.query.page,

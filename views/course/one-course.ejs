@@ -7,10 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        <%=course.name%> giá chỉ 50k
+        50k - <%=course.name%>
     </title>
-    <meta name="title" content="<%=course.name%> Giá sinh viên" />
-    <meta name="description" content="<%=course.description%>" />
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "<%=course.name%>",
+          "description": "Khoá học <%=course.name%> giá chỉ 50k, nhận khoá học qua Drive. <%=course.description%>",
+          "provider": {
+            "@type": "Organization",
+            "name": "Udemy",
+            "sameAs": "<%=course.url%>"
+          }
+        }
+        </script>
+    <meta name="title" content="Giá chỉ 50k - <%=course.name%> " />
+    <meta name="description"
+        content="Khoá học <%=course.name%> giá chỉ 50k, nhận khoá học qua Drive. <%=course.description%>" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -162,7 +176,8 @@
                                     </div>
 
                                     <p class="col-xl-9 mt-20">
-                                        <%=course.description%>
+                                        Giá chỉ 50k, nhận khoá học <%=course.name%> qua Onedrive. <br>
+                                            <%=course.description%>
                                     </p>
 
                                 </div>

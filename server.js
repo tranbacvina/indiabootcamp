@@ -14,7 +14,7 @@ const stripe = require("./service/stripe")
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
 
 
-app.use(paginate.middleware(10, 20));
+app.use(paginate.middleware(28, 20));
 app.use(cookieParser())
 app.use(express.json({
   verify: (req, res, buf) => {
@@ -34,12 +34,13 @@ app.use(
     origin: "*",
   })
 );
-
 app.use("/", Routers);
 
 // cron.schedule('* * * * *', async () => {
 //   await cronBank.cron()
 // });
+
+
 
 app.listen(port, async () => {
   console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
