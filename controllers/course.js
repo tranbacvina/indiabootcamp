@@ -1,7 +1,7 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update } = require("../service/course")
-const { getDriveUdemy, givenamereturndrive } = require("../service/cawn_data")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update } = require("../service/course")
+const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
 
@@ -201,8 +201,9 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
+    const structuredDataCourse = createStrucDataOneCourse(course)
     // res.send(course)
-    res.render("course/one-course", { course });
+    res.render("course/one-course", { course, structuredDataCourse });
 };
 
 const create = async (req, res) => {

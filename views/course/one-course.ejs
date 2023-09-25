@@ -10,17 +10,7 @@
         50k - <%=course.name%>
     </title>
     <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "<%=course.name%>",
-          "description": "Khoá học <%=course.name%> giá chỉ 50k, nhận khoá học qua Drive. <%=course.description%>",
-          "provider": {
-            "@type": "Organization",
-            "name": "Udemy",
-            "sameAs": "<%=course.url%>"
-          }
-        }
+        <%-JSON.stringify(structuredDataCourse)%>
         </script>
     <meta name="title" content="Giá chỉ 50k - <%=course.name%> " />
     <meta name="description"

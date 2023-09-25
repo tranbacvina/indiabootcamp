@@ -260,46 +260,50 @@ const update = async (id, name, url, slug, price, priceus, priceindia, topicId, 
     return updateCourse
 }
 
+const handleProviderStructure = (url) => {
+
+    if (url.includes("unica")) {
+        return {
+            "@type": "Organization",
+            "name": "Unica",
+            "sameAs": "https://unica.vn/"
+        }
+    }
+    if (url.includes("udemy")) {
+        return {
+            "@type": "Organization",
+            "name": "Udemy",
+            "sameAs": "https://www.udemy.com/"
+        }
+    }
+    if (url.includes("cyberlearn")) {
+        return {
+            "@type": "Organization",
+            "name": "Cyberlearn",
+            "sameAs": "https://cyberlearn.vn/"
+        }
+    }
+    if (url.includes("gitiho")) {
+        return {
+            "@type": "Organization",
+            "name": "gitiho",
+            "sameAs": "https://gitiho.com/"
+        }
+    }
+}
+
 const createStrucDataCourses = (courses) => {
-    let provider
     const itemListElement = courses.map((item, index) => {
-        if (item.url.includes("unica")) {
-            provider = {
-                "@type": "Organization",
-                "name": "Unica",
-                "sameAs": "https://unica.vn/"
-            }
-        }
-        if (item.url.includes("udemy")) {
-            provider = {
-                "@type": "Organization",
-                "name": "Udemy",
-                "sameAs": "https://www.udemy.com/"
-            }
-        }
-        if (item.url.includes("cyberlearn")) {
-            provider = {
-                "@type": "Organization",
-                "name": "Cyberlearn",
-                "sameAs": "https://cyberlearn.vn/"
-            }
-        }
-        if (item.url.includes("gitiho")) {
-            provider = {
-                "@type": "Organization",
-                "name": "gitiho",
-                "sameAs": "https://gitiho.com/"
-            }
-        }
+
         return {
             "@type": "ListItem",
             "position": index + 1,
             "item": {
                 "@type": "Course",
                 "url": `${process.env.DOMAIN}/${item.slug}`,
-                "name": `${item.name}`,
-                "description": `${item.description}`,
-                provider
+                "name": item.name,
+                "description": item.description,
+                "provider": handleProviderStructure(item.url)
             }
         }
     })
@@ -310,6 +314,16 @@ const createStrucDataCourses = (courses) => {
     }
     return structuredDataCourse
 }
+const createStrucDataOneCourse = (course) => {
+    const structuredDataCourse = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": course.name,
+        "description": course.description,
+        "provider": handleProviderStructure(course.url)
+    }
+    return structuredDataCourse
+}
 module.exports = {
-    createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
+    createStrucDataOneCourse, createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
 };
