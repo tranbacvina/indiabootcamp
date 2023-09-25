@@ -9,6 +9,7 @@ var cron = require('node-cron');
 const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
+var sitemap = require('express-sitemap');
 
 
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
@@ -41,7 +42,18 @@ app.use("/", Routers);
 // });
 
 
+const map = sitemap({
+  http: "https",
+  url: "fullbootcamp.com",
+  sitemap: './public/sitemap.xml',
+  map: {
+    '/topic/lap-trinh': ['get'],
+    '/category/huong-dan': ['get'],
+    '/category/share-khoa-hoc-0': ['get'],
+  },
 
+})
+map.XMLtoFile();
 app.listen(port, async () => {
   console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
   try {

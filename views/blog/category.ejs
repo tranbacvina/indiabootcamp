@@ -5,7 +5,24 @@
     <!-- Required meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+    <title>
+        <%=categorie.seotitle%>
+    </title>
+    <link rel="canonical" href="https://fullbootcamp.com/category/<%=categorie.slug%>">
+    <meta name="title" content="<%=categorie.seotitle%>" />
+    <meta name="description" content="<%=categorie.seodescription%>" />
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fullbootcamp.com/category/<%=categorie.slug%>" />
+    <meta property="og:title" content="<%=categorie.seotitle%>" />
+    <meta property="og:description" content="<%=categorie.seodescription%>" />
+    <meta property="og:image" content="https://fullbootcamp.com/<%=blogs[0].thumbnail%>" />
+
+
+
+    <!-- Meta Tags Generated with https://metatags.io -->
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,14 +93,17 @@
                                 <div class="col-auto">
                                     <div data-anim="slide-up delay-1" class="is-in-view">
 
-                                        <h1 class="page-header__title">Blog</h1>
+                                        <h1 class="page-header__title">
+                                            <%=categorie.seotitle%>
+                                        </h1>
 
                                     </div>
 
                                     <div data-anim="slide-up delay-2" class="is-in-view">
 
-                                        <p class="page-header__text">Hướng dẫn sử dụng, khoá học miễn phí được chia sẻ
-                                            tải đây</p>
+                                        <p class="page-header__text">
+                                            <%=categorie.seodescription%>
+                                        </p>
 
                                     </div>
                                 </div>

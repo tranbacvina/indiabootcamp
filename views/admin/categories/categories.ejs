@@ -116,6 +116,8 @@
                                                                 <th colspan="1" role="columnheader">Tên</th>
                                                                 <th colspan="1" role="columnheader">slug</th>
                                                                 <th colspan="1" role="columnheader">Trạng thái</th>
+                                                                <th colspan="1" role="columnheader">Seo title</th>
+                                                                <th colspan="1" role="columnheader">Seo Mô tả</th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                             </tr>
@@ -135,7 +137,6 @@
                                                                     <td role="cell" class="align-middle">
                                                                         <%=cat.slug%>
                                                                     </td>
-
                                                                     <td role="cell" class="align-middle">
                                                                         <% if (cat.isDeleted) { %>
                                                                             Delete
@@ -143,10 +144,19 @@
                                                                                 Hiển thị
                                                                                 <%}%>
                                                                     </td>
+                                                                    <td role="cell" class="align-middle">
+                                                                        <%=cat.seotitle%>
+                                                                    </td>
+                                                                    <td role="cell" class="align-middle">
+                                                                        <%=cat.seodescription%>
+                                                                    </td>
+
 
                                                                     <td role="cell" class="align-middle"
                                                                         data-id="<%=cat.id %>" data-slug="<%=cat.slug%>"
                                                                         data-name="<%=cat.name%>"
+                                                                        data-seotitle="<%=cat.seotitle%>"
+                                                                        data-seodescription="<%=cat.seodescription%>"
                                                                         onclick="editTopic(this)">
                                                                         <button type="button"
                                                                             class="me-1 mb-2 btn btn-outline-danger btn-xs">Sửa</button>
@@ -203,9 +213,12 @@
                 const topicID = document.getElementById("topicID").value
                 const topicName = document.getElementById("topicName").value
                 const topicSlug = document.getElementById("topicSlug").value
+                const seotitle = document.getElementById("seotitle").value
+                const seodescription = document.getElementById("seodescription").value
+
                 try {
                     const updateTopic = await axios.patch(`/admin/categories/${topicID}`, {
-                        topicName, topicSlug
+                        topicName, topicSlug, seotitle, seodescription
                     })
                     console.log(updateTopic.data)
                     toastr.success(updateTopic.data.data)
@@ -235,7 +248,9 @@
                 const topicID = e.getAttribute("data-id")
                 const topicName = e.getAttribute("data-name")
                 const topicSlug = e.getAttribute("data-slug")
-                console.log(topicID, topicName, topicSlug)
+                const seotitle = e.getAttribute("data-seotitle")
+                const seodescription = e.getAttribute("data-seodescription")
+
 
                 const html = `
                             <form class="contact-form" id="updateTopicForm">
@@ -251,6 +266,15 @@
                             <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug</label>
                             <div class="">
                             <input type="text" name="slug" id="topicSlug" value="${topicSlug}">
+
+                            </div> <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">seotitle</label>
+                            <div class="">
+                            <input type="text" name="seotitle" id="seotitle" value="${seotitle}">
+                            </div>
+
+                             </div> <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">seodescription</label>
+                            <div class="">
+                            <input type="text" name="seodescription" id="seodescription" value="${seodescription}">
                             </div>
                         </form>
                 `

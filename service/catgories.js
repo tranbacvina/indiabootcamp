@@ -4,4 +4,12 @@ const findAll = async () => {
     return await db.Category.findAll()
 }
 
-module.exports = { findAll }
+const findOne = async (slug) => {
+    return await db.Category.findOne({
+        where: {
+            slug
+        }
+    })
+}
+
+module.exports = { findAll, findOne }

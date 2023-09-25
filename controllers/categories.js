@@ -14,11 +14,13 @@ const createCategoriesView = async (req, res) => {
 
 const updateTopic = async (req, res) => {
     const topicID = req.params.id
-    const { topicName, topicSlug } = req.body
+    const { topicName, topicSlug, seotitle, seodescription } = req.body
     try {
         await db.Category.update({
             name: topicName,
-            slug: topicSlug
+            slug: topicSlug,
+            seotitle,
+            seodescription
         }, {
             where: {
                 id: topicID
@@ -77,7 +79,8 @@ const deleteTopic = async (req, res) => {
 const findAllBlogBySlugcatgories = async (req, res) => {
     const { text, limit, } = req.query
     const { slug } = req.params
-
+    const categorie = await catgoriesServices.findOne(slug)
+    console.log(categorie)
     const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
 
     if (blogs.length === 0) {
@@ -95,6 +98,7 @@ const findAllBlogBySlugcatgories = async (req, res) => {
         // })
         res.render('blog/category', {
             blogs: blogs.rows,
+            categorie,
             pageCount,
             itemCount,
             currentPage: req.query.page,

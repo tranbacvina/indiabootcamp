@@ -6,19 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>Combo giá rẻ</title>
+    <title>Các khoá học <%=course[0].Topic.name%> giá rẻ</title>
     <script type="application/ld+json">
         <%-JSON.stringify(structuredDataCourse)%>
     </script>
-    <meta name="title" content="Get Udemy Paid Courses only 3$" />
-    <meta name="description"
-        content="If you want to acquire new skills without having to spend a dim on udemy Premium Courses, then learn how to Get Udemy Paid Courses only 3$. Dear, you are at the right place at the right time." />
+    <link rel="canonical" href="https://fullbootcamp.com/topic/<%=course[0].Topic.slug%>" />
+
+    <meta name="title" content="Các khoá học <%=course[0].Topic.name%> giá rẻ" />
+    <meta name="description" content="Các khoá học <%=course[0].Topic.name%> giá rẻ chỉ từ 50k / khoá" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fullbootcamp.com" />
-    <meta property="og:title" content="Get Udemy Paid Courses only 3$" />
-    <meta property="og:description" content="Tool get Udemy Paid Course" />
+    <meta property="og:url" content="https://fullbootcamp.com/topic/<%=course[0].Topic.slug%>" />
+    <meta property="og:title" content="Khoá học  <%=course[0].Topic.name%> giá chỉ 50k" />
+    <meta property="og:description" content="Khoá học  <%=course[0].Topic.name%> giá chỉ 50k" />
     <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
 
     <!-- Google fonts -->

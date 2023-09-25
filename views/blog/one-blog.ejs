@@ -11,7 +11,24 @@
     </title>
     <meta name="title" content="<%= blog.title %>" />
     <meta name="description" content="<%= blog.title %>" />
-
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "<%= blog.title %>",
+      "image": [
+        "<%= blog.thumbnail %>",
+       
+       ],
+      "datePublished": "<%= blog.createdAt %>",
+      "dateModified": "<%= blog.updatedAt %>",
+      "author": [{
+          "@type": "Person",
+          "name": "Henry",
+          "url": "https://www.facebook.com/fullbootcamp3"
+        }]
+    }
+    </script>
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fullbootcamp.com/<%= blog.slug %>" />

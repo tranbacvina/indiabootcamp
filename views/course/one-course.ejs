@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        50k - <%=course.name%>
+        <%=course.name%>
     </title>
+    <link rel="canonical" href="https://fullbootcamp.com/course/<%=course.slug%>" />
     <script type="application/ld+json">
         <%-JSON.stringify(structuredDataCourse)%>
         </script>

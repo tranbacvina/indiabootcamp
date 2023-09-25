@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   Category.init({
     name: DataTypes.STRING,
     slug: { type: DataTypes.STRING, unique: true },
+    seotitle: DataTypes.STRING,
+    seodescription: DataTypes.STRING,
     isDeleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
