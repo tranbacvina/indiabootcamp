@@ -15,11 +15,11 @@ const createTopicView = async (req, res) => {
 
 const updateTopic = async (req, res) => {
     const topicID = req.params.id
-    const { topicName, topicSlug } = req.body
+    const { topicName, topicSlug, seotitle, seodescription } = req.body
     try {
         await db.Topic.update({
             name: topicName,
-            slug: topicSlug
+            slug: topicSlug, seotitle, seodescription
         }, {
             where: {
                 id: topicID
@@ -39,11 +39,11 @@ const updateTopic = async (req, res) => {
 
 const createTopic = async (req, res) => {
     try {
-        const { name, slug } = req.body
+        const { name, slug, seotitle, seodescription } = req.body
         console.log(name, slug, req.body)
 
         const newTopic = await db.Topic.create({
-            name, slug
+            name, slug, seotitle, seodescription
         })
         console.log(newTopic)
         res.redirect(`/admin/topic/`)
@@ -78,6 +78,7 @@ const deleteTopic = async (req, res) => {
 const topicSlugGetCourses = async (req, res) => {
     const { text, limit, } = req.query
     const { slug } = req.params
+    const topicOne = await topic.findOne(slug)
     const course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
     // res.send(course)
     // const itemCount = course.count;
@@ -91,6 +92,7 @@ const topicSlugGetCourses = async (req, res) => {
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('course/course', {
             course: course.rows,
+            topicOne,
             structuredDataCourse,
             pageCount,
             itemCount,

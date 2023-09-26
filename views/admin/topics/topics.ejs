@@ -116,6 +116,8 @@
                                                                 <th colspan="1" role="columnheader">Tên</th>
                                                                 <th colspan="1" role="columnheader">slug</th>
                                                                 <th colspan="1" role="columnheader">Trạng thái</th>
+                                                                <th colspan="1" role="columnheader">seo title</th>
+                                                                <th colspan="1" role="columnheader">seo mo ta</th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                             </tr>
@@ -143,11 +145,18 @@
                                                                                 Hiển thị
                                                                                 <%}%>
                                                                     </td>
-
+                                                                    <td role="cell" class="align-middle">
+                                                                        <%=topic.seotitle%>
+                                                                    </td>
+                                                                    <td role="cell" class="align-middle">
+                                                                        <%=topic.seodescription%>
+                                                                    </td>
                                                                     <td role="cell" class="align-middle"
                                                                         data-id="<%=topic.id %>"
                                                                         data-slug="<%=topic.slug%>"
                                                                         data-name="<%=topic.name%>"
+                                                                        data-seotitle="<%=topic.seotitle%>"
+                                                                        data-seodescription="<%=topic.seodescription%>"
                                                                         onclick="editTopic(this)">
                                                                         <button type="button"
                                                                             class="me-1 mb-2 btn btn-outline-danger btn-xs">Sửa</button>
@@ -204,9 +213,11 @@
                 const topicID = document.getElementById("topicID").value
                 const topicName = document.getElementById("topicName").value
                 const topicSlug = document.getElementById("topicSlug").value
+                const seotitle = document.getElementById("seotitle").value
+                const seodescription = document.getElementById("seodescription").value
                 try {
                     const updateTopic = await axios.patch(`/admin/topic/${topicID}`, {
-                        topicName, topicSlug
+                        topicName, topicSlug, seotitle, seodescription
                     })
                     console.log(updateTopic.data)
                     toastr.success(updateTopic.data.data)
@@ -236,6 +247,8 @@
                 const topicID = e.getAttribute("data-id")
                 const topicName = e.getAttribute("data-name")
                 const topicSlug = e.getAttribute("data-slug")
+                const seotitle = e.getAttribute("data-seotitle")
+                const seodescription = e.getAttribute("data-seodescription")
                 console.log(topicID, topicName, topicSlug)
 
                 const html = `
@@ -252,6 +265,16 @@
                             <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug</label>
                             <div class="">
                             <input type="text" name="slug" id="topicSlug" value="${topicSlug}">
+                            </div>
+
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">seotitle</label>
+                            <div class="">
+                            <input type="text" name="seotitle" id="seotitle" value="${seotitle}">
+                            </div>
+
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">seodescription</label>
+                            <div class="">
+                            <input type="text" name="seodescription" id="seodescription" value="${seodescription}">
                             </div>
                         </form>
                 `
