@@ -129,13 +129,13 @@ const cronVietcombank = async () => {
 
 
 const cron = async () => {
-    try {
-        // await cronMB()
-        // await cronMOMO();
-        await cronMOMOv2();
-    } catch (error) {
-        console.log(error);
-    }
+    // try {
+    //     // await cronMB()
+    //     // await cronMOMO();
+    //     await cronMOMOv2();
+    // } catch (error) {
+    //     console.log(error);
+    // }
     try {
         await cronVietcombank();
     } catch (error) {

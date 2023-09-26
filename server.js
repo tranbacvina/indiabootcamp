@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3008;
+const port = 3020;
 const cookieParser = require('cookie-parser')
 const Routers = require("./routers");
 const { sequelize } = require("./models");
@@ -37,9 +37,9 @@ app.use(
 );
 app.use("/", Routers);
 
-// cron.schedule('* * * * *', async () => {
-//   await cronBank.cron()
-// });
+cron.schedule('* * * * *', async () => {
+  await cronBank.cron()
+});
 
 
 const map = sitemap({
