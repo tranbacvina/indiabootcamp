@@ -10,8 +10,9 @@ const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
 var sitemap = require('express-sitemap');
+var useragent = require('express-useragent');
 
-
+app.use(useragent.express());
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
 
 

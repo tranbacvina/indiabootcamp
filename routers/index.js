@@ -9,7 +9,7 @@ const middleware = require('../middleware/auth')
 const admin = require("./admin")
 const category = require("./category")
 const blogController = require("../controllers/blog")
-
+const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
 const db = require("../models");
 
@@ -28,6 +28,11 @@ Routers.post("/adduser", auth.adduser)
 Routers.use("/admin", middleware.needLogin, admin)
 
 Routers.use("/category", category)
+Routers.get("/myip", (req, res) => {
+  const ipAddress = IP.address();
+  const client_user_agent = req.useragent.source
+  res.send({ ipAddress, client_user_agent })
+})
 Routers.get("/:slug", blogController.oneBlogPublic)
 
 

@@ -9,6 +9,10 @@ const { v4: uuidv4 } = require("uuid");
 const paginate = require('express-paginate');
 const axios = require('axios')
 const courseService = require("../service/course")
+const facebookPixel = require("../service/facebook_pixel")
+var ip = require('ip');
+
+
 const createindia = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -16,6 +20,9 @@ const createindia = async (req, res) => {
     }
     try {
         const { email, items } = req.body;
+        const client_user_agent = req.useragent.source
+        const ipClien = ip.address()
+
 
         const orderItem = [];
         for (let item of items) {
@@ -66,6 +73,7 @@ const createindia = async (req, res) => {
         })
         const urlStripeCheckOut = await stripe.createCheckOutSession(line_items, order.uuid, order.id, email)
 
+        const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent)
         res.status(200).json({ order, urlStripeCheckOut });
     } catch (error) {
         console.error(error);
@@ -112,7 +120,9 @@ const createVN = async (req, res) => {
                 },
             }
         );
-
+        const client_user_agent = req.useragent.source
+        const ipClien = ip.address()
+        const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent)
 
         res.redirect(`/order/${order.uuid}`)
     } catch (error) {
@@ -159,6 +169,9 @@ const createvnapi = async (req, res) => {
             }
         );
 
+        const client_user_agent = req.useragent.source
+        const ipClien = ip.address()
+        const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent)
 
         res.status(200).json({ url: `/order/${order.uuid}` });
     } catch (error) {
@@ -168,7 +181,7 @@ const createvnapi = async (req, res) => {
 
 const getuuid = async (req, res) => {
     const { uuid } = req.params;
-    const orderid = await order.findOne(uuid)
+    const orderid = await order.orderUUID(uuid)
     const qrcode = await axios.post('https://api.vietqr.io/v2/generate', {
         "accountNo": "0141000836982",
         "accountName": "TRAN DUY BAC",
