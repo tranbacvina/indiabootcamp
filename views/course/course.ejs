@@ -14,7 +14,7 @@
     </script>
     <link rel="canonical" href="https://fullbootcamp.com/topic/<%=topicOne.slug%>" />
 
-    <meta name="title" content="<%=topicOne.title%> " />
+    <meta name="title" content="<%=topicOne.seotitle%>" />
     <meta name="description" content="<%=topicOne.seodescription%>" />
 
     <!-- Open Graph / Facebook -->
@@ -93,14 +93,16 @@
                                 <div class="col-auto">
                                     <div data-anim="slide-up delay-1" class="is-in-view">
 
-                                        <h1 class="page-header__title">Khoá học - Combo đặc biệt</h1>
+                                        <h1 class="page-header__title">
+                                            <%=topicOne.seotitle%>
+                                        </h1>
 
                                     </div>
 
                                     <div data-anim="slide-up delay-2" class="is-in-view">
 
-                                        <p class="page-header__text">Khoá học khác ngoài Udemy, Unica, Gitiho, Combo ưu
-                                            đãi
+                                        <p class="page-header__text">
+                                            <%=topicOne.seodescription%>
                                         </p>
 
                                     </div>

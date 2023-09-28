@@ -412,19 +412,19 @@
 
                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Name*</label>
 
-                <input type="text" value="" name="name" id="name">
+                <input type="text" name="name" id="name">
               </div>
               <div class="col-12">
 
                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">URI*</label>
 
-                <input type="text" value="" name="url" id="URI">
+                <input type="text" name="url" id="URI">
               </div>
               <div class="col-12">
 
                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
 
-                <input type="text" value="" name="slug" id="slug">
+                <input type="text" name="slug" id="slug">
               </div>
               <div class="col-12">
 
@@ -461,12 +461,12 @@
               <div class="col-12">
 
                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">whatyouwilllearn</label>
-                <textarea class="" id="whatyouwilllearn" name="whatyouwilllearn"></textarea>
+                <textarea class="" id="whatyouwilllearn" name="whatyouwilllearn">[]</textarea>
               </div>
               <div class="col-12">
 
                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">requirements</label>
-                <textarea class="" id="requirements" name="requirements"></textarea>
+                <textarea class="" id="requirements" name="requirements">[]</textarea>
 
                 </pre>
               </div>
@@ -481,7 +481,7 @@
 
                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
                   chính*</label>
-                <textarea class="editor" id="description_log" name="description_log"></textarea>
+                <textarea class="editor" id="description_log" rows="15" name="description_log"></textarea>
 
               </div>
               <div class="col-12">
@@ -602,6 +602,23 @@
 
   <!-- JavaScript -->
   <%- include('../../layout/footerjs'); %>
+    <script src="/js/ckeditor.js"></script>
+    <script>
+      let editor;
+      ClassicEditor
+        .create(document.querySelector('.editor'), {
+          licenseKey: '',
+        })
+        .then(newEditor => {
+          editor = newEditor;
+        })
+        .catch(error => {
+          console.error('Oops, something went wrong!');
+          console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+          console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
+          console.error(error);
+        });
+    </script>
     <script>
       const handle_addcourse = document.getElementById("handle_addcourse");
       handle_addcourse.addEventListener("submit", async (event) => {

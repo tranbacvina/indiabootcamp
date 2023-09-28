@@ -129,7 +129,8 @@
                                                                         <%=topic.id%>
                                                                     </td>
                                                                     <td role="cell" class="align-middle">
-                                                                        <a class="text-inherit text-purple-1" href="">
+                                                                        <a class="text-inherit text-purple-1"
+                                                                            href="/admin/course/topic/<%=topic.slug%>">
                                                                             <%=topic.name%>
                                                                         </a>
                                                                     </td>
@@ -259,6 +260,7 @@
                             </div>
                             <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Name</label>
                             <div class="">
+                                
                                 <input type="text" name="name" id="topicName" value="${topicName}">
                             </div>
 
