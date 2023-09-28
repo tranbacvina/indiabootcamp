@@ -13,9 +13,8 @@
     <script type="application/ld+json">
         <%-JSON.stringify(structuredDataCourse)%>
         </script>
-    <meta name="title" content="Giá chỉ 50k - <%=course.name%> " />
-    <meta name="description"
-        content="Khoá học <%=course.name%> giá chỉ 50k, nhận khoá học qua Drive. <%=course.description%>" />
+    <meta name="title" content="<%=course.name%> " />
+    <meta name="description" content="<%=course.description%>" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -122,9 +121,7 @@
                                         </a>
                                     </div>
                                     <div class="breadcrumbs__item ">
-                                        <a href="/course/<%=course.slug%>">
-                                            <%=course.name%>
-                                        </a>
+                                        <%=course.name%>
                                     </div>
 
 
@@ -145,21 +142,6 @@
                         <div class="page-header__content pt-90 pb-">
                             <div class="row y-gap-30 relative">
                                 <div class="col-xl-7 col-lg-8">
-                                    <div class="d-flex x-gap-15 y-gap-10 pb-20">
-                                        <div>
-                                            <div class="badge px-15 py-8 text-11 bg-green-1 text-dark-1 fw-400">BEST
-                                                SELLER</div>
-                                        </div>
-                                        <div>
-                                            <div class="badge px-15 py-8 text-11 bg-orange-1 text-white fw-400">NEW
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="badge px-15 py-8 text-11 bg-purple-1 text-white fw-400">POPULAR
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div data-anim="slide-up delay-1" class="is-in-view">
                                         <h1 class="text-30 lh-14 pr-60 lg:pr-0">
                                             <%=course.name%>
@@ -167,7 +149,7 @@
                                     </div>
 
                                     <p class="col-xl-9 mt-20">
-                                        Giá chỉ 50k, nhận khoá học <%=course.name%> qua Onedrive. <br>
+                                        Nhận khoá học <%=course.name%> qua Onedrive. <br>
                                             <%=course.description%>
                                     </p>
 
