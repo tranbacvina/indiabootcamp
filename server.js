@@ -49,8 +49,11 @@ const map = sitemap({
   sitemap: './public/sitemap.xml',
   map: {
     '/topic/lap-trinh': ['get'],
+    '/topic/hidden': ['get'],
+    '/topic/cyberlearn': ['get'],
+    '/topic/thiet-ke': ['get'],
     '/category/huong-dan': ['get'],
-    '/category/share-khoa-hoc-0': ['get'],
+    '/category/share-khoa-hoc': ['get'],
   },
 
 })
