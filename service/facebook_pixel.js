@@ -9,7 +9,7 @@ function sha256(input) {
 const access_token = 'EAASsyRHsm0sBOZCFGGCRZBsMUrZCRA9nSge7eNjyGEZAWPEvZCUztWWA4uWWfERy4lf7Bg57GyhZB3pOGEYHhR6pm5cpEYkr33fZClb5yEH87FC6E8LNG7mCM8N2KSUBy8S6pDo1ZAkXVbSJXJ52EhTxZBTlBRhMpglsUDhZCK984IHF6oUkRflfIKeq1xLqxzxkQGXgZDZD';
 const pixel_id = '704457201605603';
 
-const newEvenSendToFacebook = async (email, price, ipClien, client_user_agent) => {
+const newEvenSendToFacebook = async (email, price, ipClien, client_user_agent, fbc, fbp) => {
     try {
         let current_timestamp = Math.floor(new Date() / 1000);
         const response = await axios.post(
@@ -24,6 +24,7 @@ const newEvenSendToFacebook = async (email, price, ipClien, client_user_agent) =
                             "em": sha256(email),
                             "client_ip_address": ipClien,
                             "client_user_agent": client_user_agent,
+                            fbc, fbp
                         },
 
                         "custom_data": {

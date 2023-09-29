@@ -31,7 +31,9 @@ Routers.use("/category", category)
 Routers.get("/myip", (req, res) => {
   const ipAddress = IP.address();
   const client_user_agent = req.useragent.source
-  res.send({ ipAddress, client_user_agent })
+  const fbc = req.cookies._fbc
+  const fbp = req.cookies._fbp
+  res.send({ ipAddress, client_user_agent, fbc, fbp })
 })
 Routers.get("/:slug", blogController.oneBlogPublic)
 
