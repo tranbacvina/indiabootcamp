@@ -178,7 +178,7 @@ const createvnapi = async (req, res) => {
         const fbp = req.cookies._fbp
         const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent, fbc, fbp)
 
-        res.status(200).json({ url: `/order/${order.uuid}` });
+        res.status(200).json({ order, url: `/order/${order.uuid}` });
     } catch (error) {
         console.error(error);
     }
@@ -196,8 +196,16 @@ const getuuid = async (req, res) => {
         "template": "qr_only"
     })
     // res.send(qrcode.data)
+    const itemsForGtag = orderid.orderItems.map(item => {
+        return {
+            item_id: item.course.id,
+            item_name: item.course.name,
+            price: item.course.price,
+            quantity: 1
+        }
+    })
     if (orderid) {
-        res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data })
+        res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data, itemsForGtag })
     } else {
         res.render('layout/404')
     }
