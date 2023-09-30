@@ -201,9 +201,13 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
-    const structuredDataCourse = createStrucDataOneCourse(course)
     // res.send(course)
-    res.render("course/one-course", { course, structuredDataCourse });
+    if (course) {
+        const structuredDataCourse = createStrucDataOneCourse(course)
+        res.render("course/one-course", { course, structuredDataCourse });
+    } else {
+        res.render("layout/404")
+    }
 };
 
 const create = async (req, res) => {
