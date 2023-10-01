@@ -736,7 +736,7 @@
                 email, items
             })
             console.log(createOrder.data)
-
+            fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.price });
             window.location.href = `${createOrder.data.url}`
         } catch (error) {
             alert(error)
