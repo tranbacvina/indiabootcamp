@@ -127,9 +127,9 @@ const createVN = async (req, res) => {
         const fbp = req.cookies._fbp
         const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent, fbc, fbp)
 
-        res.redirect(`/order/${order.uuid}`)
+        res.send(order)
     } catch (error) {
-        console.error(error);
+        res.send(error)
     }
 };
 

@@ -180,9 +180,10 @@
                                                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Email nhận khoá
                                                     học:
                                                 </label>
-                                                <input type="text" name="email" placeholder="abc@gmail.com"
+                                                <input type="text" name="email" id="email" placeholder="abc@gmail.com"
                                                     oninput="this.className = ''" required>
-                                                <input type="hidden" name="courseID" value="<%=course.id%>">
+                                                <input type="hidden" name="courseID" id="courseID"
+                                                    value="<%=course.id%>">
                                                 <button type="submit" id="" onclick=""
                                                     class="button -md -purple-1 text-white w-1/1 mt-20">Mua
                                                     ngay</button>
@@ -352,7 +353,26 @@
     </main>
 
     <%- include('../layout/footerjs'); %>
+        <script>
+            const regForm = document.getElementById("regForm")
+            regForm.addEventListener("submit", async (event) => {
+                event.preventDefault()
+                try {
+                    const email = document.getElementById("email").value
+                    const courseID = document.getElementById("courseID").value
+                    const createOrder = await axios.post('/order/createvn', {
+                        email, courseID
+                    })
+                    console.log(createOrder.data)
+                    fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.price });
+                    toastr.success(`Tạo đơn hàng ${email} thành công!`)
+                    window.location.href = `/order/${createOrder.data.uuid}`
+                } catch (error) {
+                    toastr.error(error)
 
+                }
+            })
+        </script>
 </body>
 
 
