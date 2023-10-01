@@ -269,15 +269,7 @@
     </main>
 
     <%- include('../layout/footerjs'); %>
-        <script type="text/javascript">
 
-            gtag("event", "purchase", {
-                transaction_id: "<%=order.uuid %>",
-                value: <%=order.price %>,
-                currency: "VND",
-                items: <%-JSON.stringify(itemsForGtag)%>
-                });
-        </script>
 </body>
 
 </html>

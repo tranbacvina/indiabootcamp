@@ -365,6 +365,20 @@
                     })
                     console.log(createOrder.data)
                     fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.price });
+                    const itemsForGtag = createOrder.data.orderItems.map(item => {
+                        return {
+                            item_id: item.course.id,
+                            item_name: item.course.name,
+                            price: item.course.price,
+                            quantity: 1
+                        }
+                    })
+                    gtag("event", "purchase", {
+                        transaction_id: createOrder.data.uuid,
+                        value: createOrder.data.price,
+                        currency: "VND",
+                        items: itemsForGtag
+                    });
                     toastr.success(`Tạo đơn hàng ${email} thành công!`)
                     window.location.href = `/order/${createOrder.data.uuid}`
                 } catch (error) {

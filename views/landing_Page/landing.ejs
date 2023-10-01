@@ -736,8 +736,23 @@
                 email, items
             })
             console.log(createOrder.data)
-            fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.price });
-            window.location.href = `${createOrder.data.url}`
+            const itemsForGtag = createOrder.data.order.orderItems.map(item => {
+                return {
+                    item_id: item.course.id,
+                    item_name: item.course.name,
+                    price: item.course.price,
+                    quantity: 1
+                }
+            })
+            console.log(itemsForGtag)
+            gtag("event", "purchase", {
+                transaction_id: createOrder.data.order.uuid,
+                value: createOrder.data.order.price,
+                currency: "VND",
+                items: itemsForGtag
+            });
+            fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.order.price });
+            window.location.href = `/order/${createOrder.data.order.uuid}`
         } catch (error) {
             alert(error)
         }
