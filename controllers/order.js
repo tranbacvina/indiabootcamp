@@ -101,7 +101,7 @@ const createVN = async (req, res) => {
         const priceindia = orderItem.reduce((acc, obj) => acc + obj.priceindia || 9900, 0)
         const priceus = orderItem.reduce((acc, obj) => acc + obj.priceus || 300, 0)
 
-        const order = await db.order.create(
+        let neworder = await db.order.create(
             {
                 email,
                 price,
@@ -126,8 +126,8 @@ const createVN = async (req, res) => {
         const fbc = req.cookies._fbc
         const fbp = req.cookies._fbp
         const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent, fbc, fbp)
-
-        res.send(order)
+        neworder = await order.orderUUID(neworder.uuid)
+        res.send(neworder)
     } catch (error) {
         res.send(error)
     }
@@ -151,7 +151,7 @@ const createvnapi = async (req, res) => {
         const priceindia = orderItem.reduce((acc, obj) => acc + obj.priceindia || 9900, 0)
         const priceus = orderItem.reduce((acc, obj) => acc + obj.priceus || 300, 0)
 
-        const order = await db.order.create(
+        let neworder = await db.order.create(
             {
                 email,
                 price,
@@ -166,7 +166,7 @@ const createvnapi = async (req, res) => {
                 include: {
                     model: db.orderItem,
                     include: {
-                        model: db.course
+                        model: db.course,
                     }
                 },
             }
@@ -177,8 +177,8 @@ const createvnapi = async (req, res) => {
         const fbc = req.cookies._fbc
         const fbp = req.cookies._fbp
         const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent, fbc, fbp)
-
-        res.status(200).json({ order, url: `/order/${order.uuid}` });
+        neworder = await order.orderUUID(neworder.uuid)
+        res.status(200).json({ order: neworder });
     } catch (error) {
         console.error(error);
     }
@@ -196,16 +196,9 @@ const getuuid = async (req, res) => {
         "template": "qr_only"
     })
     // res.send(qrcode.data)
-    const itemsForGtag = orderid.orderItems.map(item => {
-        return {
-            item_id: item.course.id,
-            item_name: item.course.name,
-            price: item.course.price,
-            quantity: 1
-        }
-    })
+
     if (orderid) {
-        res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data, itemsForGtag })
+        res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data, })
     } else {
         res.render('layout/404')
     }
