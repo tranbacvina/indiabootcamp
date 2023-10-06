@@ -20,7 +20,6 @@ Routers.post("/createvnapi", [
 ])
 Routers.get('/success', order.stripeSuccess);
 Routers.post("/cstripe", order.cstripe)
-
 Routers.get("/:uuid", order.getuuid)
 Routers.get("/", order.tracking)
 
