@@ -187,23 +187,25 @@ const createvnapi = async (req, res) => {
 const getuuid = async (req, res) => {
     const { uuid } = req.params;
     const orderid = await order.orderUUID(uuid)
-    const qrcode = await axios.post('https://api.vietqr.io/v2/generate', {
-        "accountNo": "0141000836982",
-        "accountName": "TRAN DUY BAC",
-        "acqId": "970436",
-        "addInfo": `bootcamp ${orderid.id}`,
-        "amount": `${orderid.price}`,
-        "template": "qr_only"
-    })
+
     // res.send(qrcode.data)
 
     if (orderid) {
+        const qrcode = await axios.post('https://api.vietqr.io/v2/generate', {
+            "accountNo": "0141000836982",
+            "accountName": "TRAN DUY BAC",
+            "acqId": "970436",
+            "addInfo": `bootcamp ${orderid.id}`,
+            "amount": `${orderid.price}`,
+            "template": "qr_only"
+        })
         res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data, })
     } else {
         res.render('layout/404')
     }
-
 }
+
+
 const oneOrder = async (req, res) => {
     const { id } = req.params
     try {

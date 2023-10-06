@@ -30,48 +30,33 @@
 // })()
 
 const axios = require('axios')
-const crypto = require('crypto');
-function sha256(input) {
-    const hash = crypto.createHash('sha256');
-    hash.update(input);
-    return hash.digest('hex');
-}
 
-const access_token = 'EAASsyRHsm0sBOZCFGGCRZBsMUrZCRA9nSge7eNjyGEZAWPEvZCUztWWA4uWWfERy4lf7Bg57GyhZB3pOGEYHhR6pm5cpEYkr33fZClb5yEH87FC6E8LNG7mCM8N2KSUBy8S6pDo1ZAkXVbSJXJ52EhTxZBTlBRhMpglsUDhZCK984IHF6oUkRflfIKeq1xLqxzxkQGXgZDZD';
-const pixel_id = '704457201605603';
+const getAllTopics = async (id) => {
+    const req = await axios.get(`https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=16&item_count=12&label_id=${id}&source_page=topic_page&locale=vi_VN&currency=vnd&navigation_locale=vi_VN&skip_price=true`)
 
-const newEvenSendToFacebook = async (email, price, ipClien, client_user_agent) => {
-    try {
-        let current_timestamp = Math.floor(new Date() / 1000);
-        const response = await axios.post(
-            `https://graph.facebook.com/v13.0/${pixel_id}/events?access_token=${access_token}`,
-            {
-                data: [
-                    {
-                        "event_name": "Purchase",
-                        "event_time": current_timestamp,
-                        "action_source": "website",
-                        "user_data": {
-                            "em": sha256(email),
-                            "client_ip_address": ipClien,
-                            "client_user_agent": client_user_agent,
-                        },
+    const itemsTopics = req.data.units[4].items.map(item => { return { name: item.display_name, id: item.id } })
+    console.log(itemsTopics)
+    for (let item of itemsTopics) {
+        console.log(item.name)
+        try {
+            const req = await axios.get(`https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=16&item_count=12&label_id=${item.id}&source_page=topic_page&locale=vi_VN&currency=vnd&navigation_locale=vi_VN&skip_price=true`)
 
-                        "custom_data": {
-                            "currency": "VND",
-                            "value": price
-                        }
-                    }
-                ],
-            }
-        );
-        console.log(response.data)
-    } catch (error) {
-        console.log(error.response.data)
+            const itemsTopics = req.data.units.filter(item => item.item_type == 'course_label')[0].items.map(item => { return { name: item.display_name, id: item.id } })
+
+            console.log(itemsTopics)
+        } catch (error) {
+            console.log(error)
+            continue
+        }
+
     }
-
-
 }
 
+const allCourseInTopic = async (id) => {
+    const req = await axios.get(`https://www.udemy.com/api-2.0/discovery-units/all_courses/?page_size=36&subs_coll_id=&subcategory=&instructional_level=&lang=&price=&duration=&closed_captions=&subs_filter_type=&label_id=${id}&source_page=topic_page&locale=vi_VN&currency=vnd&navigation_locale=vi_VN&skip_price=true&sos=pl&fl=lbl`)
+    const items = req.data.unit.items.map(item => { return item.url })
+    const course_labels = req.data.unit.course_labels.map(item => { return item.display_name })
 
-newEvenSendToFacebook('trabacvina@gmail.com', 50000, '192.168.0.3', "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36")
+    console.log(course_labels)
+}
+getAllTopics(5306)

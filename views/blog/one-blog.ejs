@@ -69,11 +69,11 @@
     <!-- preloader end -->
 
 
-    <main class="main-content bg-light-3 ">
+    <main class="main-content  ">
+
         <%- include('../layout/header'); %>
+
             <div class="content-wrapper  js-content-wrapper">
-
-
                 <section data-anim="fade" class="breadcrumbs is-in-view">
                     <div class="container">
                         <div class="row">
@@ -99,6 +99,8 @@
                         </div>
                     </div>
                 </section>
+
+
                 <section class="page-header -type-1">
                     <div class="container">
                         <div class="page-header__content">
@@ -115,7 +117,9 @@
                                         </h1>
 
 
-                                        <!-- <p class="page-header__text">August 10, 2022</p> -->
+                                        <p class="page-header__text">
+                                            <%= blog.updatedAt.toLocaleString() %>
+                                        </p>
 
                                     </div>
                                 </div>
@@ -123,6 +127,7 @@
                         </div>
                     </div>
                 </section>
+
                 <section class="layout-pt-md layout-pb-lg">
                     <div class="container">
                         <div class="blogSection">
@@ -131,20 +136,17 @@
                                     <div class="col-xl-8 col-lg-9 col-md-11">
                                         <div class="blogCard__content">
                                             <%- blog.content %>
-
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </section>
-                <%- include('../layout/footer'); %>
-
 
             </div>
-
     </main>
     <%- include('../layout/footerjs'); %>
 

@@ -76,161 +76,132 @@
                             <div class="dashboard__content bg-light-4">
                                 <div class="row pb-50 mb-10">
                                     <div class="col-auto">
-
-                                        <h1 class="text-30 lh-12 fw-700">Tạo mới bài viết
+                                        <h1 class="text-30 lh-12 fw-700">
+                                            Tạo mới bài viết
                                         </h1>
                                     </div>
-
                                 </div>
-                            </div>
+                                <div class="row y-gap-60">
+                                    <div class="col-12">
+                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
+                                            </div>
+
+                                            <div class="py-30 px-30">
+                                                <form class="contact-form row y-gap-30" action="/admin/blogs"
+                                                    method="POST" enctype="multipart/form-data">
+
+                                                    <div class="col-12">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
+
+                                                        <input type="text" value="" name="title" id="title">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug*</label>
+
+                                                        <input type="text" value="" name="slug" id="slug">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh
+                                                            mục*</label>
+
+                                                        <select name="categoryId" id="categoryId" class=" form-select">
+                                                            <% for (let category of categories) { %>
+                                                                <option value="<%= category.id %>">
+                                                                    <%= category.name %>
+                                                                </option>
+                                                                <% } %>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
+                                                            ngắn*</label>
+
+                                                        <textarea rows="3" name="description" value="description"
+                                                            id="description"></textarea>
+                                                    </div>
 
 
-                            <div class="row y-gap-60">
-                                <div class="col-12">
-                                    <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
-                                        <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                            <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
-                                        </div>
+                                                    <div class="col-12">
 
-                                        <div class="py-30 px-30">
-                                            <form class="contact-form row y-gap-30" action="/admin/blogs" method="POST"
-                                                enctype="multipart/form-data">
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội
+                                                            dung
+                                                            chính*</label>
+                                                        <textarea name="content" id="editor" rows="35">
 
-                                                <div class="col-12">
+                                                                                                                            </textarea>
 
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="d-flex lg:flex-column">
+                                                            <div class="relative shrink-0">
+                                                                <img class="w-1\/4" width="150" height="100" src=""
+                                                                    alt="image">
 
-                                                    <input type="text" value="" name="title" id="title">
-                                                </div>
-                                                <div class="col-12">
-
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug*</label>
-
-                                                    <input type="text" value="" name="slug" id="slug">
-                                                </div>
-                                                <div class="col-12">
-
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh
-                                                        mục*</label>
-
-                                                    <select name="categoryId" id="categoryId" class=" form-select">
-                                                        <% for (let category of categories) { %>
-                                                            <option value="<%= category.id %>">
-                                                                <%= category.name %>
-                                                            </option>
-                                                            <% } %>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-12">
-
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
-                                                        ngắn*</label>
-
-                                                    <textarea rows="7" name="description" value="description"
-                                                        id="description"></textarea>
-                                                </div>
-
-
-                                                <div class="col-12">
-
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
-                                                        chính*</label>
-                                                    <textarea name="content" id="editor">
-
-                                                        </textarea>
-
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="d-flex lg:flex-column">
-                                                        <div class="relative shrink-0">
-                                                            <img class="w-1\/4" width="150" height="100" src=""
-                                                                alt="image">
-
-                                                            <div
-                                                                class="absolute-full-center d-flex justify-end py-20 px-20">
-                                                                <a href="#"
-                                                                    class="d-flex justify-center items-center bg-white size-40 rounded-8 shadow-1">
-                                                                    <i class="icon-bin text-16"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="w-1/1 ml-30 lg:ml-0 lg:mt-20">
-
-                                                            <div class="form-upload col-12">
-                                                                <label
-                                                                    class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình
-                                                                    đại diện*</label>
-                                                                <div class="form-upload__wrap">
-                                                                    <input type="file" name="hinhdaidien"
-                                                                        class="button -dark-3 text-white" id="thumbnail"
-                                                                        placeholder="Cover-1.png">
-
+                                                                <div
+                                                                    class="absolute-full-center d-flex justify-end py-20 px-20">
+                                                                    <a href="#"
+                                                                        class="d-flex justify-center items-center bg-white size-40 rounded-8 shadow-1">
+                                                                        <i class="icon-bin text-16"></i>
+                                                                    </a>
                                                                 </div>
                                                             </div>
+                                                            <div class="w-1/1 ml-30 lg:ml-0 lg:mt-20">
 
-                                                            <p class="mt-10">Upload your course image here. It must
-                                                                meet our course image
-                                                                quality standards to be accepted. Important
-                                                                guidelines: 750x440 pixels;
-                                                                .jpg, .jpeg,. gif, or .png. no text on the image.
-                                                            </p>
+                                                                <div class="form-upload col-12">
+                                                                    <label
+                                                                        class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình
+                                                                        đại diện*</label>
+                                                                    <div class="form-upload__wrap">
+                                                                        <input type="file" name="hinhdaidien"
+                                                                            class="button -dark-3 text-white"
+                                                                            id="thumbnail" placeholder="Cover-1.png">
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <p class="mt-10">Upload your course image here. It
+                                                                    must
+                                                                    meet our course image
+                                                                    quality standards to be accepted. Important
+                                                                    guidelines: 750x440 pixels;
+                                                                    .jpg, .jpeg,. gif, or .png. no text on the
+                                                                    image.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row y-gap-20 justify-between pt-15">
+
+                                                        <div class="col-auto">
+                                                            <button type="submit"
+                                                                class="button -md -purple-1 text-white"
+                                                                id="updateButton">Tạo Blog</button>
                                                         </div>
                                                     </div>
 
-                                                </div>
-                                                <div class="row y-gap-20 justify-between pt-15">
-
-                                                    <div class="col-auto">
-                                                        <button type="submit" class="button -md -purple-1 text-white"
-                                                            id="updateButton">Cập
-                                                            nhật</button>
-                                                    </div>
-                                                </div>
-
-                                            </form>
+                                                </form>
 
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
 
                         </div>
 
-                        <footer class="footer -dashboard py-30">
-                            <div class="row items-center justify-between">
-                                <div class="col-auto">
-                                    <div class="text-13 lh-1">© 2022 Educrat. All Right Reserved.</div>
-                                </div>
 
-                                <div class="col-auto">
-                                    <div class="d-flex items-center">
-                                        <div class="d-flex items-center flex-wrap x-gap-20">
-                                            <div>
-                                                <a href="help-center.html" class="text-13 lh-1">Help</a>
-                                            </div>
-                                            <div>
-                                                <a href="terms.html" class="text-13 lh-1">Privacy Policy</a>
-                                            </div>
-                                            <div>
-                                                <a href="#" class="text-13 lh-1">Cookie Notice</a>
-                                            </div>
-                                            <div>
-                                                <a href="#" class="text-13 lh-1">Security</a>
-                                            </div>
-                                            <div>
-                                                <a href="terms.html" class="text-13 lh-1">Terms of Use</a>
-                                            </div>
-                                        </div>
-
-                                        <button
-                                            class="button -md -rounded bg-light-4 text-light-1 ml-30">English</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
                 </div>
             </div>
     </div>
