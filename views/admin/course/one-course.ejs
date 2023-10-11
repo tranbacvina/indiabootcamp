@@ -148,18 +148,32 @@
                                                     </div>
                                                     <div class="col-12">
 
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh mục chính</label>
+
+                                                       
+                                                    </div>
+                                                    <div class="col-12">
+
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh
                                                             mục*</label>
 
-                                                        <select name="topicId" id="topicId" class=" form-select">
-                                                            <option value="null">Chọn</option>
+                                                        
                                                             <% for (let topic of topics) { %>
-                                                                <option value="<%= topic.id %>" <%-
-                                                                    topic.id===course.topicId ? 'selected' : '' %> >
-                                                                    <%= topic.name %>
-                                                                </option>
+                                                               
+                                                                <div class="d-flex items-center">
+                                                                    <div class="form-checkbox">
+                                                                      <input type="checkbox" name="topicId" value="<%= topic.id %>"
+                                                                      <% if (course.Topics.some(selected => selected.id === topic.id)) { %>
+                                                                        checked
+                                                                    <% } %>
+                                                                      >
+                                                                      <div class="form-checkbox__mark">
+                                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                                      </div>
+                                                                    </div>
+                                                                    <div class="text-14 lh-12 text-dark-1 ml-15"><%= topic.name %></div>
+                                                                  </div>
                                                                 <% } %>
-                                                        </select>
                                                     </div>
 
                                                     <div class="col-12">

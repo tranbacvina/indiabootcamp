@@ -248,15 +248,16 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
 const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image) => {
     const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
     const converJsonwhatrequirements = JSON.parse(requirements)
-
+    const course = await db.course.findOne({where:{id}})
     const updateCourse = await db.course.update({
-        id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image
+        id, name, url, slug, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,
     }, {
         where: {
             id
         }, include: { model: db.Topic }
 
     })
+    await course.setTopics(topicId)
     return updateCourse
 }
 

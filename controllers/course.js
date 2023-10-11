@@ -4,7 +4,7 @@ const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDat
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
-
+const db = require("../models")
 
 const check = async (req, res) => {
     const errors = validationResult(req);
@@ -93,9 +93,9 @@ const coursedownload = async (req, res) => {
 const all = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
+//    const course= await db.course.findAndCountAll({include: { model: db.Topic }})
     const topics = await topic.findAll()
 
-    // res.send(course)
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
 
@@ -125,7 +125,6 @@ const allCourseTopic = async (req, res) => {
 
     const course = await findManyCourseTopic(text, limit, req.skip, slug)
 
-    // res.send(course)
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
 
@@ -222,7 +221,7 @@ const updateCourse = async (req, res) => {
         name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image
     } = req.body
     console.log(name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image)
-    const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image)
+    const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId,primary_topic_id, whatyouwilllearn, requirements, description, description_log, image)
     res.redirect(`/admin/course/${id}`)
 }
 module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse }

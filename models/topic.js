@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.course, { foreignKey: "topicId" })
+      this.belongsToMany(models.course, { through: models.course_topic, foreignKey: "topic_id" } );
+
     }
   }
   Topic.init({
