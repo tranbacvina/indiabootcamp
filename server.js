@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3008;
+const port = 3010;
 const cookieParser = require('cookie-parser')
 const Routers = require("./routers");
 const { sequelize } = require("./models");
