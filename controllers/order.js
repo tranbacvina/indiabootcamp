@@ -46,26 +46,26 @@ const createindia = async (req, res) => {
                 },
             }
         );
-        const line_items = orderItem.map((item) => {
-            return {
-                quantity: 1,
-                price_data:
-                {
-                    currency: "USD",
-                    unit_amount: item.priceus,
-                    product_data: {
-                        name: item.name,
-                        images: [item.image],
-                    },
+        // const line_items = orderItem.map((item) => {
+        //     return {
+        //         quantity: 1,
+        //         price_data:
+        //         {
+        //             currency: "USD",
+        //             unit_amount: item.priceus,
+        //             product_data: {
+        //                 name: item.name,
+        //                 images: [item.image],
+        //             },
 
-                },
+        //         },
 
-            }
+        //     }
 
-        })
-        const urlStripeCheckOut = await stripe.createCheckOutSession(line_items, order.uuid, order.id, email)
+        // })
+        // const urlStripeCheckOut = await stripe.createCheckOutSession(line_items, order.uuid, order.id, email)
 
-        res.status(200).json({ order, urlStripeCheckOut });
+        res.send(order);
     } catch (error) {
         console.error(error);
     }
@@ -146,8 +146,8 @@ const getorders = async (req, res) => {
 
 const cstripe = async (req, res) => {
     try {
-        const uuid = req.body.uuid
-        const orderItems = await order.findOne(uuid)
+        const uuid = req.params.uuid
+        const orderItems = await order.orderUUID(uuid)
         const line_items = orderItems.orderItems.map((item) => {
             return {
                 quantity: 1,
@@ -181,4 +181,9 @@ const stripeSuccess = async (req, res) => {
     const orderdata = await order.findOne(orderid)
     res.render('order/order_success', { order: orderdata });
 }
-module.exports = { createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess }
+const coinBaseSuccess = async (req, res) => {
+    const orderid = req.params.uuid
+    const orderdata = await order.findOne(orderid)
+    res.render('order/order_success', { order: orderdata });
+}
+module.exports = { coinBaseSuccess,createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess }

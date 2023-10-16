@@ -1784,7 +1784,13 @@ button:focus {
   background-color: var(--color-purple-1);
   border: 2px solid var(--color-purple-1);
 }
-
+.button.-coinbase-1 {
+  background-color: #1652f0;
+  border: 1px solid #1652f0;
+  color: #fff;
+}.button.-coinbase-1:hover {
+  background: rgb(1, 76, 236);
+}
 .button.-purple-1:hover {
   background-color: transparent !important;
   color: var(--color-purple-1) !important;

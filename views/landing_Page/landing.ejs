@@ -722,7 +722,7 @@
                 email, items
             })
             console.log(createOrder.data)
-            window.location.href = `${createOrder.data.urlStripeCheckOut}`
+            window.location.href = `/order/${createOrder.data.uuid}`
         } catch (error) {
             alert(error)
         }

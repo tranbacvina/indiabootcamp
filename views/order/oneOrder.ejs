@@ -183,16 +183,26 @@
                                 </div>
                             </div>
                             <%if ( order.status=='Chua thanh toan' ) {%>
-                                <div class="col-12 shopCompleted-footer ">
-                                    <form method="POST" action="/order/cstripe">
-                                        <input type="hidden" id="custId" name="uuid" value="<%=order.uuid%>">
-                                        <button type="submit" class="button -md -green-1 text-dark-1 fw-500 w-1/1">Pay
-                                            <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
-                                                style: 'currency' , currency: 'USD' });%>
-                                        </button>
-                                    </form>
-
+                                <div class="row">
+                                    <div class="col-6 shopCompleted-footer ">
+                                        <form method="POST" action="/order/cstripe/<%=order.uuid%>">
+                                            <button type="submit" class="button -md -green-1 text-dark-1 fw-700 w-1/1">Pay with Visa, Mastercard
+                                                <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
+                                                    style: 'currency' , currency: 'USD' });%>
+                                            </button>
+                                        </form>
+    
+                                    </div> <div class="col-6 shopCompleted-footer ">
+                                        <form method="POST" action="/order/cscoinbase/<%=order.uuid%>">
+                                            <button type="submit" class="button -md -coinbase-1 fw-700 w-1/1">Pay with Crypto
+                                                <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
+                                                    style: 'currency' , currency: 'USD' });%>
+                                            </button>
+                                        </form>
+    
+                                    </div>
                                 </div>
+                                
                                 <%} %>
                         </div>
                     </div>

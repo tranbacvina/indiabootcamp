@@ -9,9 +9,10 @@ const cors = require("cors");
 // const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
-
+const coinbase = require("./controllers/coinbase")
 
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
+app.post("/webhookcoinbase", coinbase.webhookCoinbase);
 
 
 app.use(paginate.middleware(10, 20));
