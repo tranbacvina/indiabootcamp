@@ -11,6 +11,7 @@ Routers.get('/cawncoursechuagui', course.cawnCourseChuaGui)
 Routers.get('/cawnnamecoursechuagui', course.cawnNameCourseChuaGui)
 Routers.get('/khoahoccantai', course.coursedownload)
 Routers.post('/sendEmailCourse', course.sendEmailCourse)
+Routers.get("/delete/:id",course.deleteCourseColtroler)
 
 
 Routers.get('/:id', course.one)
