@@ -115,15 +115,15 @@
                                     <div class="breadcrumbs__item ">
                                         <a href="/">Trang chủ</a>
                                     </div>
+                                    
+                                    <% for (let item of course.Topics) {%>
                                     <div class="breadcrumbs__item ">
-                                        <a href="/topic/<%=course.Topic.slug%>">
-                                            <%=course.Topic.name%>
-                                        </a>
-                                    </div>
-                                    <div class="breadcrumbs__item ">
-                                        <%=course.name%>
-                                    </div>
+                                        <a href="/topic/<%=item.slug%>">
 
+                                        <%=item.name%>
+                                            </a>
+                                    </div>
+                                    <%}%>
 
                                 </div>
                             </div>

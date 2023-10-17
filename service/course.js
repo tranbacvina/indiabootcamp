@@ -40,7 +40,7 @@ const createNewCourse = async (name, url, description, image, price, is_practice
             price,
             is_practice_test_course,
             description_log, whatyouwilllearn, requirements,
-            topicId: topicId || 9
+            
         },
         {
             include: {
@@ -49,6 +49,7 @@ const createNewCourse = async (name, url, description, image, price, is_practice
         }
 
     );
+    await course.setTopics(topicId || 9)
     return course
 }
 const findManyCourse_ChuaGui = async (id) => {
@@ -230,7 +231,7 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
     const converJsonwhatrequirements = JSON.parse(requirements)
 
     const newCourse = await db.course.create({
-        name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,
+        name, url, slug, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,
         driveCourses: [
             {
                 name: drivecoursename,
@@ -242,22 +243,33 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
     }, {
         include: [{ model: db.Topic }, { model: db.driveCourse }]
     })
+    await newCourse.setTopics(topicId)
     return newCourse
 }
 
 const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image) => {
     const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
     const converJsonwhatrequirements = JSON.parse(requirements)
-
+    const course = await db.course.findOne({where:{id}})
     const updateCourse = await db.course.update({
-        id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image
+        id, name, url, slug, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,
     }, {
         where: {
             id
         }, include: { model: db.Topic }
 
     })
+    await course.setTopics(topicId)
     return updateCourse
+}
+
+const deleteCourse = async(id) => {
+    const course = await db.course.findOne({where: {id}})
+    await course.setTopics([])
+    await course.setDriveCourses([])
+    await db.course.destroy({
+        where:{id}
+    })
 }
 
 const handleProviderStructure = (url) => {
@@ -325,5 +337,5 @@ const createStrucDataOneCourse = (course) => {
     return structuredDataCourse
 }
 module.exports = {
-    createStrucDataOneCourse, createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
+    createStrucDataOneCourse, createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
 };

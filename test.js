@@ -1,62 +1,28 @@
-// const { gotScraping } = require('got-scraping');
-// const axios = require('axios');
-// const cheerio = require("cheerio");
+const cawn_data = require("./service/cawn_data_test")
 
-// (async () => {
-//     const response = await gotScraping({
-//         url: 'https://gitiho.com/khoa-hoc/ebook-tuyet-dinh-excel-khai-pha-10-ky-thuat-ung-dung-excel-ma-dai-hoc-khong-day-ban',
-
-//     });
-//     // const response = await axios.get('https://www.udemy.com/course/khoa-hoc-python-ui-can-ban-trong-maya/')
-//     // console.log(response.body)
-
-
-//     let $ = cheerio.load(response.body);
-//     // const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
-//     // const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
-//     // console.log(requirements)
-
-//     // console.log(whatyouwilllearn)
-//     const name = $("h1").text();
-
-//     const description = $("meta[name='description']").attr("content")
-//     const image = $("meta[property='og:image']").attr("content")
-
-//     const price = 50000
-//     const whatyouwilllearn = $('.pixcel-content').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
-//     const description_log = $('.cou-description').html()
-
-//     console.log(description_log)
-// })()
-
-const axios = require('axios')
-
-const getAllTopics = async (id) => {
-    const req = await axios.get(`https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=16&item_count=12&label_id=${id}&source_page=topic_page&locale=vi_VN&currency=vnd&navigation_locale=vi_VN&skip_price=true`)
-
-    const itemsTopics = req.data.units[4].items.map(item => { return { name: item.display_name, id: item.id } })
-    console.log(itemsTopics)
-    for (let item of itemsTopics) {
-        console.log(item.name)
-        try {
-            const req = await axios.get(`https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=16&item_count=12&label_id=${item.id}&source_page=topic_page&locale=vi_VN&currency=vnd&navigation_locale=vi_VN&skip_price=true`)
-
-            const itemsTopics = req.data.units.filter(item => item.item_type == 'course_label')[0].items.map(item => { return { name: item.display_name, id: item.id } })
-
-            console.log(itemsTopics)
-        } catch (error) {
-            console.log(error)
-            continue
+const main = async() => {
+    const links =[{'uri': 'https://unica.vn/excel-ung-dung-trong-phan-tich-tai-chinh', 'topicId': [10]}, {'uri': 'https://unica.vn/lam-chu-bo-cong-cu-van-phong-google-workspace-cho-cong-viec-va-hoc-tap', 'topicId': [10]}, {'uri': 'https://unica.vn/excel-essentials-for-business', 'topicId': [10]}, {'uri': 'https://unica.vn/vba-excel-toan-tap-tu-co-ban-den-nang-cao', 'topicId': [10]}, {'uri': 'https://unica.vn/excel-thuc-chien-nang-cao', 'topicId': [10]}, {'uri': 'https://unica.vn/python-excel-cho-nguoi-di-lam', 'topicId': [10]}, {'uri': 'https://unica.vn/chinh-phuc-chung-chi-mos-excel-2016', 'topicId': [10]}, {'uri': 'https://unica.vn/mos-word-2016-danh-bay-noi-lo-chung-chi', 'topicId': [10]}, {'uri': 'https://unica.vn/hoc-word-ung-dung-hieu-suat-nhan-ba-chuyen-gia-noi-cong-so', 'topicId': [10]}, {'uri': 'https://unica.vn/tro-thanh-sieu-sao-excel-noi-cong-so', 'topicId': [10]}, {'uri': 'https://unica.vn/chinh-phuc-chung-chi-mos-powerpoint-2016', 'topicId': [10]}, {'uri': 'https://unica.vn/vba-tuyet-chieu-nang-cao-hieu-qua-su-dung-excel-va-pha-vo-gioi-han-ban-than', 'topicId': [10]}, {'uri': 'https://unica.vn/power-query-co-ban-xu-ly-du-lieu-chuyen-sau', 'topicId': [10]}, {'uri': 'https://unica.vn/lam-chu-ky-nang-thiet-ke-slide-nhanh-chong-hieu-qua', 'topicId': [10]}, {'uri': 'https://unica.vn/chinh-phuc-chung-chi-ic3-san-sang-vuon-xa', 'topicId': [10]}, {'uri': 'https://unica.vn/tuyet-chieu-thu-thuat-meo-thong-thao-microsoft-excel', 'topicId': [10]}]
+    const promises = []
+        for (let link of links) {
+            const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
+            const expression = link.uri.match(regex);
+            switch (expression[0]) {
+                case "unica.vn":
+                    promises.push(cawn_data.unica(link))
+                    break;
+                case "udemy.com":
+                    promises.push(cawn_data.udemy(link))
+                    break;
+                case "gitiho.com/khoa-hoc":
+                    promises.push(cawn_data.gitiho(link))
+                    break;
+                default:
+                    promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+    
+            }
         }
-
-    }
+        const result = await Promise.all(promises)
+    
+        console.log(result)
 }
-
-const allCourseInTopic = async (id) => {
-    const req = await axios.get(`https://www.udemy.com/api-2.0/discovery-units/all_courses/?page_size=36&subs_coll_id=&subcategory=&instructional_level=&lang=&price=&duration=&closed_captions=&subs_filter_type=&label_id=${id}&source_page=topic_page&locale=vi_VN&currency=vnd&navigation_locale=vi_VN&skip_price=true&sos=pl&fl=lbl`)
-    const items = req.data.unit.items.map(item => { return item.url })
-    const course_labels = req.data.unit.course_labels.map(item => { return item.display_name })
-
-    console.log(course_labels)
-}
-getAllTopics(5306)
+main()

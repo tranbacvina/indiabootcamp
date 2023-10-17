@@ -1,10 +1,10 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update,deleteCourse } = require("../service/course")
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
-
+const db = require("../models")
 
 const check = async (req, res) => {
     const errors = validationResult(req);
@@ -93,9 +93,9 @@ const coursedownload = async (req, res) => {
 const all = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
+//    const course= await db.course.findAndCountAll({include: { model: db.Topic }})
     const topics = await topic.findAll()
 
-    // res.send(course)
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
 
@@ -125,7 +125,6 @@ const allCourseTopic = async (req, res) => {
 
     const course = await findManyCourseTopic(text, limit, req.skip, slug)
 
-    // res.send(course)
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
 
@@ -211,7 +210,8 @@ const onePublic = async (req, res) => {
 };
 
 const create = async (req, res) => {
-    const { name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId } = req.body
+    const { name, url, slug, price, priceus, priceindia,topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId } = req.body
+   
     const newCourse = await createCourse(name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId)
     res.redirect(`/admin/course/${newCourse.id}`)
 }
@@ -225,4 +225,10 @@ const updateCourse = async (req, res) => {
     const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image)
     res.redirect(`/admin/course/${id}`)
 }
-module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse }
+
+const deleteCourseColtroler = async(req,res)=>{
+    const { id} = req.params
+    await deleteCourse(id)
+    res.redirect('/admin/course')
+}
+module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse ,deleteCourseColtroler}
