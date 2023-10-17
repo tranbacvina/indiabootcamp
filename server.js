@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3008;
+const port = 3010;
 const cookieParser = require('cookie-parser')
 const Routers = require("./routers");
 const { sequelize } = require("./models");
@@ -10,7 +10,22 @@ const cors = require("cors");
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
 const coinbase = require("./controllers/coinbase")
+function rawBody(req, res, next) {
+	req.setEncoding('utf8');
 
+	var data = '';
+
+	req.on('data', function (chunk) {
+		data += chunk;
+	});
+
+	req.on('end', function () {
+		req.rawBody = data;
+
+		next();
+	});
+}
+app.use(rawBody);
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
 app.post("/webhookcoinbase", coinbase.webhookCoinbase);
 
