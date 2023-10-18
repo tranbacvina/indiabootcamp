@@ -232,7 +232,7 @@
                                         </div>
                                         <%for (let item of order.orderItems){ %>
                                             <div class="item p-3">
-                                                <span class=""><a href="<%= item.course.url %>" target="_blank"
+                                                <span class=""><a href="/course/<%= item.course.slug %>" target="_blank"
                                                         rel="<%= item.course.name %>">
                                                         <%= item.course.name %>
                                                     </a></span>
@@ -251,7 +251,7 @@
                                                                     rel="noopener noreferrer">Download</a>
                                                                 <%}%>
                                                                     <%} else {%>
-                                                                        <span>Loading.</span>
+                                                                        <span>Đang tải....</span>
                                                                         <%} %>
 
                                                 </span>
