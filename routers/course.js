@@ -2,7 +2,7 @@ const Routers = require("express").Router();
 const { check } = require('express-validator');
 const course = require("../controllers/course")
 
-// Routers.get("/", course.publicall)
+Routers.get("/", course.publicall)
 Routers.get("/:slug", course.onePublic)
 
 Routers.post("/check", [

@@ -185,7 +185,7 @@ const publicall = async (req, res) => {
     } else {
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
-        res.render('course/course', {
+        res.render('course/allcourse', {
             course: course.rows,
             structuredDataCourse,
             pageCount,
