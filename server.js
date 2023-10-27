@@ -25,9 +25,8 @@ function rawBody(req, res, next) {
 		next();
 	});
 }
-app.use(rawBody);
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
-app.post("/webhookcoinbase", coinbase.webhookCoinbase);
+app.post("/webhookcoinbase",rawBody, coinbase.webhookCoinbase);
 
 
 app.use(paginate.middleware(10, 20));

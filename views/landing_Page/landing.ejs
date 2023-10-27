@@ -68,8 +68,7 @@
                             <div class="col-xl-6 col-lg-11 ">
                                 <div class="masthead__content">
                                     <h1 data-anim-child="slide-up" class="masthead__title is-in-view">
-                                        No Limits to Learning - <span class="text-green-1 ">Udemy for
-                                            Everyone</span>
+                                        Get Paid Course Udemy <span class="text-green-1 ">Only 3$</span>
                                     </h1>
                                     <p data-anim-child="slide-up delay-1" class="masthead__text is-in-view">
                                         Tool to support get Paid Course Udemy, at an affordable price. With only $3, you
@@ -81,8 +80,7 @@
 
                                         <div class="col-12 col-sm-auto">
                                             <a data-barba="" href="https://www.youtube.com/watch?v=OXDe5vz0_6A"
-                                                class="button -md -outline-light-13  ">How to Use This Course
-                                                Download Tool?</a>
+                                                class="button -md -outline-light-13  ">GUIDE</a>
                                         </div>
                                     </div>
                                     <div data-anim-child="slide-up delay-3"
@@ -722,7 +720,22 @@
                 email, items
             })
             console.log(createOrder.data)
-            window.location.href = `/order/${createOrder.data.uuid}`
+            const itemsForGtag = createOrder.data.order.orderItems.map(item => {
+                return {
+                    item_id: item.course.id,
+                    item_name: item.course.name,
+                    price: item.course.price,
+                    quantity: 1
+                }
+            })
+            gtag("event", "purchase", {
+                transaction_id: createOrder.data.order.uuid,
+                value: createOrder.data.order.priceus,
+                currency: "USD",
+                items: itemsForGtag
+            });
+            fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.order.price });
+            window.location.href = `/order/${createOrder.data.order.uuid}`
         } catch (error) {
             alert(error)
         }

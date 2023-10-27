@@ -26,7 +26,7 @@ const createindia = async (req, res) => {
         const priceindia = orderItem.reduce((acc, obj) => acc + obj.priceindia || 9900, 0)
         const priceus = orderItem.reduce((acc, obj) => acc + obj.priceus || 300, 0)
 
-        const order = await db.order.create(
+        const norder = await db.order.create(
             {
                 email,
                 price,
@@ -64,8 +64,10 @@ const createindia = async (req, res) => {
 
         // })
         // const urlStripeCheckOut = await stripe.createCheckOutSession(line_items, order.uuid, order.id, email)
+        const neworder = await order.orderUUID(norder.uuid)
 
-        res.send(order);
+        res.status(200).json({ order: neworder });
+
     } catch (error) {
         console.error(error);
     }

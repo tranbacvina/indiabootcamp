@@ -141,7 +141,28 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <%if ( order.status=='Chua thanh toan' ) {%>
+                                <div class="row">
+                                    <div class="col-6 shopCompleted-footer ">
+                                        <form method="POST" action="/order/cstripe/<%=order.uuid%>">
+                                            <button type="submit" class="button -md -green-1 text-dark-1 fw-700 w-1/1">Pay with Visa, Mastercard
+                                                <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
+                                                    style: 'currency' , currency: 'USD' });%>
+                                            </button>
+                                        </form>
+    
+                                    </div> <div class="col-6 shopCompleted-footer ">
+                                        <form method="POST" action="/order/cscoinbase/<%=order.uuid%>">
+                                            <button type="submit" class="button -md -coinbase-1 fw-700 w-1/1">Pay with Crypto
+                                                <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
+                                                    style: 'currency' , currency: 'USD' });%>
+                                            </button>
+                                        </form>
+    
+                                    </div>
+                                </div>
+                                
+                                <%} %>
                             <div class="shopCompleted-footer bg-light-4 border-light rounded-8">
                                 <div class="shopCompleted-footer__wrap">
                                     <h5 class="title">
@@ -182,28 +203,7 @@
                                         <%} %>
                                 </div>
                             </div>
-                            <%if ( order.status=='Chua thanh toan' ) {%>
-                                <div class="row">
-                                    <div class="col-6 shopCompleted-footer ">
-                                        <form method="POST" action="/order/cstripe/<%=order.uuid%>">
-                                            <button type="submit" class="button -md -green-1 text-dark-1 fw-700 w-1/1">Pay with Visa, Mastercard
-                                                <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
-                                                    style: 'currency' , currency: 'USD' });%>
-                                            </button>
-                                        </form>
-    
-                                    </div> <div class="col-6 shopCompleted-footer ">
-                                        <form method="POST" action="/order/cscoinbase/<%=order.uuid%>">
-                                            <button type="submit" class="button -md -coinbase-1 fw-700 w-1/1">Pay with Crypto
-                                                <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
-                                                    style: 'currency' , currency: 'USD' });%>
-                                            </button>
-                                        </form>
-    
-                                    </div>
-                                </div>
-                                
-                                <%} %>
+                            
                         </div>
                     </div>
                 </div>
