@@ -125,10 +125,6 @@ const allCourseTopic = async (req, res) => {
 
     const course = await findManyCourseTopic(text, limit, req.skip, slug)
 
-    const itemCount = course.count;
-    const pageCount = Math.ceil(course.count / req.query.limit);
-
-
     if (course.length === 0) {
 
         res.render('layout/404')
@@ -185,7 +181,7 @@ const publicall = async (req, res) => {
     } else {
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
-        res.render('course/course', {
+        res.render('course/allcourse', {
             course: course.rows,
             structuredDataCourse,
             pageCount,
