@@ -299,9 +299,18 @@
                                                                                             <%= item.driveDaGui %>
                                                                                         </a>
                                                                                         <%}%>
-
-
-
+                                                                            </td>
+                                                                            <td role="cell">
+                                                                                <select class="form-select"
+                                                                                name="isOneDrive"
+                                                                                aria-label="Default select example">
+                                                                                
+                                                                                <option value="1" <%= item.isOneDrive ? selected="selected" : '' %>>One Drive
+                                                                                </option>
+                                                                                <option value="0" <%= !item.isOneDrive ? selected="selected" : '' %>>Google Drive
+                                                                                </option>
+                                                                            </select>
+                                                                        </td>
                                                                             </td>
                                                                             <td role="cell">
 
