@@ -248,9 +248,9 @@
                                                                     <th colspan="1" role="columnheader">Drive đã gửi
                                                                         khách
                                                                     </th>
+                                                                    <th colspan="1" role="columnheader">Onedrive / GGDrive</th>
                                                                     <th colspan="1" role="columnheader">STATUS</th>
                                                                     <th colspan="1" role="columnheader">AMOUNT</th>
-
                                                                     <th colspan="1" role="columnheader"></th>
                                                                 </tr>
                                                             </thead>
@@ -291,12 +291,19 @@
                                                                                             <%= item.driveDaGui %>
                                                                                         </a>
                                                                                         <%}%>
-
-
-
                                                                             </td>
                                                                             <td role="cell">
-
+                                                                                <select class="form-select"
+                                                                                    name="isOneDrive"
+                                                                                    aria-label="Default select example">
+                                                                                    
+                                                                                    <option value="1" <%= item.isOneDrive ? selected="selected" : '' %>>One Drive
+                                                                                    </option>
+                                                                                    <option value="0" <%= !item.isOneDrive ? selected="selected" : '' %>>Google Drive
+                                                                                    </option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td role="cell">
                                                                                 <select class="form-select"
                                                                                     name="status"
                                                                                     aria-label="Default select example">
@@ -308,8 +315,6 @@
                                                                                     <option value="Chua gui">Chua gui
                                                                                     </option>
                                                                                 </select>
-
-
                                                                             </td>
                                                                             <td role="cell">
                                                                                 <%= item.course.price.toLocaleString('it-IT',

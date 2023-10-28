@@ -65,5 +65,9 @@ const findMany = async (querys, limit, skip) => {
 //         query,
 //     )
 // }
-
+// const setOrderItem = async (id,) => {
+//     const order = await findOne(id)
+//     const oldOrderItemsID = order.orderItems.map(item => item.id)
+//     await order.setOrderItems([... oldOrderItemsID,])
+// }
 module.exports = { orderUUID, findMany, findOne, }
