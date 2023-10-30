@@ -49,7 +49,8 @@ const map = sitemap({
   sitemap: './public/sitemap.xml',
   map: {
     '/topic/lap-trinh': ['get'],
-    '/topic/hidden': ['get'],
+    '/topic/duocmmo': ['get'],
+    '/course': ['get'],
     '/topic/cyberlearn': ['get'],
     '/topic/thiet-ke': ['get'],
     '/category/huong-dan': ['get'],
