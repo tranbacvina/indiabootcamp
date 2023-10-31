@@ -83,7 +83,9 @@
                                         </h1>
                                         <div class="mt-10">Cập nhật lần cuối <%= course.updatedAt.toLocaleString()%>.
                                         </div>
-
+                                        <div class="mt-10">
+                                            <a href="/course/<%=course.slug%>" class="text-purple-4 " target="_blank">Xem trên trang chủ</a>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -145,6 +147,14 @@
 
                                                         <input type="text" value="<%=course.priceindia%>"
                                                             name="priceindia" id="priceindia">
+                                                    </div>
+                                                    <div class="col-12">
+
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                                                            Link Share Free*</label>
+
+                                                        <input type="text" value="<%=course.sharelinkfree%>"
+                                                            name="sharelinkfree" id="sharelinkfree">
                                                     </div>
                                                     
                                                     <div class="col-12">

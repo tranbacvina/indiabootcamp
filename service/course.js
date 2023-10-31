@@ -27,7 +27,7 @@ const oneCourseSlug = async (slug) => {
         where: {
             slug
         },
-        include: { model: db.Topic }
+        include: { model: db.Topic},
     });
 }
 const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, topicId) => {
@@ -142,7 +142,14 @@ const promiseCourse = async (drive) => {
             orderItem.driveDaGui = shareOneDrive.value[0].link.webUrl
             orderItem.isOneDrive = true
             await orderItem.save()
-
+            await db.course.update({
+                sharelinkfree:shareOneDrive.value[0].link.webUrl
+            },{
+                where:{
+                    id: orderItem.course.id
+                },
+                
+            })
 
             const [driveCourse, created] = await db.driveCourse.findOrCreate({
                 where: {
@@ -191,7 +198,14 @@ const promiseCourse = async (drive) => {
             orderItem.status = 'Da gui'
             orderItem.driveDaGui = id
             await orderItem.save()
-
+            await db.course.update({
+                sharelinkfree:`https://drive.google.com/drive/folders/${id}?usp=drive_link`
+            },{
+                where:{
+                    id: orderItem.course.id
+                },
+                
+            })
             const [driveCourse, created] = await db.driveCourse.findOrCreate({
                 where: {
                     idCourse: orderItem.course.id,
@@ -247,12 +261,12 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
     return newCourse
 }
 
-const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image) => {
+const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image,sharelinkfree) => {
     const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
     const converJsonwhatrequirements = JSON.parse(requirements)
     const course = await db.course.findOne({where:{id}})
     const updateCourse = await db.course.update({
-        id, name, url, slug, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,
+        id, name, url, slug, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,sharelinkfree
     }, {
         where: {
             id
