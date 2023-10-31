@@ -145,6 +145,10 @@
                                         <h1 class="text-30 lh-14 pr-60 lg:pr-0">
                                             <%=course.name%>
                                         </h1>
+                                        <%=locals.user%>
+                                        <%if (locals.user){%>
+                                            <a class="text-green-1" href="/admin/course/<%=course.id%>">Sửa khoá học này</a>
+                                            <%}%>
                                     </div>
 
                                     <p class="col-xl-9 mt-20">
@@ -168,6 +172,7 @@
                                         </div>
 
                                         <div class="courses-single-info__content scroll-bar-1 pt-30 pb-20 px-20">
+                                            <% if (course.price !== 0) { %>
                                             <div class="d-flex justify-between items-center mb-30">
                                                 <div class="text-24 lh-1 text-dark-1 fw-500">
                                                     <%=course.price.toLocaleString('it-IT', {style : 'currency' ,
@@ -189,6 +194,17 @@
                                                     ngay</button>
 
                                             </form>
+                                            <%} else {%>
+                                                <div class="d-flex justify-between items-center mb-30">
+                                                    <div class="text-24 lh-1 text-dark-1 fw-500">
+                                                        Miễn phí
+                                                    </div>
+                                                    <!-- <div class="lh-1 line-through">$76.00</div> -->
+                                                </div>
+                                                <a class="button -md -green-1 text-dark-1 w-1/1"
+                                                href="<%= course.sharelinkfree %>" target="_blank"
+                                                >Nhận ngay!</a>
+                                            <%}%>
                                             <div class="layout-pt-md">
 
                                                 <div class="d-flex justify-between py-8 ">
@@ -214,14 +230,7 @@
                                                     </div>
                                                     <!-- <div>Nhận được khóa học trong vòng 3-5 phút ngay trên website -->
                                                 </div>
-                                                <div class="d-flex justify-between py-8 border-top-light">
-                                                    <div class="d-flex items-center text-dark-1">
-                                                        <div class="icon-bar-chart-2"></div>
-                                                        <div class="ml-10">Sở hữu khóa học trọn đời</div>
-                                                    </div>
-                                                    <!-- <div>Trọn đời</div> -->
-                                                </div>
-                                                <div class="d-flex justify-between py-8 border-top-light">
+                                                                                                <div class="d-flex justify-between py-8 border-top-light">
                                                     <div class="d-flex items-center text-dark-1">
                                                         <div class="icon-badge"></div>
                                                         <div class="ml-10">Thanh toán tự động</div>

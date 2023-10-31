@@ -37,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 300,
       },
       is_practice_test_course: DataTypes.BOOLEAN,
+      sharelinkfree: DataTypes.STRING,
+
     },
     {
       sequelize,

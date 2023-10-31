@@ -79,6 +79,10 @@ const topicSlugGetCourses = async (req, res) => {
     const { text, limit, } = req.query
     const { slug } = req.params
     const topicOne = await topic.findOne(slug)
+    if (!topicOne) {
+        res.render('layout/404')
+        return
+    }
     const course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
     // res.send(course)
     // const itemCount = course.count;

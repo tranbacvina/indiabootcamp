@@ -217,13 +217,18 @@
 
 
                                             <div class="coursesCard-footer">
-
+                                                <%if (item.price == 0) {%>
+                                                    <div class="coursesCard-footer__price">
+                                                        <span>Miễn phí</span>
+                                                    </div>
+                                                <%} else {%>    
                                                 <div class="coursesCard-footer__price">
                                                     <span>
                                                         <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
                                                             currency : 'VND' }); %>
                                                     </span>
                                                 </div>
+                                                <%}%>
                                             </div>
                                         </div>
                                     </a>
