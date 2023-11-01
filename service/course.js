@@ -97,7 +97,7 @@ const findMany = async (text, limit, skip) => {
 }
 
 const findManyCourseTopic = async (text, limit, skip, topic) => {
-    const query = { limit: limit, offset: skip, order: [['id', 'DESC']] }
+    const query = { limit: limit, offset: skip, order: [['updatedAt', 'DESC']] }
     if (text) {
         query['where'] = {
             [Op.or]: [
