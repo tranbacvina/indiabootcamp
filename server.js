@@ -50,11 +50,11 @@ const map = sitemap({
   map: {
     '/topic/lap-trinh': ['get'],
     '/topic/duocmmo': ['get'],
+    '/topic/chia-se-khoa-hoc-mien-phi': ['get'],
     '/course': ['get'],
     '/topic/cyberlearn': ['get'],
     '/topic/thiet-ke': ['get'],
     '/category/huong-dan': ['get'],
-    '/category/share-khoa-hoc': ['get'],
   },
 
 })
