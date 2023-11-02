@@ -5,6 +5,8 @@ Routers.get('/', course.all)
 Routers.get('/topic/:slug', course.allCourseTopic)
 Routers.post('/', course.create)
 Routers.post('/update/:id', course.updateCourse)
+Routers.post('/:id/drives', course.addDriveToCourse)
+Routers.get('/:id/drives/del/:iddrive', course.delDriveToCourse)
 
 Routers.get('/chuagui', course.courseChuaGui)
 Routers.get('/cawncoursechuagui', course.cawnCourseChuaGui)

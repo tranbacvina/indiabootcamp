@@ -277,6 +277,20 @@ const update = async (id, name, url, slug, price, priceus, priceindia, topicId, 
     return updateCourse
 }
 
+const addDriveToCourse = async(id,DriveName,DriveID,isOnedrive,OneDriveParentReferenceId) => {
+    const course = await db.course.findOne({where: {id}})
+    await course.createDriveCourse({name:DriveName,idDrive:DriveID,isOneDrive:isOnedrive,OneDriveParentReferenceId:OneDriveParentReferenceId})
+    return course
+}
+const removeDriveToCourse = async(id, iddrive) => {
+    const course = await db.driveCourse.destroy({
+        where:{
+            id: iddrive
+        }
+    })
+    return course
+}
+
 const deleteCourse = async(id) => {
     const course = await db.course.findOne({where: {id}})
     await course.setTopics([])
@@ -351,5 +365,5 @@ const createStrucDataOneCourse = (course) => {
     return structuredDataCourse
 }
 module.exports = {
-    createStrucDataOneCourse, createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse
+    createStrucDataOneCourse, createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse,addDriveToCourse,removeDriveToCourse
 };

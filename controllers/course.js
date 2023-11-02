@@ -1,6 +1,7 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
 const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update,deleteCourse } = require("../service/course")
+const serverCourse = require('../service/course')
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
@@ -220,10 +221,23 @@ const updateCourse = async (req, res) => {
     const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image,sharelinkfree)
     res.redirect(`/admin/course/${id}`)
 }
+const addDriveToCourse = async (req, res) => {
+    const { id } = req.params
+    const {
+        DriveName,DriveID,isOnedrive,OneDriveParentReferenceId} = req.body
+    await serverCourse.addDriveToCourse(id, DriveName,DriveID,isOnedrive,OneDriveParentReferenceId)
+    res.redirect(`/admin/course/${id}`)
+}
+const delDriveToCourse = async (req, res) => {
+    const { id, iddrive} = req.params
+    // const {idDrive,isOneDrive,OneDriveParentReferenceId} = req.body
+    await serverCourse.removeDriveToCourse(id, iddrive)
 
+    res.redirect(`/admin/course/${id}`)
+}
 const deleteCourseColtroler = async(req,res)=>{
     const { id} = req.params
     await deleteCourse(id)
     res.redirect('/admin/course')
 }
-module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse ,deleteCourseColtroler}
+module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse ,deleteCourseColtroler,addDriveToCourse,delDriveToCourse}

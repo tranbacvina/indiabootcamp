@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/vendors.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/tingle.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Sửa <%=course.name%>
@@ -275,8 +276,9 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
-                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Drive</h2>
+                                            <div class="d-flex items-center justify-between space py-20 px-30 border-bottom-light">
+                                                <h2 class="text-17 lh-1 fw-500">Drive</h2> 
+                                                <a onclick="addDrive()" class="icon icon-edit mr-5">Thêm Drive</a>
                                             </div>
 
                                             <div class="py-30 px-30">
@@ -293,13 +295,12 @@
                                                                             <div class="icon icon-drag mr-10"></div>
                                                                             <span
                                                                                 class="text-16 lh-14 fw-500 text-dark-1">
-                                                                                <%= drivecourse.name %>
+                                                                                <%= drivecourse.id %> <%= drivecourse.name %>
                                                                             </span>
                                                                         </div>
 
                                                                         <div class="d-flex x-gap-10 items-center">
-                                                                            <a href="#" class="icon icon-edit mr-5"></a>
-                                                                            <a href="#" class="icon icon-bin"></a>
+                                                                            
                                                                             <div class="accordion__icon mr-0">
                                                                                 <div
                                                                                     class="d-flex items-center justify-center icon icon-chevron-down">
@@ -338,6 +339,10 @@
                                                                                         %>
 
                                                                                 </div>
+                                                                                <a href="/admin/course/<%=course.id%>/drives/del/<%= drivecourse.id %>" class="icon icon-bin">Xoá</a>
+
+                                                                                
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -356,38 +361,7 @@
 
                             </div>
 
-                            <footer class="footer -dashboard py-30">
-                                <div class="row items-center justify-between">
-                                    <div class="col-auto">
-                                        <div class="text-13 lh-1">© 2022 Educrat. All Right Reserved.</div>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="d-flex items-center">
-                                            <div class="d-flex items-center flex-wrap x-gap-20">
-                                                <div>
-                                                    <a href="help-center.html" class="text-13 lh-1">Help</a>
-                                                </div>
-                                                <div>
-                                                    <a href="terms.html" class="text-13 lh-1">Privacy Policy</a>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="text-13 lh-1">Cookie Notice</a>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="text-13 lh-1">Security</a>
-                                                </div>
-                                                <div>
-                                                    <a href="terms.html" class="text-13 lh-1">Terms of Use</a>
-                                                </div>
-                                            </div>
-
-                                            <button
-                                                class="button -md -rounded bg-light-4 text-light-1 ml-30">English</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </footer>
+                       
                         </div>
                 </div>
             </div>
@@ -426,6 +400,51 @@
                     console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
                     console.error(error);
                 });
+                var modal = new tingle.modal({
+                footer: true,
+                stickyFooter: false,
+                closeMethods: ['overlay', 'button', 'escape'],
+                closeLabel: "Close",
+                cssClass: ['custom-class-1', 'custom-class-2'],
+            });
+                const addDrive = async (e) => {
+                modal.open()
+                
+                const html = `
+                            <form class="contact-form" id="updateTopicForm" method="POST" action="/admin/course/<%=course.id%>/drives">
+                                 <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">DriveName</label>
+                            <div class="">
+                                <input type="text" name="DriveName" id="DriveName" value="">
+                            </div>
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">ID</label>
+                            <div class="">
+                                <input type="text" name="DriveID" id="DriveID" value="">
+                            </div>
+
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Is Onedrive</label>
+                            <div class="">
+                                <select class="form-select"
+                                name="isOneDrive"
+                                aria-label="Default select example">
+                                
+                                <option value="1" >One Drive
+                                </option>
+                                <option value="0" >Google Drive
+                                </option>
+                            </select>
+                            </div>
+
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">OneDriveParentReferenceId</label>
+                            <div class="">
+                            <input type="text" name="OneDriveParentReferenceId" id="OneDriveParentReferenceId" value="">
+                            </div>
+                            <div class="col-auto mt-10">
+                                <button class="button -md -purple-1 text-white" id="addDriveButton" type="submit">Thêm Drive</button>
+                            </div>
+                        </form>
+                `
+                modal.setContent(html)
+            }
         </script>
 </body>
 
