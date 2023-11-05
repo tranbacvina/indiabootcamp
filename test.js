@@ -25,11 +25,11 @@ const main = async() => {
     //     const result = await Promise.all(promises)
     
     //     console.log(result)
-    const course = await db.course.findAll({
+    const course = await db.Blog.destroy(
+        
+        {
         where:{
-            url:{
-                [Op.like]: '%unica.vn%',
-            }
+            categoryId:1
         }
     })
     console.log(course)
