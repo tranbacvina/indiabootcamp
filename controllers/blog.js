@@ -1,4 +1,5 @@
 const serviceBlog = require("../service/blog")
+const catgoriesServices = require("../service/catgories")
 const paginate = require('express-paginate');
 const serviceCategories = require("../service/catgories")
 const db = require("../models");
@@ -204,4 +205,24 @@ const oneBlogPublic = async (req, res) => {
         res.render('layout/404')
     }
 }
-module.exports = { oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove }
+
+const allBlogPublic = async (req, res) => {
+    const { text, limit, } = req.query
+    const blogs = await serviceBlog.findMany(text, limit, req.skip)
+    if (blogs.length === 0) {
+
+        res.render('layout/404')
+    } else {
+        const itemCount = blogs.count;
+        const pageCount = Math.ceil(blogs.count / req.query.limit);
+        res.render('blog/all', {
+            blogs: blogs.rows,
+            pageCount,
+            itemCount,
+            currentPage: req.query.page,
+            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        });
+
+    }
+};
+module.exports = { oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove,allBlogPublic }

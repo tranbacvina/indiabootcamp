@@ -12,13 +12,14 @@ const blogController = require("../controllers/blog")
 const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
 const db = require("../models");
-
+const blog = require('./blog')
 
 Routers.get("/", (req, res) => {
   res.render("landing_Page/landing");
 });
 
 Routers.use("/course", course)
+Routers.use("/blog", blog)
 Routers.use("/topic", topic)
 Routers.use("/order", order)
 Routers.get("/login", auth.getLogin)

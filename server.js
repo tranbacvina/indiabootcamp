@@ -48,10 +48,11 @@ const map = sitemap({
   url: "fullbootcamp.com",
   sitemap: './public/sitemap.xml',
   map: {
+    '/course': ['get'],
+    '/blog': ['get'],
     '/topic/lap-trinh': ['get'],
     '/topic/duocmmo': ['get'],
     '/topic/chia-se-khoa-hoc-mien-phi': ['get'],
-    '/course': ['get'],
     '/topic/cyberlearn': ['get'],
     '/topic/thiet-ke': ['get'],
     '/category/huong-dan': ['get'],
