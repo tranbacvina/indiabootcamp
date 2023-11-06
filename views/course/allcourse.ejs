@@ -7,22 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        Tất cả khoá học Full Bootcamp
+        All Courses FullUdemy
     </title>
     <script type="application/ld+json">
         <%-JSON.stringify(structuredDataCourse)%>
     </script>
-    <link rel="canonical" href="https://fullbootcamp.com/course" />
+    <link rel="canonical" href="https://fulludemy.com/course" />
 
-    <meta name="title" content="Tất cả khoá học Full Bootcamp" />
-    <meta name="description" content="Danh sách khoá học của Full Bootcamp" />
+    <meta name="title" content="All Courses FullUdemy" />
+    <meta name="description" content="Danh sách khoá học của FullUdemy" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fullbootcamp.com/course" />
-    <meta property="og:title" content="Tất cả khoá học Full Bootcamp" />
-    <meta property="og:description" content="Danh sách khoá học của Full Bootcamp" />
-    <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
+    <meta property="og:url" content="https://fulludemy.com/course" />
+    <meta property="og:title" content="All Courses FullUdemy" />
+    <meta property="og:description" content="Danh sách khoá học của FullUdemy" />
+    <meta property="og:image" content="https://fulludemy.com/1662989050474fb-ogimg.png" />
 
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,12 +70,12 @@
                                 <div class="breadcrumbs__content">
 
                                     <div class="breadcrumbs__item ">
-                                        <a href="/">Trang chủ</a>
+                                        <a href="/">Home</a>
                                     </div>
 
                                     <div class="breadcrumbs__item ">
                                         <a href="/course">
-                                           Tất cả khoá học
+                                           All Courses
                                         </a>
                                     </div>
 
@@ -96,7 +96,7 @@
                                     <div data-anim="slide-up delay-1" class="is-in-view">
 
                                         <h1 class="page-header__title">
-                                            Tất cả khoá học
+                                            All Courses
                                         </h1>
 
                                     </div>
@@ -104,7 +104,7 @@
                                     <div data-anim="slide-up delay-2" class="is-in-view">
 
                                         <p class="page-header__text">
-                                            Các khoá học của fullbootcamp
+                                            All courses of FullUdemy
                                         </p>
 
                                     </div>
@@ -121,10 +121,10 @@
                             <div class="accordion__item">
                                 <div class="row y-gap-20 items-center justify-between pb-30">
                                     <div class="col-auto">
-                                        <div class="text-14 lh-12">Hiển thị <span class="text-dark-1 fw-500">
+                                        <div class="text-14 lh-12">Show <span class="text-dark-1 fw-500">
                                                 <%=itemCount%>
                                             </span>
-                                            kết quả
+                                            result
                                         </div>
                                     </div>
 
@@ -219,13 +219,13 @@
                                             <div class="coursesCard-footer">
                                                 <%if (item.price == 0) {%>
                                                     <div class="coursesCard-footer__price">
-                                                        <span>Miễn phí</span>
+                                                        <span>Free</span>
                                                     </div>
                                                 <%} else {%>    
                                                 <div class="coursesCard-footer__price">
                                                     <span>
-                                                        <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                            currency : 'VND' }); %>
+                                                        <%= (item.priceus/100).toLocaleString('en-US', {maximumFractionDigits: 2,style : 'currency' ,
+                                                            currency : 'USD' }); %>
                                                     </span>
                                                 </div>
                                                 <%}%>

@@ -1,19 +1,39 @@
 const express = require("express");
 const app = express();
-const port = 3020;
+const port = 3080;
 const cookieParser = require('cookie-parser')
 const Routers = require("./routers");
 const { sequelize } = require("./models");
 const cors = require("cors");
-var cron = require('node-cron');
-const cronBank = require('./controllers/cron_bank')
+// var cron = require('node-cron');
+// const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
+const coinbase = require("./controllers/coinbase")
+
 var sitemap = require('express-sitemap');
 var useragent = require('express-useragent');
 
 app.use(useragent.express());
+
+function rawBody(req, res, next) {
+	req.setEncoding('utf8');
+
+	var data = '';
+
+	req.on('data', function (chunk) {
+		data += chunk;
+	});
+
+	req.on('end', function () {
+		req.rawBody = data;
+
+		next();
+	});
+}
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
+app.post("/webhookcoinbase",rawBody, coinbase.webhookCoinbase);
+
 
 
 app.use(paginate.middleware(28, 20));
@@ -38,9 +58,9 @@ app.use(
 );
 app.use("/", Routers);
 
-cron.schedule('* * * * *', async () => {
-  await cronBank.cron()
-});
+// cron.schedule('* * * * *', async () => {
+//   await cronBank.cron()
+// });
 
 
 const map = sitemap({

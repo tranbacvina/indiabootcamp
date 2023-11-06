@@ -187,19 +187,8 @@ const createvnapi = async (req, res) => {
 const getuuid = async (req, res) => {
     const { uuid } = req.params;
     const orderid = await order.orderUUID(uuid)
-
-    // res.send(qrcode.data)
-
     if (orderid) {
-        const qrcode = await axios.post('https://api.vietqr.io/v2/generate', {
-            "accountNo": "0141000836982",
-            "accountName": "TRAN DUY BAC",
-            "acqId": "970436",
-            "addInfo": `bootcamp ${orderid.id}`,
-            "amount": `${orderid.price}`,
-            "template": "qr_only"
-        })
-        res.render('order/oneOrder', { order: orderid, qrcode: qrcode.data, })
+        res.render('order/oneOrder', { order: orderid })
     } else {
         res.render('layout/404')
     }
@@ -271,8 +260,8 @@ const getorders = async (req, res) => {
 
 const cstripe = async (req, res) => {
     try {
-        const uuid = req.body.uuid
-        const orderItems = await order.findOne(uuid)
+        const uuid = req.params.uuid
+        const orderItems = await order.orderUUID(uuid)
         const line_items = orderItems.orderItems.map((item) => {
             return {
                 quantity: 1,
@@ -297,7 +286,6 @@ const cstripe = async (req, res) => {
         res.render('layout/505')
     }
 
-
 }
 
 const stripeSuccess = async (req, res) => {
@@ -306,7 +294,11 @@ const stripeSuccess = async (req, res) => {
     const orderdata = await order.findOne(orderid)
     res.render('order/order_success', { order: orderdata });
 }
-
+const coinBaseSuccess = async (req, res) => {
+    const uuid = req.params.uuid
+    const orderdata = await order.orderUUID(uuid)
+    res.render('order/order_success', { order: orderdata });
+}
 const updateOrder = async (req, res) => {
     const { id } = req.params
     const updateOder = req.body
@@ -332,4 +324,4 @@ const needdowwnload = async (req, res) => {
     links = links.map(item => { return item.course.url })
     res.send(links)
 }
-module.exports = { needdowwnload, createvnapi, updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }
+module.exports = {coinBaseSuccess, needdowwnload, createvnapi, updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }

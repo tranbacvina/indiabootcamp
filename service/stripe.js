@@ -1,4 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_LIVE_KEY);
+const DOMAIN = process.env.EN_DOMAIN;
+
 const endpointSecret = process.env.Signingsecret;
 const db = require("../models");
 const botTelegram = require("./telegram_noti");
@@ -9,8 +11,8 @@ const createCheckOutSession = async (line_items, uuid, orderid, email) => {
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: 'payment',
-        success_url: `https://en.fullbootcamp.com/order/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `https://en.fullbootcamp.com/order/${uuid}`,
+        success_url: `${DOMAIN}/order/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${DOMAIN}/order/${uuid}`,
         customer_email: email,
         metadata: {
             orderid
@@ -45,7 +47,7 @@ const webhookStipe = async (request, response) => {
                 },
             });
             if (OrderDetail) {
-                const url = `https://en.fullbootcamp.com/admin/order/${orderid}`;
+                const url = `${DOMAIN}/admin/order/${orderid}`;
                 await botTelegram.sendMessage(
                     `Đơn hàng ${orderid} đã được thanh toán qua Stripe US`,
                     url
