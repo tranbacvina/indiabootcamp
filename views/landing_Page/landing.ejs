@@ -769,7 +769,6 @@
             const email = document.getElementById("email").value
 
             let links = Array.from(uri.match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig))
-            links = links.map(item => { return { uri: item, topicId: null } })
 
             modalCheckCourse.open()
             modalCheckCourse.setContent('Fetching data, please wait...');

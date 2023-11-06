@@ -61,9 +61,9 @@ const cawnUdemy = async (uri) => {
 
 const udemy = async (uri) => {
   console.log(uri)
-  const urlfixshare_udemy = await base_url(uri.uri)
+  const urlfixshare_udemy = await base_url(uri)
   const patch = urlfixshare_udemy.split('/')[4];
-  const fixURL = new URL(uri.uri).origin + '/course/' + patch
+  const fixURL = new URL(uri).origin + '/course/' + patch
   try {
     const course = await oneCourseLink(fixURL)
 
@@ -77,7 +77,7 @@ const udemy = async (uri) => {
 
       const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
 
-      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements, uri.topicId)
+      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements,)
 
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
@@ -124,7 +124,7 @@ const cawnUnica = async (link) => {
 }
 
 const unica = async (uri) => {
-  const urlfixshare_udemy = await base_url(uri.uri)
+  const urlfixshare_udemy = await base_url(uri)
   try {
     const course = await oneCourseLink(urlfixshare_udemy)
 
@@ -144,7 +144,7 @@ const unica = async (uri) => {
         requirements } = await cawnUnica(urlfixshare_udemy)
 
 
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, uri.topicId)
+      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,)
 
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
@@ -192,7 +192,7 @@ const cawnGitio = async (link) => {
 }
 
 const gitiho = async (uri) => {
-  const urlfixshare_udemy = await base_url(uri.uri)
+  const urlfixshare_udemy = await base_url(uri)
   try {
     const course = await oneCourseLink(urlfixshare_udemy)
 
@@ -212,7 +212,7 @@ const gitiho = async (uri) => {
         requirements } = await cawnGitio(urlfixshare_udemy)
 
 
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, uri.topicId)
+      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,)
 
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }

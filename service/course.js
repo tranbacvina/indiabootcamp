@@ -30,7 +30,7 @@ const oneCourseSlug = async (slug) => {
         include: { model: db.Topic},
     });
 }
-const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, topicId) => {
+const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements) => {
     const course = await db.course.create(
         {
             name,
@@ -49,7 +49,6 @@ const createNewCourse = async (name, url, description, image, price, is_practice
         }
 
     );
-    await course.setTopics(topicId || 9)
     return course
 }
 const findManyCourse_ChuaGui = async (id) => {
