@@ -12,6 +12,17 @@
     <script type="application/ld+json">
         <%-JSON.stringify(structuredDataCourse)%>
     </script>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Tất cả khoá học"
+          }]
+        }
+        </script>
     <link rel="canonical" href="https://fullbootcamp.com/course" />
 
     <meta name="title" content="Tất cả khoá học Full Bootcamp" />
