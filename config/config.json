@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "vn_bootcampshop",
-    "password": "fySRBwtyhhAhNpDi",
-    "database": "vn_bootcampshop",
-    "host": "185.111.159.193",
+    "username": "fulludemy",
+    "password": "dBtFZx7DWEPwxWJ3",
+    "database": "fulludemy",
+    "host": "66.94.114.49",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
-    "host": "185.111.159.193",
+    "host": "66.94.114.49",
     "dialect": "mysql"
   },
   "production": {
-    "username": "vn_bootcampshop",
-    "password": "fySRBwtyhhAhNpDi",
-    "database": "vn_bootcampshop",
-    "host": "185.111.159.193",
+    "username": "fulludemy",
+    "password": "dBtFZx7DWEPwxWJ3",
+    "database": "fulludemy",
+    "host": "66.94.114.49",
     "dialect": "mysql"
   }
 }
