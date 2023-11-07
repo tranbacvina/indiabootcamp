@@ -22,7 +22,7 @@ const check = async (req, res) => {
     const promises = []
     for (let link of links) {
         const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
-        const expression = link.uri.match(regex);
+        const expression = link.match(regex);
         switch (expression[0]) {
             case "unica.vn":
                 promises.push(cawn_data.unica(link))
