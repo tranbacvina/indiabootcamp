@@ -80,7 +80,6 @@ const findAllBlogBySlugcatgories = async (req, res) => {
     const { text, limit, } = req.query
     const { slug } = req.params
     const categorie = await catgoriesServices.findOne(slug)
-    console.log(categorie)
     const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
 
     if (blogs.length === 0) {

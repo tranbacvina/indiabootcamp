@@ -9,6 +9,7 @@ const middleware = require('../middleware/auth')
 const admin = require("./admin")
 const category = require("./category")
 const blogController = require("../controllers/blog")
+const blog = require('./blog')
 const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
 const db = require("../models");
@@ -19,6 +20,7 @@ Routers.get("/", (req, res) => {
 });
 
 Routers.use("/course", course)
+Routers.use("/blog", blog)
 Routers.use("/topic", topic)
 Routers.use("/order", order)
 Routers.get("/login", auth.getLogin)
