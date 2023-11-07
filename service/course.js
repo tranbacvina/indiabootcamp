@@ -339,7 +339,7 @@ const createStrucDataCourses = (courses) => {
             "position": index + 1,
             "item": {
                 "@type": "Course",
-                "url": `${process.env.DOMAIN}/${item.slug}`,
+                "url": `${process.env.DOMAIN}/course/${item.slug}`,
                 "name": item.name,
                 "description": item.description,
                 "provider": handleProviderStructure(item.url)
