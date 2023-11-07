@@ -6,8 +6,8 @@ function sha256(input) {
     return hash.digest('hex');
 }
 
-const access_token = 'EAASsyRHsm0sBOZCFGGCRZBsMUrZCRA9nSge7eNjyGEZAWPEvZCUztWWA4uWWfERy4lf7Bg57GyhZB3pOGEYHhR6pm5cpEYkr33fZClb5yEH87FC6E8LNG7mCM8N2KSUBy8S6pDo1ZAkXVbSJXJ52EhTxZBTlBRhMpglsUDhZCK984IHF6oUkRflfIKeq1xLqxzxkQGXgZDZD';
-const pixel_id = '704457201605603';
+const access_token = 'EAASsyRHsm0sBO4rzmZBsAE19TOKVCCZBPfMKJFfm924CpPDykdPAsAZC8GtUL6XzZB8GXNKphtTfOXJwZCLWWREG0EOIho3fgeefEmPAnIHMBfH26s2L6hGhp3NVL2xIcjwUjf2e8rvbTx6TMBZB7AdeVlTZCkKVs3tfPjErWEEpfp4uZAZCxHCRnmtHe9Ufix3ypMgZDZD';
+const pixel_id = '117401864799926';
 
 const newEvenSendToFacebook = async (email, price, ipClien, client_user_agent, fbc, fbp) => {
     try {
