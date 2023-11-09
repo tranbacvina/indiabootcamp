@@ -50,33 +50,35 @@ const getAllCourses = async(label_id,topicId) => {
 }    
 const getdiscovery_context = async(label_id,topicId) => {
     let links = []
+    try {
+        const started = await axios.get(`
+        https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=${label_id}&source_page=topic_page&locale=en_US&currency=usd&skip_price=true`)
 
-    const started = await axios.get(`
-    https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=${label_id}&source_page=topic_page&locale=en_US&currency=usd&skip_price=true`)
-
-    for (let course of started.data.units[1].items) {
-        console.log(course.title, course.url)
-        const url = `https://www.udemy.com${course.url}`
-        links= [...links,{uri:url, topicId}]
-    }
-
-    for (let i of started.data.units[1].available_filters.units){
-        const available_filters =  await axios.get(`https://udemy.com${i.url}&source_page=topic_page`)
-        for (let item of available_filters.data.unit.items){
-            links = [... links, {uri: `https://www.udemy.com${item.url}`, topicId}]
-
+        for (let course of started.data.units[1].items) {
+            console.log(course.title, course.url)
+            const url = `https://www.udemy.com${course.url}`
+            links= [...links,{uri:url, topicId}]
         }
-    }
-   
 
+        for (let i of started.data.units[1].available_filters.units){
+            const available_filters =  await axios.get(`https://udemy.com${i.url}&source_page=topic_page`)
+            for (let item of available_filters.data.unit.items){
+                links = [... links, {uri: `https://www.udemy.com${item.url}`, topicId}]
+
+            }
+        }
+    
+    } catch (error) {
+        console.log(error)
+    }
 
     return links
 }    
 const main = async() => {
     
 
-    const getTopics = await axios.get('https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=6148&source_page=topic_page&locale=en_US&currency=usd&skip_price=true')
-    for (let item of getTopics.data.units[4].items) {
+    const getTopics = await axios.get('https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=5726&source_page=topic_page&locale=vi_VN&currency=usd&skip_price=true')
+    for (let item of getTopics.data.units[3].items) {
         console.log('begin' , item.display_name)
         console.log(item.id, item.display_name)
         const [topic, creaed] = await db.Topic.findOrCreate({
@@ -95,9 +97,16 @@ const main = async() => {
         const allCourse =  await getAllCourses(item.id,topic.id)
         links = [...allCourse, ...getstarted]
         console.log(links)
-        // await hand_coursetoTopics(links)
+        await hand_coursetoTopics(links)
         console.log('end -------------' , item.display_name)
 
     }
+
+    // const courses = await db.course.findAll()
+    // for (let course of courses) {
+    //     course.description = course.description.trim().replace(/^\s+|\s+$/g, '');
+    //     await course.save()
+    // }
+    
 }
 main()
