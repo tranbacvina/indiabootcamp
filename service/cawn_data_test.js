@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { oneCourseLink, createNewCourse } = require("../service/course")
+const db = require("../models")
+const { oneCourseLink,  } = require("../service/course")
 const { gotScraping } = require('got-scraping');
 
 const cheerio = require("cheerio");
@@ -71,6 +72,8 @@ const udemy = async (uri) => {
       if (course.is_practice_test_course) {
         return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
       }
+      console.log('đã tồn tại course, đang sửa topicid')
+      await course.addTopic(uri.topicId)
       return { success: true, data: course }
     } else {
       const data_course = await cawnUdemy(patch)
@@ -233,7 +236,28 @@ const gitiho = async (uri) => {
     return { success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" }
   }
 };
+const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, topicid) => {
+  const course = await db.course.create(
+      {
+          name,
+          url,
+          description,
+          image,
+          price,
+          is_practice_test_course,
+          description_log, whatyouwilllearn, requirements,
+          
+      },
+      {
+          include: {
+              model: db.Topic
+          }
+      }
 
+  );
+  await course.addTopic(topicid)
+  return course
+}
 module.exports = {
   getDriveUdemy, udemy, givenamereturndrive, unica, gitiho
 };
