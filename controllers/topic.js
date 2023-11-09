@@ -30,6 +30,7 @@ const updateTopic = async (req, res) => {
             data: 'Cập nhật thành công'
         })
     } catch (error) {
+        console.log(error)
         res.status(500).send({
             success: false,
             data: 'Internal Server Error'

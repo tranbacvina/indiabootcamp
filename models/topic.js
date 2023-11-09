@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     slug: { type: DataTypes.STRING, unique: true },
     seotitle: DataTypes.STRING,
-    seodescription: DataTypes.STRING,
+    seodescription: DataTypes.TEXT('medium'),
     isDeleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
