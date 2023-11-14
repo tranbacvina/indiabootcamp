@@ -79,6 +79,7 @@ const deleteTopic = async (req, res) => {
 const topicSlugGetCourses = async (req, res) => {
     const { text, limit, } = req.query
     const { slug } = req.params
+    
     const topicOne = await topic.findOne(slug)
     if (!topicOne) {
         res.render('layout/404')
@@ -93,6 +94,7 @@ const topicSlugGetCourses = async (req, res) => {
 
         res.render('layout/404')
     } else {
+        
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('course/course', {

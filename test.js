@@ -1,7 +1,7 @@
 const cawn_data = require("./service/cawn_data_test")
 const db =require('./models')
 const { Op } = require("sequelize");
-const { includes } = require("lodash");
+const { includes, conforms } = require("lodash");
 const axios = require('axios')
 
 const hand_coursetoTopics = async (links) => {
@@ -77,36 +77,45 @@ const getdiscovery_context = async(label_id,topicId) => {
 const main = async() => {
     
 
-    const getTopics = await axios.get('https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=5726&source_page=topic_page&locale=vi_VN&currency=usd&skip_price=true')
-    for (let item of getTopics.data.units[3].items) {
-        console.log('begin' , item.display_name)
-        console.log(item.id, item.display_name)
-        const [topic, creaed] = await db.Topic.findOrCreate({
-            where: {
-                name: item.display_name
-            },
-            default:{
-                name:item.display_name,
-                slug: slugify(item.display_name),
-                seotitle:item.display_name,
-                seodescription:item.display_name,
-            }
-        })
-        let links = []
-        const getstarted = await getdiscovery_context(item.id,topic.id)
-        const allCourse =  await getAllCourses(item.id,topic.id)
-        links = [...allCourse, ...getstarted]
-        console.log(links)
-        await hand_coursetoTopics(links)
-        console.log('end -------------' , item.display_name)
+    // const getTopics = await axios.get('https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=5726&source_page=topic_page&locale=vi_VN&currency=usd&skip_price=true')
+    // for (let item of getTopics.data.units[3].items) {
+    //     console.log('begin' , item.display_name)
+    //     console.log(item.id, item.display_name)
+    //     const [topic, creaed] = await db.Topic.findOrCreate({
+    //         where: {
+    //             name: item.display_name
+    //         },
+    //         default:{
+    //             name:item.display_name,
+    //             slug: slugify(item.display_name),
+    //             seotitle:item.display_name,
+    //             seodescription:item.display_name,
+    //         }
+    //     })
+    //     let links = []
+    //     const getstarted = await getdiscovery_context(item.id,topic.id)
+    //     const allCourse =  await getAllCourses(item.id,topic.id)
+    //     links = [...allCourse, ...getstarted]
+    //     console.log(links)
+    //     await hand_coursetoTopics(links)
+    //     console.log('end -------------' , item.display_name)
 
-    }
+    // }
 
     // const courses = await db.course.findAll()
     // for (let course of courses) {
     //     course.description = course.description.trim().replace(/^\s+|\s+$/g, '');
     //     await course.save()
     // }
-    
+
+    const topic = await db.Topic.findOne({
+        where:{
+            id: 15
+        },
+        includes:{model: db.Topic}
+    })
+    console.log(topic)
+    console.log( await topic.getChildren())
+    // console.log(topic)
 }
 main()

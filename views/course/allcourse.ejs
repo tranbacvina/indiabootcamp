@@ -13,14 +13,18 @@
         <%-JSON.stringify(structuredDataCourse)%>
     </script>
 
-    <link rel="canonical" href="https://fullbootcamp.com/course" />
+    <link rel="canonical" href="<%=canonicalURL%>" />
 
     <meta name="title" content="Tất cả khoá học Full Bootcamp" />
     <meta name="description" content="Danh sách khoá học của Full Bootcamp" />
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
+    <link rel="manifest" href="/img/redketchup/site.webmanifest">
+    <meta content="INDEX,FOLLOW" name="robots" />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fullbootcamp.com/course" />
+    <meta property="og:url" content="<%=canonicalURL%>" />
     <meta property="og:title" content="Tất cả khoá học Full Bootcamp" />
     <meta property="og:description" content="Danh sách khoá học của Full Bootcamp" />
     <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
@@ -61,33 +65,6 @@
 
     <main class="main-content  ">
         <%- include('../layout/header'); %>
-            <div class="content-wrapper  js-content-wrapper">
-
-
-                <section data-anim="fade" class="breadcrumbs is-in-view">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-auto">
-                                <div class="breadcrumbs__content">
-
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/">Trang chủ</a>
-                                    </div>
-
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/course">
-                                           Tất cả khoá học
-                                        </a>
-                                    </div>
-
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
 
                 <section class="page-header -type-1">
                     <div class="container">

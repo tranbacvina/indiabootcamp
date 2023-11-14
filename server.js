@@ -11,12 +11,35 @@ const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
 var sitemap = require('express-sitemap');
 var useragent = require('express-useragent');
+const urlService = require('./service/url')
 
 app.use(useragent.express());
+
+// Middleware để xoá dấu '/' cuối cùng của mỗi URL
+app.use((req, res, next) => {
+  if (req.path[req.path.length - 1] === '/' && req.path.length > 1) {
+    const query = req.url.slice(req.path.length);
+    res.redirect(301, req.path.slice(0, -1) + query);
+  } else {
+    next();
+  }
+});
+
+app.use((req, res, next) => {
+  let canonicalURL = ''; 
+    if (req.query.page == 1 || req.query.page == null) {
+         canonicalURL = `https://${req.host}${req.path}`;
+    } else {
+        canonicalURL = urlService.getPageQuery(`https://${req.host}${req.originalUrl}`);
+    }
+  res.locals.canonicalURL = canonicalURL;
+  next();
+})
+
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
 
 
-app.use(paginate.middleware(28, 20));
+app.use(paginate.middleware(20, 56));
 app.use(cookieParser())
 app.use(express.json({
   verify: (req, res, buf) => {
@@ -36,6 +59,7 @@ app.use(
     origin: "*",
   })
 );
+
 app.use("/", Routers);
 
 cron.schedule('* * * * *', async () => {

@@ -9,13 +9,17 @@
     <title>
         <%=categorie.seotitle%>
     </title>
-    <link rel="canonical" href="https://fullbootcamp.com/category/<%=categorie.slug%>">
+    <link rel="canonical" href="<%=canonicalURL%>">
     <meta name="title" content="<%=categorie.seotitle%>" />
     <meta name="description" content="<%=categorie.seodescription%>" />
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
+    <link rel="manifest" href="/img/redketchup/site.webmanifest">
+    <meta content="INDEX,FOLLOW" name="robots" />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fullbootcamp.com/category/<%=categorie.slug%>" />
+    <meta property="og:url" content="<%=canonicalURL%>" />
     <meta property="og:title" content="<%=categorie.seotitle%>" />
     <meta property="og:description" content="<%=categorie.seodescription%>" />
     <meta property="og:image" content="https://fullbootcamp.com/<%=blogs[0].thumbnail%>" />

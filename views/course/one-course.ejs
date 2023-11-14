@@ -9,7 +9,7 @@
     <title>
         <%=course.name%>
     </title>
-    <link rel="canonical" href="https://fullbootcamp.com/course/<%=course.slug%>" />
+    <link rel="canonical" href="<%=canonicalURL%>" />
     <script type="application/ld+json">
         <%-JSON.stringify(structuredDataCourse)%>
         </script>
@@ -17,10 +17,14 @@
         
     <meta name="title" content="<%=course.name%> " />
     <meta name="description" content="<%=course.description%>" />
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
+    <link rel="manifest" href="/img/redketchup/site.webmanifest">
+    <meta content="INDEX,FOLLOW" name="robots" />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fullbootcamp.com" />
+    <meta property="og:url" content="<%=canonicalURL%>" />
     <meta property="og:title" content="<%=course.name%>" />
     <meta property="og:description" content="<%=course.description%>" />
     <meta property="og:image" content="<%=course.image%>" />
@@ -117,10 +121,7 @@
                                     <div class="breadcrumbs__item ">
                                         <a href="/">Trang chủ</a>
                                     </div>
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/course">Khoá học</a>
-                                    </div>
-                                    
+                                   
                                     <% for (let item of course.Topics) {%>
                                     <div class="breadcrumbs__item ">
                                         <a href="/topic/<%=item.slug%>">
@@ -129,6 +130,10 @@
                                             </a>
                                     </div>
                                     <%}%>
+
+                                    <div class="breadcrumbs__item ">
+                                        <a href="/course/<%=course.slug%>"><%=course.name%></a>
+                                    </div>
 
                                 </div>
                             </div>
