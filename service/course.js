@@ -24,10 +24,11 @@ const oneCourseID = async (id) => {
 }
 const oneCourseSlug = async (slug) => {
     return await db.course.findOne({
+    nest: true , 
         where: {
             slug
         },
-        include: { model: db.Topic},
+        include: [{ model: db.Topic},{model: db.rating}],
     });
 }
 const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements) => {

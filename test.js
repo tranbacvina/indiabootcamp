@@ -108,14 +108,67 @@ const main = async() => {
     //     await course.save()
     // }
 
-    const topic = await db.Topic.findOne({
-        where:{
-            id: 15
+    // const course = await db.course.findOne({
+    //     where:{
+    //         slug: 'bcg01-xay-dung-he-thong-bao-cao-quan-tri-bang-excel'
+    //     },
+    //     includes:{model: db.rating}
+    // })
+    // await course.createRating({email:"muhalog@gmail.com",comments:'Đã nhận khoá học',star:3})
+    // console.log(course)
+
+    const ratings = [
+        {
+          "id": 1,
+          "email": "fullboot@gmail.com",
+          "comments": "Đầy đủ video",
+          "star": 4,
+          "courseId": 2575,
+          "createdAt": "2023-11-16T16:46:04.000Z",
+          "updatedAt": "2023-11-16T16:46:04.000Z"
         },
-        includes:{model: db.Topic}
-    })
-    console.log(topic)
-    console.log( await topic.getChildren())
-    // console.log(topic)
+        {
+          "id": 2,
+          "email": "muhalog@gmail.com",
+          "comments": "Đã nhận khoá học",
+          "star": 3,
+          "courseId": 2575,
+          "createdAt": "2023-11-16T16:48:32.000Z",
+          "updatedAt": "2023-11-16T16:48:32.000Z"
+        }
+      ];
+      
+      function calculateStats(ratings) {
+        const stats = {
+          "1": { count: 0, percent: 0 },
+          "2": { count: 0, percent: 0 },
+          "3": { count: 0, percent: 0 },
+          "4": { count: 0, percent: 0 },
+          "5": { count: 0, percent: 0 },
+          avg: 0
+        };
+      
+        let totalStars = 0;
+      
+        for (const rating of ratings) {
+          stats[rating.star].count++;
+          totalStars += rating.star;
+        }
+      
+        stats.avg = (totalStars / (ratings.length * 5)) * 5;
+      
+        for (const key in stats) {
+          if (key !== 'avg') {
+            const percentage = ((stats[key].count / ratings.length) * 100).toFixed(0);
+            stats[key].percent = percentage + '%';
+          }
+        }
+      
+        return { avg: stats.avg.toFixed(2), ...stats };
+      }
+      
+      const result = calculateStats(ratings);
+      console.log(result);
+      
 }
 main()

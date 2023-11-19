@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // this.belongsTo(models.course)
       this.belongsToMany(models.course, { through: models.course_topic, foreignKey: "topic_id" } );
-      this.belongsToMany(models.Topic, { as: 'Children',through: 'TopicChildren'})
     }
   }
   Topic.init({
@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     slug: { type: DataTypes.STRING, unique: true },
     seotitle: DataTypes.STRING,
     seodescription: DataTypes.TEXT('medium'),
+    parent_id: DataTypes.INTEGER,            
     isDeleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

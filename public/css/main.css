@@ -8689,7 +8689,6 @@ h6 {
   }
 }
 .courses-single-info__content {
-  height: 57vh;
   overflow-y: scroll;
 }
 @media (max-width: 991px) {
@@ -13549,4 +13548,38 @@ table.table td {
   background-color: var(--color-green-1);
   border-color: transparent;
   color: #fff !important;
+}
+/****** Style Star Rating Widget *****/
+#rating{border:none;float:left;}
+#rating>input{display:none;}/*ẩn input radio - vì chúng ta đã có label là GUI*/
+#rating>label:before{margin:5px;font-size:2em;font-family:FontAwesome;display:inline-block;content:"\f005";}/*1 ngôi sao*/
+#rating>.half:before{content:"\f089";position:absolute;}/*0.5 ngôi sao*/
+#rating>label{color:#ddd;float:right;}/*float:right để lật ngược các ngôi sao lại đúng theo thứ tự trong thực tế*/
+/*thêm màu cho sao đã chọn và các ngôi sao phía trước*/
+#rating>input:checked~label,
+#rating:not(:checked)>label:hover, 
+#rating:not(:checked)>label:hover~label{color:#ffc700;}
+/* Hover vào các sao phía trước ngôi sao đã chọn*/
+#rating>input:checked+label:hover,
+#rating>input:checked~label:hover,
+#rating>label:hover~input:checked~label,
+#rating>input:checked~label:hover~label{color:#FFED85;}
+
+progress {
+  vertical-align: baseline;
+  width: 100%;
+  /* border: none; */
+  height: 4px;
+  appearance: none;
+}
+/* Styling the progress bar track */
+progress::-webkit-progress-bar {
+  background-color: var(--color-light-12);
+  border-radius: 4px;
+}
+
+/* Styling the progress bar itself */
+progress::-webkit-progress-value {
+  background-color: var(--color-purple-1);
+  border-radius: 4px; /* Border radius */
 }

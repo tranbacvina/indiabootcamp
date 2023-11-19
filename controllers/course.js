@@ -5,8 +5,9 @@ const serverCourse = require('../service/course')
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
+const ultrilSevice = require('../service/ulltil')
 const db = require("../models")
-
+const { Op,Sequelize } = require("sequelize");
 const check = async (req, res) => {
     const errors = validationResult(req);
 
@@ -174,7 +175,7 @@ const publicall = async (req, res) => {
     // res.send(course)
     // const itemCount = course.count;
     // const pageCount = Math.ceil(course.count / req.query.limit);
-
+    
     const structuredDataCourse = createStrucDataCourses(course.rows)
     if (course.length === 0) {
 
@@ -197,10 +198,43 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
-    // res.send(course)
+
     if (course) {
+        let breadcrumb
+        let include
+
+        const ratings =  ultrilSevice.calculateStats(course.ratings)
+        
         const structuredDataCourse = createStrucDataOneCourse(course)
-        res.render("course/one-course", { course, structuredDataCourse });
+
+        
+
+        const originTopic = course.Topics.filter(item => item.parent_id !== null)[0]
+
+       if(originTopic){
+        breadcrumb = await ultrilSevice.getTopicWithParents(originTopic.id)
+
+        //nếu course trong topic thì lấy danh sách liên quan theo topic ID
+        include=[{model: db.Topic,where: {
+            id: originTopic.id
+        }}]
+       } 
+       if (course.Topics.length !== 0){
+        include=[{model: db.Topic,where: {
+            id: course.Topics[0].id
+        }}]
+       }
+       
+       const courses = await db.course.findAll({
+        
+        include,
+        order: [
+            Sequelize.fn( 'RAND' ),
+          ], // Order by ID in ascending order
+        limit: 8 // Limit the number of records returned (default: 10)
+      });
+       
+        res.render("course/one-course", { course, structuredDataCourse,breadcrumb,ratings,courses });
     } else {
         res.render("layout/404")
     }

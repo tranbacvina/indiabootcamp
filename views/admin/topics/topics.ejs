@@ -118,6 +118,7 @@
                                                                 <th colspan="1" role="columnheader">Trạng thái</th>
                                                                 <th colspan="1" role="columnheader">seo title</th>
                                                                 <th colspan="1" role="columnheader">seo mo ta</th>
+                                                                <th colspan="1" role="columnheader">Parent Topic</th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                             </tr>
@@ -152,15 +153,20 @@
                                                                     <td role="cell" class="align-middle">
                                                                         <%=topic.seodescription%>
                                                                     </td>
+                                                                    <td role="cell" class="align-middle">
+                                                                            <% for (let showtopic of topics) {%>
+                                                                                <%= showtopic.id ===  topic.parent_id ? showtopic.name : ''%>
+                                                                            <%}%>
+                                                                    </td>
                                                                     <td role="cell" class="align-middle"
                                                                         data-id="<%=topic.id %>"
                                                                         data-slug="<%=topic.slug%>"
                                                                         data-name="<%=topic.name%>"
                                                                         data-seotitle="<%=topic.seotitle%>"
                                                                         data-seodescription="<%=topic.seodescription%>"
-                                                                        onclick="editTopic(this)">
-                                                                        <button type="button"
-                                                                            class="me-1 mb-2 btn btn-outline-danger btn-xs">Sửa</button>
+                                                                        onclick="">
+                                                                        <a href="/admin/topic/<%=topic.id%>" type="button"
+                                                                            class="me-1 mb-2 btn btn-outline-danger btn-xs">Sửa</a>
                                                                     </td>
                                                                     <td role="cell" class="align-middle"
                                                                         data-id="<%=topic.id %>"
@@ -278,6 +284,11 @@
                             <div class="">
                             <input type="text" name="seodescription" id="seodescription" value="${seodescription}">
                             </div>
+
+                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">parent_id</label>
+                            <div class="">
+                                <select class="form-select"name="isOneDrive"aria-label="Default select example">
+                            </select></div>
                         </form>
                 `
                 modal.setContent(html)

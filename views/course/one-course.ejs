@@ -111,258 +111,1086 @@
         <%- include('../layout/header'); %>
             <div class="content-wrapper  js-content-wrapper">
 
+              <div class="js-pin-container">
+                    <section data-anim="fade" class="breadcrumbs is-in-view">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <div class="breadcrumbs__content">
 
-                <section data-anim="fade" class="breadcrumbs is-in-view">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-auto">
-                                <div class="breadcrumbs__content">
+                                        <div class="breadcrumbs__item ">
+                                            <a href="/">Trang chủ</a>
+                                        </div>
+                                      <% if (breadcrumb) {%>
+                                        <% for (let item of breadcrumb.parents) {%>
+                                        <div class="breadcrumbs__item ">
+                                            <a href="/topic/<%=item.slug%>">
+                                            <%=item.name%>
+                                                </a>
+                                        </div>
+                                        <%}%>
+                                        <div class="breadcrumbs__item ">
+                                            <a href="/topic/<%=breadcrumb.category.slug%>"><%=breadcrumb.category.name%></a>
+                                        </div>
+                                        <%} else if(course.Topics.length > 0)  {%>
+                                        <div class="breadcrumbs__item "><a href="/topic/<%=course.Topics[0].slug%>"><%=course.Topics[0].name%></a></div>
+                                            
+                                        <%} %>
+                                        <% if (!breadcrumb & course.Topics.length === 0) {%>
+                                            <div class="breadcrumbs__item ">
+                                              <a href="/course">Khoá học</a>
+                                          </div>
+                                          <%}%>
+                                        <div class="breadcrumbs__item ">
+                                            <a href="/course/<%=course.slug%>"><%=course.name%></a>
+                                        </div>
 
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/">Trang chủ</a>
                                     </div>
-                                   
-                                    <% for (let item of course.Topics) {%>
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/topic/<%=item.slug%>">
-
-                                        <%=item.name%>
-                                            </a>
-                                    </div>
-                                    <%}%>
-
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/course/<%=course.slug%>"><%=course.name%></a>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-
-                <section class="page-header -type-5 bg-white">
-                    <div class="page-header__bg">
-                        <div class="bg-image js-lazy loaded" data-ll-status="loaded"></div>
-                    </div>
-
-                    <div class="container">
-                        <div class="page-header__content pt-90 pb-">
-                            <div class="row y-gap-30 relative">
-                                <div class="col-xl-7 col-lg-8">
-                                    <div data-anim="slide-up delay-1" class="is-in-view">
-                                        <h1 class="text-30 lh-14 pr-60 lg:pr-0">
-                                            <%=course.name%>
-                                        </h1>
-                                        <%=locals.user%>
-                                        <%if (locals.user){%>
-                                            <a class="text-green-1" href="/admin/course/<%=course.id%>">Sửa khoá học này</a>
-                                            <%}%>
-                                    </div>
-
-                                    <p class="col-xl-9 mt-20">
-                                        Nhận khoá học <%=course.name%> qua Onedrive. <br>
-                                            <%=course.description%>
-                                    </p>
-
-                                </div>
-
-                                <div class="courses-single-info">
-                                    <div class="bg-white shadow-2 rounded-8 border-light py-10 px-10">
-                                        <div class="relative">
-                                            <img class="w-1/1" src="<%=course.image%>" alt="image">
-                                            <div class="absolute-full-center d-flex justify-center items-center">
-                                                <a href="https://www.youtube.com/watch?v=ANYfx4-jyqY"
-                                                    class="d-flex justify-center items-center size-60 rounded-full bg-white js-gallery"
-                                                    data-gallery="gallery1">
-                                                    <div class="icon-play text-18"></div>
-                                                </a>
-                                            </div>
+                    </section>
+                    <section class="page-header -type-5 bg-white ">
+                        <div class="page-header__bg">
+                            <div class="bg-image js-lazy loaded" data-ll-status="loaded"></div>
+                        </div>
+    
+                        <div class="container">
+                            <div class="page-header__content pt-90 pb-">
+                                <div class="row y-gap-30 relative">
+                                    <div class="col-xl-7 col-lg-8">
+                                        <div data-anim="slide-up delay-1" class="is-in-view">
+                                            <h1 class="text-30 lh-14 pr-60 lg:pr-0">
+                                                <%=course.name%>
+                                            </h1>
+                                            <%=locals.user%>
+                                            <%if (locals.user){%>
+                                                <a class="text-green-1" href="/admin/course/<%=course.id%>">Sửa khoá học này</a>
+                                                <%}%>
                                         </div>
-
-                                        <div class="courses-single-info__content scroll-bar-1 pt-30 pb-20 px-20">
-                                            <% if (course.price !== 0) { %>
-                                            <div class="d-flex justify-between items-center mb-30">
-                                                <div class="text-24 lh-1 text-dark-1 fw-500">
-                                                    <%=course.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                        currency : 'VND' })%>
+    
+                                        <p class="col-xl-9 mt-20">
+                                            Nhận khoá học <%=course.name%> qua Onedrive. <br>
+                                                <%=course.description%>
+                                        </p>
+    
+                                    </div>
+    
+                                    <div class="courses-single-info js-pin-content">
+                                        <div class="bg-white shadow-2 rounded-8 border-light py-10 px-10 ">
+                                            <div class="relative">
+                                                <img class="w-1/1" src="<%=course.image%>" alt="image">
+                                                <div class="absolute-full-center d-flex justify-center items-center">
+                                                    <a href="https://www.youtube.com/watch?v=ANYfx4-jyqY"
+                                                        class="d-flex justify-center items-center size-60 rounded-full bg-white js-gallery"
+                                                        data-gallery="gallery1">
+                                                        <div class="icon-play text-18"></div>
+                                                    </a>
                                                 </div>
-                                                <!-- <div class="lh-1 line-through">$76.00</div> -->
                                             </div>
-                                            <form id="regForm" action="/order/createvn" method="POST"
-                                                class="contact-form ">
-                                                <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Email nhận khoá
-                                                    học:
-                                                </label>
-                                                <input type="text" name="email" id="email" placeholder="abc@gmail.com"
-                                                    oninput="this.className = ''" required>
-                                                <input type="hidden" name="courseID" id="courseID"
-                                                    value="<%=course.id%>">
-                                                <button type="submit" id="" onclick=""
-                                                    class="button -md -purple-1 text-white w-1/1 mt-20">Mua
-                                                    ngay</button>
-
-                                            </form>
-                                            <%} else {%>
+    
+                                            <div class="courses-single-info__content scroll-bar-1 pt-30 pb-20 px-20">
+                                                <% if (course.price !== 0) { %>
                                                 <div class="d-flex justify-between items-center mb-30">
                                                     <div class="text-24 lh-1 text-dark-1 fw-500">
-                                                        Miễn phí
+                                                        <%=course.price.toLocaleString('it-IT', {style : 'currency' ,
+                                                            currency : 'VND' })%>
                                                     </div>
                                                     <!-- <div class="lh-1 line-through">$76.00</div> -->
                                                 </div>
-                                                <a class="button -md -green-1 text-dark-1 w-1/1"
-                                                href="<%= course.sharelinkfree %>" target="_blank"
-                                                >Nhận ngay!</a>
-                                            <%}%>
-                                            <div class="layout-pt-md">
-
-                                                <div class="d-flex justify-between py-8 ">
-                                                    <div class="d-flex items-center text-dark-1">
-                                                        <div class="icon-video-file"></div>
-                                                        <div class="ml-10">Đầy Đủ Bài Giảng</div>
-                                                    </div>
-                                                    <!-- <div>Cam kết video bài giảng giống mô tả</div> -->
-                                                </div>
-
-                                                <div class="d-flex justify-between py-8 border-top-light">
-                                                    <div class="d-flex items-center text-dark-1">
-                                                        <div class="icon-puzzle"></div>
-                                                        <div class="ml-10">Học Online Tiện Lợi</div>
-                                                    </div>
-                                                    <!-- <div>Học online trên drive bằng điện thoại hoặc máy tính</div> -->
-                                                </div>
-
-                                                <div class="d-flex justify-between py-8 border-top-light">
-                                                    <div class="d-flex items-center text-dark-1">
-                                                        <div class="icon-clock-2"></div>
-                                                        <div class="ml-10">Kích Hoạt Nhanh 2-5 Phút</div>
-                                                    </div>
-                                                    <!-- <div>Nhận được khóa học trong vòng 3-5 phút ngay trên website -->
-                                                </div>
-                                                                                                <div class="d-flex justify-between py-8 border-top-light">
-                                                    <div class="d-flex items-center text-dark-1">
-                                                        <div class="icon-badge"></div>
-                                                        <div class="ml-10">Thanh toán tự động</div>
-                                                    </div>
-                                                    <!-- <div>MOMO hoặc VIETCOMBANK</div> -->
-                                                </div>
-                                                <div class="d-flex justify-between py-8 border-top-light">
-                                                    <div class="d-flex items-center text-dark-1">
-                                                        <div class="icon-translate"></div>
-                                                        <div class="ml-10">Được phép tải xuống</div>
-                                                    </div>
-                                                    <!-- <div></div> -->
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex justify-center pt-15">
-
-                                                <a href="#"
-                                                    class="d-flex justify-center items-center size-40 rounded-full">
-                                                    <i class="fa fa-facebook"></i>
-                                                </a>
-
-                                                <a href="#"
-                                                    class="d-flex justify-center items-center size-40 rounded-full">
-                                                    <i class="fa fa-twitter"></i>
-                                                </a>
-
-                                                <a href="#"
-                                                    class="d-flex justify-center items-center size-40 rounded-full">
-                                                    <i class="fa fa-instagram"></i>
-                                                </a>
-
-                                                <a href="#"
-                                                    class="d-flex justify-center items-center size-40 rounded-full">
-                                                    <i class="fa fa-linkedin"></i>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-
-                <section class="layout-pt-md layout-pb-md">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="tabs -active-purple-2 js-tabs">
-                                    <div class="tabs__controls d-flex js-tabs-controls">
-                                        <button class="tabs__button js-tabs-button is-active"
-                                            data-tab-target=".-tab-item-1" type="button">
-                                            Tổng quan
-                                        </button>
-
-                                    </div>
-
-                                    <div class="tabs__content pt-60 lg:pt-40 js-tabs-content">
-                                        <div class="tabs__pane -tab-item-1 is-active">
-                                            <h4 class="text-18 fw-500">Mô tả</h4>
-
-                                            <div class="show-more mt-30 js-show-more">
-                                                <div class="show-more__content">
-                                                    <%- course.description_log %>
-                                                </div>
-
-                                                <button
-                                                    class="show-more__button text-purple-1 fw-500 underline mt-30">Xem
-                                                    thêm</button>
-                                            </div>
-
-                                            <div class="mt-60">
-                                                <h4 class="text-20 mb-30">Bạn sẽ học được gì</h4>
-                                                <div class="row x-gap-100 justfiy-between">
-                                                    <% for (let item of course.whatyouwilllearn) { %>
-                                                        <div class="col-md-6 y-gap-20">
-                                                            <div class="">
-                                                                <div class="d-flex items-start">
-                                                                    <div
-                                                                        class="d-flex justify-center items-center border-light rounded-full size-20 mr-10">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24" height="24" viewBox="0 0 24 24"
-                                                                            fill="none" stroke="currentColor"
-                                                                            stroke-width="2" stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            class="feather feather-check size-12">
-                                                                            <polyline points="20 6 9 17 4 12">
-                                                                            </polyline>
-                                                                        </svg>
-                                                                    </div>
-                                                                    <p>
-                                                                        <%=item%>
-                                                                    </p>
-                                                                </div>
-
-                                                            </div>
+                                                <form id="regForm" action="/order/createvn" method="POST"
+                                                    class="contact-form ">
+                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Email nhận khoá
+                                                        học:
+                                                    </label>
+                                                    <input type="text" name="email" id="email" placeholder="abc@gmail.com"
+                                                        oninput="this.className = ''" required>
+                                                    <input type="hidden" name="courseID" id="courseID"
+                                                        value="<%=course.id%>">
+                                                    <button type="submit" id="" onclick=""
+                                                        class="button -md -purple-1 text-white w-1/1 mt-20">Mua
+                                                        ngay</button>
+    
+                                                </form>
+                                                <%} else {%>
+                                                    <div class="d-flex justify-between items-center mb-30">
+                                                        <div class="text-24 lh-1 text-dark-1 fw-500">
+                                                            Miễn phí
                                                         </div>
-                                                        <%}%>
+                                                        <!-- <div class="lh-1 line-through">$76.00</div> -->
+                                                    </div>
+                                                    <a class="button -md -green-1 text-dark-1 w-1/1"
+                                                    href="<%= course.sharelinkfree %>" target="_blank"
+                                                    >Nhận ngay!</a>
+                                                <%}%>
+                                                <div class="layout-pt-md">
+    
+                                                    <div class="d-flex justify-between py-8 ">
+                                                        <div class="d-flex items-center text-dark-1">
+                                                            <div class="icon-video-file"></div>
+                                                            <div class="ml-10">Đầy Đủ Bài Giảng</div>
+                                                        </div>
+                                                        <!-- <div>Cam kết video bài giảng giống mô tả</div> -->
+                                                    </div>
+    
+                                                    <div class="d-flex justify-between py-8 border-top-light">
+                                                        <div class="d-flex items-center text-dark-1">
+                                                            <div class="icon-puzzle"></div>
+                                                            <div class="ml-10">Học Online Tiện Lợi</div>
+                                                        </div>
+                                                        <!-- <div>Học online trên drive bằng điện thoại hoặc máy tính</div> -->
+                                                    </div>
+    
+                                                    <div class="d-flex justify-between py-8 border-top-light">
+                                                        <div class="d-flex items-center text-dark-1">
+                                                            <div class="icon-clock-2"></div>
+                                                            <div class="ml-10">Kích Hoạt Nhanh 2-5 Phút</div>
+                                                        </div>
+                                                        <!-- <div>Nhận được khóa học trong vòng 3-5 phút ngay trên website -->
+                                                    </div>
+                                                                                                    <div class="d-flex justify-between py-8 border-top-light">
+                                                        <div class="d-flex items-center text-dark-1">
+                                                            <div class="icon-badge"></div>
+                                                            <div class="ml-10">Thanh toán tự động</div>
+                                                        </div>
+                                                        <!-- <div>MOMO hoặc VIETCOMBANK</div> -->
+                                                    </div>
+                                                    <div class="d-flex justify-between py-8 border-top-light">
+                                                        <div class="d-flex items-center text-dark-1">
+                                                            <div class="icon-translate"></div>
+                                                            <div class="ml-10">Được phép tải xuống</div>
+                                                        </div>
+                                                        <!-- <div></div> -->
+                                                    </div>
+                                                </div>
+    
+                                                <div class="d-flex justify-center pt-15">
+    
+                                                    <a href="#"
+                                                        class="d-flex justify-center items-center size-40 rounded-full">
+                                                        <i class="fa fa-facebook"></i>
+                                                    </a>
+    
+                                                    <a href="#"
+                                                        class="d-flex justify-center items-center size-40 rounded-full">
+                                                        <i class="fa fa-twitter"></i>
+                                                    </a>
+    
+                                                    <a href="#"
+                                                        class="d-flex justify-center items-center size-40 rounded-full">
+                                                        <i class="fa fa-instagram"></i>
+                                                    </a>
+    
+                                                    <a href="#"
+                                                        class="d-flex justify-center items-center size-40 rounded-full">
+                                                        <i class="fa fa-linkedin"></i>
+                                                    </a>
+    
                                                 </div>
                                             </div>
-
-                                            <div class="mt-60">
-                                                <h4 class="text-20">Yêu cầu</h4>
-                                                <ul class="ul-list y-gap-15 pt-30">
-                                                    <% for (let item of course.requirements) { %>
-                                                        <li>
-                                                            <%=item%>
-                                                        </li>
-                                                        <%}%>
-                                                </ul>
-                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </section>
+
+                    <section class="layout-pt-md layout-pb-md">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="page-nav-menu -line js-sticktop">
+                                    <div class="d-flex x-gap-30">
+                                        <div><a href="#overview" class="pb-12 page-nav-menu__link is-active">Tổng quan</a></div>
+                                        <div><a href="#course-content" class="pb-12 page-nav-menu__link">Nội dung khoá học</a></div>
+                                        <div><a href="#reviews" class="pb-12 page-nav-menu__link">Đánh giá</a></div>
+                                    </div>
+                                    </div>
+                    
+                                    <div id="overview" class="pt-60 lg:pt-40 to-over">
+                                    <h4 class="text-18 fw-500">Mô tả</h4>
+                    
+                                    <div class="show-more mt-30 js-show-more">
+                                        <div class="show-more__content">
+                                            <%- course.description_log %>
+                                        </div>
+                    
+                                        <button class="show-more__button text-purple-1 fw-500 underline mt-30">Xem thêm</button>
+                                    </div>
+                    
+                                    <div class="mt-60">
+                                        <h4 class="text-20 mb-30">Bạn sẽ học được gì</h4>
+                                        <div class="row x-gap-100 justfiy-between">
+                                            <% for (let item of course.whatyouwilllearn) { %>
+                                                <div class="col-md-6 y-gap-20">
+                                                    <div class="">
+                                                        <div class="d-flex items-start">
+                                                            <div
+                                                                class="d-flex justify-center items-center border-light rounded-full size-20 mr-10">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor"
+                                                                    stroke-width="2" stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                    class="feather feather-check size-12">
+                                                                    <polyline points="20 6 9 17 4 12">
+                                                                    </polyline>
+                                                                </svg>
+                                                            </div>
+                                                            <p>
+                                                                <%=item%>
+                                                            </p>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <%}%>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="mt-60">
+                                        <h4 class="text-20">Yêu cầu</h4>
+                                        <ul class="ul-list y-gap-15 pt-30">
+                                            <% for (let item of course.requirements) { %>
+                                                <li>
+                                                    <%=item%>
+                                                </li>
+                                                <%}%>
+                                        </ul>
+                                    </div>
+                                    </div>
+                    
+                                    <div id="course-content" class="pt-60 lg:pt-40">
+                                    <h2 class="text-20 fw-500">Nội dung khoá học</h2>
+                    
+                                    <div class="d-flex justify-between items-center mt-30">
+                                        <div class="">27 sections • 95 lectures</div>
+                                        <a href="#" class="underline text-purple-1">Expand All Sections</a>
+                                    </div>
+                    
+                                    <div class="mt-10">
+                                        <div class="accordion -block-2 text-left js-accordion">
+                    
+                                        <div class="accordion__item">
+                                            <div class="accordion__button py-20 px-30 bg-light-4">
+                                            <div class="d-flex items-center">
+                                                <div class="accordion__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up icon"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                </div>
+                                                <span class="text-17 fw-500 text-dark-1">Course Content</span>
+                                            </div>
+                    
+                                            <div>5 lectures • 87 min</div>
+                                            </div>
+                    
+                                            <div class="accordion__content">
+                                            <div class="accordion__content__inner px-30 py-30">
+                                                <div class="y-gap-20">
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Introduction to the User Experience Course</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Getting started with your Adobe XD project</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>What is UI vs UX - User Interface vs User Experience vs Product Designer</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Wireframing (low fidelity) in Adobe XD</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Viewing your prototype on a mobile device</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Sharing your design</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="accordion__item">
+                                            <div class="accordion__button py-20 px-30 bg-light-4">
+                                            <div class="d-flex items-center">
+                                                <div class="accordion__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up icon"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                </div>
+                                                <span class="text-17 fw-500 text-dark-1">The Brief</span>
+                                            </div>
+                    
+                                            <div>5 lectures • 87 min</div>
+                                            </div>
+                    
+                                            <div class="accordion__content">
+                                            <div class="accordion__content__inner px-30 py-30">
+                                                <div class="y-gap-20">
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Introduction to the User Experience Course</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Getting started with your Adobe XD project</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>What is UI vs UX - User Interface vs User Experience vs Product Designer</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Wireframing (low fidelity) in Adobe XD</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Viewing your prototype on a mobile device</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Sharing your design</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="accordion__item">
+                                            <div class="accordion__button py-20 px-30 bg-light-4">
+                                            <div class="d-flex items-center">
+                                                <div class="accordion__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up icon"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                </div>
+                                                <span class="text-17 fw-500 text-dark-1">Type, Color &amp; Icon Introduction</span>
+                                            </div>
+                    
+                                            <div>5 lectures • 87 min</div>
+                                            </div>
+                    
+                                            <div class="accordion__content">
+                                            <div class="accordion__content__inner px-30 py-30">
+                                                <div class="y-gap-20">
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Introduction to the User Experience Course</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Getting started with your Adobe XD project</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>What is UI vs UX - User Interface vs User Experience vs Product Designer</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Wireframing (low fidelity) in Adobe XD</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Viewing your prototype on a mobile device</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Sharing your design</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="accordion__item">
+                                            <div class="accordion__button py-20 px-30 bg-light-4">
+                                            <div class="d-flex items-center">
+                                                <div class="accordion__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up icon"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                </div>
+                                                <span class="text-17 fw-500 text-dark-1">Prototyping a App - Introduction</span>
+                                            </div>
+                    
+                                            <div>5 lectures • 87 min</div>
+                                            </div>
+                    
+                                            <div class="accordion__content">
+                                            <div class="accordion__content__inner px-30 py-30">
+                                                <div class="y-gap-20">
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Introduction to the User Experience Course</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Getting started with your Adobe XD project</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>What is UI vs UX - User Interface vs User Experience vs Product Designer</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Wireframing (low fidelity) in Adobe XD</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Viewing your prototype on a mobile device</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Sharing your design</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="accordion__item">
+                                            <div class="accordion__button py-20 px-30 bg-light-4">
+                                            <div class="d-flex items-center">
+                                                <div class="accordion__icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up icon"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                </div>
+                                                <span class="text-17 fw-500 text-dark-1">Wireframe Feedback</span>
+                                            </div>
+                    
+                                            <div>5 lectures • 87 min</div>
+                                            </div>
+                    
+                                            <div class="accordion__content">
+                                            <div class="accordion__content__inner px-30 py-30">
+                                                <div class="y-gap-20">
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Introduction to the User Experience Course</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Getting started with your Adobe XD project</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>What is UI vs UX - User Interface vs User Experience vs Product Designer</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Wireframing (low fidelity) in Adobe XD</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Viewing your prototype on a mobile device</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="d-flex justify-between">
+                                                    <div class="d-flex items-center">
+                                                    <div class="d-flex justify-center items-center size-30 rounded-full bg-purple-3 mr-10">
+                                                        <div class="icon-play text-9"></div>
+                                                    </div>
+                                                    <div>Sharing your design</div>
+                                                    </div>
+                    
+                                                    <div class="d-flex x-gap-20 items-center">
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">Preview</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">5 question</a>
+                                                    <a href="#" class="text-14 lh-1 text-purple-1 underline">03:56</a>
+                                                    </div>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                    
+                                        </div>
+                                    </div>
+                                    </div>
+                    
+                                
+                    
+                                    <div id="reviews" class="pt-60 lg:pt-40">
+                                    <div class="blogPost -comments">
+                                        <div class="blogPost__content">
+                                        <h2 class="text-20 fw-500">Đánh giá của học viên</h2>
+                                        <div class="row x-gap-10 y-gap-10 pt-30">
+                                            <div class="col-md-4">
+                                            <div class="d-flex items-center justify-center flex-column py-50 text-center bg-light-6 rounded-8">
+                                                <div class="<%= !ratings.avg ? 'text-20' : 'text-60' %>  lh-11 text-dark-1 fw-500"><%= !ratings.avg ? 'Chưa có đánh giá' : ratings.avg.toFixed(1)  %></div>
+                                                <div class="d-flex x-gap-5 mt-10">
+                                                    <% for (let item = 1;item <= Math.floor(ratings.avg); item ++ ) {%>
+                                                        <div class="icon-star text-11 text-yellow-1"></div>
+                                                    <%}%>
+                                                </div>
+                                                <div class="mt-10">Course Rating</div>
+                                            </div>
+                                            </div>
+                    
+                                            <div class="col-md-8">
+                                            <div class="py-20 px-30 bg-light-6 rounded-8">
+                                                <div class="row y-gap-15">
+                    
+                                                <div class="col-12">
+                                                    <div class="d-flex items-center">
+                                                        <div class="d-flex x-gap-5 pr-15 items-center">
+                                                            5
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
+                                                        </div>
+                                                        <div class="progress-bar w-1/1 mr-15">
+                                                          <progress max="100" value="<%= ratings.s5.percent ? ratings.s5.percent : '0' %>"></progress>
+                                                        </div>
+                                                        
+                                                        <div class="text-dark-1"><%= ratings.s5.percent >= 0 ? ratings.s5.percent : '0' %>%</div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="col-12">
+                                                    <div class="d-flex items-center">
+                                                        <div class="d-flex x-gap-5 pr-15 items-center">
+                                                            4
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
+                                                        </div>
+                                                        <div class="progress-bar w-1/1 mr-15">
+                                                          <progress max="100" value="<%= ratings.s4.percent ? ratings.s4.percent : '0' %>"></progress>
+                                                        </div>
+                                                   
+                                                    <div class="text-dark-1"><%= ratings.s4.percent >= 0 ? ratings.s4.percent : '0' %>%</div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="col-12">
+                                                    <div class="d-flex items-center">
+                                                        <div class="d-flex x-gap-5 pr-15 items-center">
+                                                            3
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
+                                                        </div>
+                                                    <div class="progress-bar w-1/1 mr-15">
+                                                        <progress max="100" value="<%= ratings.s3.percent ? ratings.s3.percent : '0' %>"></progress>
+                                                    </div>
+                                                  
+                                                    <div class="text-dark-1"><%= ratings.s3.percent >= 0 ? ratings.s3.percent : '0' %>%</div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="col-12">
+                                                    <div class="d-flex items-center">
+                                                        <div class="d-flex x-gap-5 pr-15 items-center">
+                                                            2
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
+                                                        </div>
+                                                    <div class="progress-bar w-1/1 mr-15">
+                                                      <progress max="100" value="<%= ratings.s2.percent ? ratings.s2.percent : '0' %>"></progress>
+                                                    </div>
+                                                  
+                                                    <div class="text-dark-1"><%= ratings.s2.percent >= 0 ? ratings.s2.percent : '0' %>%</div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="col-12">
+                                                    <div class="d-flex items-center">
+                                                        <div class="d-flex x-gap-5 pr-15 items-center">
+                                                            1
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
+                                                        </div>
+                                                    <div class="progress-bar w-1/1 mr-15">
+                                                      <progress max="100" value="<%= ratings.s1.percent ? ratings.s1.percent : '0' %>"></progress>
+                                                    </div>
+                                                   
+                                                    <div class="text-dark-1"><%= ratings.s1.percent >= 0 ? ratings.s1.percent : 0 %>%</div>
+                                                    </div>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                    
+                                        <h2 class="text-20 fw-500 mt-60 lg:mt-40">Bình luận khách hàng</h2>
+                                        <ul class="comments__list mt-30">
+                                            <% for (let item of course.ratings) {%>
+                                            <li class="comments__item">
+                                            <div class="comments__item-inner md:direction-column">
+                                                <div class="comments__img mr-20">
+                                                  <img width="60" style="border-radius: 50%;" height="60" avatar="<%=item.email%>">
+                                                </div>
+                    
+                                                <div class="comments__body md:mt-15">
+                                                <div class="comments__header">
+                                                    <h4 class="text-17 fw-500 lh-15">
+                                                        <%=item.email%>
+                                                        <span class="text-13 text-light-1 fw-400">
+                                                            <%=item.createdAt.toLocaleDateString('vi-VN', { 
+                                                                year: 'numeric', 
+                                                                month: 'numeric', 
+                                                                day: 'numeric', 
+                                                                hour: 'numeric', 
+                                                                minute: 'numeric', 
+                                                                second: 'numeric' 
+                                                            })%>
+                                                        </span>
+                                                    </h4>
+                    
+                                                    <div class="stars"></div>
+                                                </div>
+                    
+                                                <div class="comments__text mt-15">
+                                                    <p><%=item.comments%></p>
+                                                </div>
+                    
+                                                </div>
+                                            </div>
+                                            </li>
+                                            <%}%>
+                                            
+                                        </ul>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="respondForm pt-60">
+                                        <h3 class="text-20 fw-500">
+                                        Viết Bình Luận
+                                        </h3>
+
+                                        <form class="contact-form respondForm__form row y-gap-30 pt-30" id="commentsForm" method="POST" action="/comments/course/<%=course.id%>">
+                                        <h4 class="text-16 fw-500">Bạn đánh giá khoá học này thế nào?</h4>
+                                          <div class="d-flex x-gap-10 pt-10">
+                                            <div id="rating">
+                                              <input type="radio" id="star5" name="star" value="5" required/>
+                                              <label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                                           
+                                              <input type="radio" id="star4" name="star" value="4" required/>
+                                              <label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                                           
+                                              <input type="radio" id="star3" name="star" value="3" required/>
+                                              <label class = "full" for="star3" title="Meh - 3 stars"></label>
+                                           
+                                              <input type="radio" id="star2" name="star" value="2" required/>
+                                              <label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                                           
+                                              <input type="radio" id="star1" name="star" value="1" required/>
+                                              <label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                                          </div>
+                                          </div>
+                    
+                                       
+                                        <div class="col-12">
+                                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Email</label>
+                                            <input type="email" name="email" id="emailComments" required placeholder="abc@gmail.com">
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung</label>
+                                            <textarea name="comments" id="comments" required placeholder="Message" rows="8"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" name="submit" id="submit" class="button -md -purple-1 text-white">
+                                            Đăng Bình Luận
+                                            </button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+              </div>
+              <section class="layout-pt-md layout-pb-lg">
+                    <div data-anim-wrap class="container">
+                      <div class="row">
+                        <div class="col-auto">
+            
+                          <div class="sectionTitle ">
+            
+                            <h2 class="sectionTitle__title ">Khoá học liên quan</h2>
+            
+                          </div>
+            
+                        </div>
+                      </div>
+            
+                      <div class="relative pt-60 lg:pt-50">
+                        <div class="overflow-hidden js-section-slider" data-gap="30" data-loop data-pagination data-nav-prev="js-courses-prev" data-nav-next="js-courses-next" data-slider-cols="xl-4 lg-3 md-2">
+                          <div class="swiper-wrapper">
+                            <% for (let i of courses) { %>
+                            <div data-anim-child="slide-up" class="swiper-slide">
+            
+                              <a href="/course/<%=i.slug%>" class="coursesCard -type-1 ">
+                                <div class="relative">
+                                  <div class="coursesCard__image overflow-hidden rounded-8">
+                                    <img class="w-1/1" src="<%=i.image%>" alt="<%=i.name%>">
+                                    <div class="coursesCard__image_overlay rounded-8"></div>
+                                  </div>
+                                  <div class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
+            
+                                  </div>
+                                </div>
+            
+                                <div class="h-100 pt-15">
+            
+                                  <h4 class="text-17 lh-15 fw-500 text-dark-1 mt-10"><%=i.name%></h4>
+            
+                            
+            
+                                  <div class="coursesCard-footer">
+                                    <div class="coursesCard-footer__author">
+                                      <img src="/img/general/avatar-1.png" alt="image">
+                                      <div>admin</div>
+                                    </div>
+            
+                                    <div class="coursesCard-footer__price">
+                                      <div>$179</div>
+                                      <div><%=i.price.toLocaleString('it-IT', {style : 'currency' ,
+                                        currency : 'VND' })%></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </a>
+            
+                            </div>
+                            <%}%>
+                          </div>
+                        </div>
+            
+            
+                        <button class="section-slider-nav -prev -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-prev">
+                          <i class="icon icon-arrow-left text-24"></i>
+                        </button>
+            
+                        <button class="section-slider-nav -next -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-next">
+                          <i class="icon icon-arrow-right text-24"></i>
+                        </button>
+            
+                      </div>
                     </div>
-                </section>
+                  </section>
                 <section class="layout-pt-lg layout-pb-lg mb-90 section-bg">
                     <div class="section-bg__item">
                         <img class="img-full rounded-16" src="/img/home-3/cta/bg.png" alt="image">
@@ -395,8 +1223,6 @@
                     </div>
                 </section>
                 <%- include('../layout/footer'); %>
-
-
 
             </div>
     </main>
@@ -435,6 +1261,118 @@
 
                 }
             })
+
+            const commentsForm = document.getElementById('commentsForm')
+            commentsForm.addEventListener('submit', async e => {
+              e.preventDefault(); 
+              const courseID = document.getElementById("courseID").value
+              let star = document.querySelector('input[name="star"]:checked').value
+              let email = document.getElementById('emailComments').value
+              let comments = document.getElementById('comments').value
+
+              try {
+                const createComments = await axios.post(`/comments/course/${courseID}`,{
+                  star,email,comments
+                })
+                star = ''
+                email =''
+                comments = ''
+                if(createComments.data){
+                  toastr.success(createComments.data)
+                } 
+              } catch (error) {
+                toastr.error(error.response.data)
+                
+              }
+            })
+            
+
+        </script>
+        <script>
+                      (function(w, d){
+
+
+function LetterAvatar (name, size) {
+
+    name  = name || '';
+    size  = size || 60;
+
+    var colours = [
+            "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", 
+            "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"
+        ],
+
+        nameSplit = String(name).toUpperCase().split(' '),
+        initials, charIndex, colourIndex, canvas, context, dataURI;
+
+
+    if (nameSplit.length == 1) {
+        initials = nameSplit[0] ? nameSplit[0].charAt(0):'?';
+    } else {
+        initials = nameSplit[0].charAt(0) + nameSplit[1].charAt(0);
+    }
+
+    if (w.devicePixelRatio) {
+        size = (size * w.devicePixelRatio);
+    }
+        
+    charIndex     = (initials == '?' ? 72 : initials.charCodeAt(0)) - 64;
+    colourIndex   = charIndex % 20;
+    canvas        = d.createElement('canvas');
+    canvas.width  = size;
+    canvas.height = size;
+    context       = canvas.getContext("2d");
+     
+    context.fillStyle = colours[colourIndex - 1];
+    context.fillRect (0, 0, canvas.width, canvas.height);
+    context.font = Math.round(canvas.width/2)+"px Arial";
+    context.textAlign = "center";
+    context.fillStyle = "#FFF";
+    context.fillText(initials, size / 2, size / 1.5);
+
+    dataURI = canvas.toDataURL();
+    canvas  = null;
+
+    return dataURI;
+}
+
+LetterAvatar.transform = function() {
+
+    Array.prototype.forEach.call(d.querySelectorAll('img[avatar]'), function(img, name) {
+        name = img.getAttribute('avatar');
+        img.src = LetterAvatar(name, img.getAttribute('width'));
+        img.removeAttribute('avatar');
+        img.setAttribute('alt', name);
+    });
+};
+
+
+// AMD support
+if (typeof define === 'function' && define.amd) {
+    
+    define(function () { return LetterAvatar; });
+
+// CommonJS and Node.js module support.
+} else if (typeof exports !== 'undefined') {
+    
+    // Support Node.js specific `module.exports` (which can be a function)
+    if (typeof module != 'undefined' && module.exports) {
+        exports = module.exports = LetterAvatar;
+    }
+
+    // But always support CommonJS module 1.1.1 spec (`exports` cannot be a function)
+    exports.LetterAvatar = LetterAvatar;
+
+} else {
+    
+    window.LetterAvatar = LetterAvatar;
+
+    d.addEventListener('DOMContentLoaded', function(event) {
+        LetterAvatar.transform();
+    });
+}
+
+})(window, document);
         </script>
 </body>
 

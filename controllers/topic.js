@@ -1,8 +1,9 @@
 const topic = require("../service/topic")
 const courseService = require("../service/course")
 const paginate = require('express-paginate');
-
-const db = require("../models")
+const ulltilService = require ('../service/ulltil')
+const db = require("../models");
+const { where } = require("sequelize");
 
 const allTopicShow = async (req, res) => {
     const topics = await topic.findAll()
@@ -12,23 +13,26 @@ const allTopicShow = async (req, res) => {
 const createTopicView = async (req, res) => {
     res.render('admin/topics/create')
 }
+const editTopicView = async (req, res) => {
+    const {id} = req.params
+    const topics = await db.Topic.findAll()
 
+    const topic = await db.Topic.findOne({where:{id}})
+    res.render('admin/topics/edit',{topic,topics})
+}
 const updateTopic = async (req, res) => {
     const topicID = req.params.id
-    const { topicName, topicSlug, seotitle, seodescription } = req.body
+    const { topicName, topicSlug, seotitle, seodescription,parent_id } = req.body
     try {
         await db.Topic.update({
             name: topicName,
-            slug: topicSlug, seotitle, seodescription
+            slug: topicSlug, seotitle, seodescription,parent_id
         }, {
             where: {
                 id: topicID
             }
         })
-        res.send({
-            success: true,
-            data: 'Cập nhật thành công'
-        })
+        res.redirect(`/admin/topic/${topicID}`)
     } catch (error) {
         console.log(error)
         res.status(500).send({
@@ -85,6 +89,7 @@ const topicSlugGetCourses = async (req, res) => {
         res.render('layout/404')
         return
     }
+    const breadcrumb = await ulltilService.getTopicWithParents(topicOne.id)
     const course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
     // res.send(course)
     // const itemCount = course.count;
@@ -104,10 +109,11 @@ const topicSlugGetCourses = async (req, res) => {
             pageCount,
             itemCount,
             currentPage: req.query.page,
+            breadcrumb,
             pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
         });
 
     }
 
 }
-module.exports = { createTopic, allTopicShow, deleteTopic, updateTopic, createTopicView, topicSlugGetCourses }
+module.exports = { createTopic, allTopicShow, deleteTopic, updateTopic, createTopicView, topicSlugGetCourses,editTopicView }

@@ -77,12 +77,24 @@
                                     <div class="breadcrumbs__item ">
                                         <a href="/">Trang chủ</a>
                                     </div>
-                                    
-                                    <div class="breadcrumbs__item ">
-                                        <a href="/topic/<%=topicOne.slug%>">
-                                            <%=topicOne.name%>
-                                        </a>
-                                    </div>
+                                    <% if (breadcrumb) {%>
+                                        <% for (let item of breadcrumb.parents) {%>
+                                            <div class="breadcrumbs__item ">
+                                                <a href="/topic/<%=item.slug%>">
+                                                <%=item.name%>
+                                                    </a>
+                                            </div>
+                                        <%}%>
+                                            <div class="breadcrumbs__item ">
+                                                <a href="/topic/<%=breadcrumb.category.slug%>"><%=breadcrumb.category.name%></a>
+                                            </div>
+                                        <%}else {%>
+                                            <div class="breadcrumbs__item ">
+                                                <a href="/topic/<%=topicOne.slug%>">
+                                                    <%=topicOne.name%>
+                                                </a>
+                                            </div>
+                                        <%}%>
 
 
 
@@ -221,7 +233,7 @@
                                         <div class="text-13 lh-1 ml-10">(1991)</div>
                                         </div>
                     
-                                        <div class="col-xl-10 text-20 lh-15 fw-700 text-dark-1 mt-10"><%= item.name %></div>
+                                        <div class="col-xl-10 text-20 lh-15 fw-700 text-dark-1 mt-10"><h3><%= item.name %></h3></div>
                                         <div class="mt-8"><%= item.description %></div>
                                     </div>
                     

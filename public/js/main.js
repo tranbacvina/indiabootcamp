@@ -213,7 +213,7 @@ function pinOnScroll() {
 
   target.forEach(el => {
     const sceneDuration = el.offsetHeight;
-    const sceneOffset = el.querySelector('.js-pin-content').offsetHeight + 70;
+    const sceneOffset = el.querySelector('.js-pin-content').offsetHeight + 370;
 
     const scene = new ScrollMagic.Scene({
       duration: sceneDuration - sceneOffset,

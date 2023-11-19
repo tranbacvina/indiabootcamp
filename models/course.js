@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.hasMany(models.driveCourse, { foreignKey: "idCourse" });
       this.hasMany(models.orderItem, { foreignKey: "courseID" });
+      this.hasMany(models.rating, { foreignKey: "courseId" } );
       this.belongsToMany(models.Topic, { through: models.course_topic, foreignKey: "course_id" } );
-
     }
   }
   course.init(
@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       requirements: DataTypes.JSON,
       image: DataTypes.STRING,
       price: DataTypes.FLOAT,
+      // TopicID:DataTypes.INTEGER, 
       priceindia: {
         type: DataTypes.FLOAT,
         defaultValue: 9900,
