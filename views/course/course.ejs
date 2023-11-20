@@ -243,7 +243,8 @@
                     
                                     <div class="col-md-auto">
                                         <div class="text-right md:text-left">
-                                        <div class="text-15 lh-1 fw-500 line-through">$179</div>
+                                        <div class="text-15 lh-1 fw-500 line-through"><%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
+                                            currency : 'VND' }); %></div>
                                         <div class="text-24 lh-1 fw-500 text-dark-1 mt-10">
                                             <%if (item.price == 0) {%>
                                                 Miễn Phí

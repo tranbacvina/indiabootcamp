@@ -54,39 +54,59 @@ const scrapingUdemy = async (link) => {
 }
 
 const cawnUdemy = async (uri) => {
-  const udemy = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=title,locale,headline,is_practice_test_course,url,published_title,image_480x270,is_in_any_ufb_content_collection,description`
+  const udemydata = await axios.get(
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers`
   )
-  return udemy
+
+
+  const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
+  return {udemydata:udemydata.data,sections:sections.data}
 }
 
 const udemy = async (uri) => {
-  console.log(uri)
-  const urlfixshare_udemy = await base_url(uri.uri)
+  const urlfixshare_udemy = await base_url(uri.url)
   const patch = urlfixshare_udemy.split('/')[4];
-  const fixURL = new URL(uri.uri).origin + '/course/' + patch
+  // const fixURL = new URL(uri.uri).origin + '/course/' + patch
   try {
-    const course = await oneCourseLink(fixURL)
+    // const course = await oneCourseLink(fixURL)
 
-    if (course) {
-      if (course.is_practice_test_course) {
-        return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
+    // if (course) {
+    //   if (course.is_practice_test_course) {
+    //     return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
+    //   }
+    //   console.log('đã tồn tại course, đang sửa topicid')
+    //   await course.addTopic(uri.topicId)
+    //   return { success: true, data: course }
+    // } else {
+    //   const data_course = await cawnUdemy(patch)
+
+    //   const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
+
+    //   const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements, uri.topicId)
+
+    //   if (newCourse.is_practice_test_course) {
+    //     return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
+    //   }
+    //   return { success: true, data: newCourse }
+    // }
+
+    const {udemydata,sections} = await cawnUdemy(patch)
+    
+    uri.originprice = udemydata.price_detail.amount
+    uri.sections = sections.curriculum_context.data
+    const [topic, created]  = await db.Topic.findOrCreate(
+      {
+        where: {name: udemydata.context_info.label.title},
+        defaults: {
+          name: udemydata.context_info.label.title,
+        
+        }
       }
-      console.log('đã tồn tại course, đang sửa topicid')
-      await course.addTopic(uri.topicId)
-      return { success: true, data: course }
-    } else {
-      const data_course = await cawnUdemy(patch)
-
-      const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
-
-      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements, uri.topicId)
-
-      if (newCourse.is_practice_test_course) {
-        return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
-      }
-      return { success: true, data: newCourse }
+      )
+    if (topic) {
+      uri.addTopic(topic.id)
     }
+    await uri.save()
 
 
 
@@ -107,7 +127,21 @@ const cawnUnica = async (link) => {
     const price = 50000
     const description_log = $('#u-des-course').html()
     const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
-
+    const sections = []
+    const panel = $('.panel').map((i, e) => {
+            const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
+           
+            const items = $(e).find('.panel-body').find('.col').map((i,e) => {
+               
+                    const title= $(e).find('.title').text().trim().replace(/\n/g, '')
+                    const content_summary=  $(e).find('.time').text().trim().replace(/\n/g, '')
+               
+                return {title,content_summary};
+           }).get()
+           sections.push({title,items,lecture_count:items.length});
+      })
+    const originprice =  parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
+    const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
 
     return {
       name,
@@ -118,6 +152,9 @@ const cawnUnica = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [],
+      sections,
+      originprice,
+      breadcrumb
     }
   } catch (error) {
     console.log(error)
@@ -127,38 +164,66 @@ const cawnUnica = async (link) => {
 }
 
 const unica = async (uri) => {
-  const urlfixshare_udemy = await base_url(uri.uri)
+  const urlfixshare_udemy = await base_url(uri.url)
   try {
-    const course = await oneCourseLink(urlfixshare_udemy)
+    // const course = await oneCourseLink(urlfixshare_udemy)
 
-    if (course) {
-      if (course.is_practice_test_course) {
-        return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
+    // if (course) {
+    //   if (course.is_practice_test_course) {
+    //     return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
+    //   }
+    //   console.log('đã tồn tại course, đang sửa topicid')
+    //    await course.setTopics(uri.topicId)
+    //   return { success: true, data: course }
+    // } else {
+    //   const { name,
+    //     description,
+    //     image,
+    //     price,
+    //     is_practice_test_course,
+    //     description_log,
+    //     whatyouwilllearn,
+    //     requirements } = await cawnUnica(urlfixshare_udemy)
+
+
+    //   const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, uri.topicId)
+    //   await newCourse.addTopics(uri.topicId)
+
+    //   if (newCourse.is_practice_test_course) {
+    //     return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
+    //   }
+    //   return { success: true, data: newCourse }
+    // }
+
+    const {
+      name,
+      description,
+      image,
+      price,
+      is_practice_test_course,
+      description_log,
+      whatyouwilllearn,
+      requirements,
+      sections,
+      originprice,
+      breadcrumb
+    }= await cawnUnica(urlfixshare_udemy)
+
+    uri.originprice = originprice
+    uri.sections = {sections: sections}
+    const [topic, created]  = await db.Topic.findOrCreate(
+      {
+        where: {name: breadcrumb},
+        defaults: {
+          name: breadcrumb,
+        
+        }
       }
-      console.log('đã tồn tại course, đang sửa topicid')
-       await course.setTopics(uri.topicId)
-      return { success: true, data: course }
-    } else {
-      const { name,
-        description,
-        image,
-        price,
-        is_practice_test_course,
-        description_log,
-        whatyouwilllearn,
-        requirements } = await cawnUnica(urlfixshare_udemy)
-
-
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, uri.topicId)
-      await newCourse.addTopics(uri.topicId)
-
-      if (newCourse.is_practice_test_course) {
-        return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
-      }
-      return { success: true, data: newCourse }
+      )
+    if (topic) {
+      uri.addTopic(topic.id)
     }
-
-
+    await uri.save()
 
   } catch (error) {
     console.log(error)

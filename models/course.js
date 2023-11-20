@@ -26,8 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       description_log: DataTypes.TEXT('long'),
       whatyouwilllearn: DataTypes.JSON,
       requirements: DataTypes.JSON,
+      sections: DataTypes.JSON,
       image: DataTypes.STRING,
       price: DataTypes.FLOAT,
+      originprice: DataTypes.FLOAT,
       // TopicID:DataTypes.INTEGER, 
       priceindia: {
         type: DataTypes.FLOAT,

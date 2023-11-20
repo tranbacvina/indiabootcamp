@@ -13583,3 +13583,11 @@ progress::-webkit-progress-value {
   background-color: var(--color-purple-1);
   border-radius: 4px; /* Border radius */
 }
+
+.blogCard__image{
+  max-height: 250px;
+}
+
+.blogCard__image img {
+  max-height: 220px;
+}

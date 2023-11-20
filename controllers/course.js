@@ -226,11 +226,12 @@ const onePublic = async (req, res) => {
        }
        
        const courses = await db.course.findAll({
-        
+        where: {
+            id: {
+                [Op.gt]: course.id
+            }
+        },
         include,
-        order: [
-            Sequelize.fn( 'RAND' ),
-          ], // Order by ID in ascending order
         limit: 8 // Limit the number of records returned (default: 10)
       });
        

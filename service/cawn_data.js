@@ -53,10 +53,11 @@ const scrapingUdemy = async (link) => {
 }
 
 const cawnUdemy = async (uri) => {
-  const udemy = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=title,locale,headline,is_practice_test_course,url,published_title,image_480x270,is_in_any_ufb_content_collection,description`
+  const udemydata = await axios.get(
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course`
   )
-  return udemy
+  const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
+  return {udemydata:udemydata.data,sections:sections.data}
 }
 
 const udemy = async (uri) => {
@@ -73,11 +74,10 @@ const udemy = async (uri) => {
       }
       return { success: true, data: course }
     } else {
-      const data_course = await cawnUdemy(patch)
-
+      const {udemydata,sections} = await cawnUdemy(patch)
       const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
 
-      const newCourse = await createNewCourse(data_course.data.title, fixURL, data_course.data.headline, data_course.data.image_480x270, 50000, data_course.data.is_practice_test_course, data_course.data.description, whatyouwilllearn, requirements,)
+      const newCourse = await createNewCourse(udemydata.title, fixURL, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements,sections.curriculum_context.data,udemydata.price_detail.amount)
 
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }

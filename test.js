@@ -3,30 +3,34 @@ const db =require('./models')
 const { Op } = require("sequelize");
 const { includes, conforms } = require("lodash");
 const axios = require('axios')
+const cheerio = require("cheerio");
+
 
 const hand_coursetoTopics = async (links) => {
         const promises = []
         for (let link of links) {
+        console.log(link.url)
+
             const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
-            const expression = link.uri.match(regex);
+            const expression = link.url.match(regex);
             switch (expression[0]) {
                 case "unica.vn":
-                    promises.push(cawn_data.unica(link))
+                     await cawn_data.unica(link)
                     break;
                 case "udemy.com":
-                    promises.push(cawn_data.udemy(link))
+                     await cawn_data.udemy(link)
                     break;
                 case "gitiho.com/khoa-hoc":
-                    promises.push(cawn_data.gitiho(link))
+                     await cawn_data.gitiho(link)
                     break;
                 default:
-                    promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+                  console.log({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
     
             }
         }
-        const result = await Promise.all(promises)
+        // const result = await Promise.all(promises)
     
-        console.log(result)
+        // console.log(result)
 }
 const slugify = str =>
   str
@@ -74,6 +78,51 @@ const getdiscovery_context = async(label_id,topicId) => {
 
     return links
 }    
+
+const caounica = async(link) => {
+    try {
+        const get_web = await axios.get(link);
+        let $ = cheerio.load(get_web.data);
+    
+        const name = $('h1').children().text()
+        const description = $("div[itemprop='description']").text().trim().replace(/^\s+|\s+$/g, '');
+        const image = `https://unica.vn/${$("meta[property='og:image']").attr("content")}`;
+        const price = 50000
+        const description_log = $('#u-des-course').html()
+        const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trim().replace(/\n/g, '') }).get()
+        const originprice =  parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
+        const sections = []
+        const panel = $('.panel').map((i, e) => {
+            const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
+           
+            const items = $(e).find('.panel-body').find('.col').map((i,e) => {
+               
+                    const title= $(e).find('.title').text().trim().replace(/\n/g, '')
+                    const content_summary=  $(e).find('.time').text().trim().replace(/\n/g, '')
+               
+                return {title,content_summary};
+           }).get()
+           sections.push({title,items,lecture_count:items.length});
+        })
+        
+        const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
+
+        console.log(breadcrumb)
+        return {
+          name,
+          description,
+          image,
+          price,
+          is_practice_test_course: false,
+          description_log,
+          whatyouwilllearn,
+          requirements: [],
+        }
+      } catch (error) {
+        console.log(error)
+        return error
+      }
+}
 const main = async() => {
     
 
@@ -102,73 +151,17 @@ const main = async() => {
 
     // }
 
-    // const courses = await db.course.findAll()
-    // for (let course of courses) {
-    //     course.description = course.description.trim().replace(/^\s+|\s+$/g, '');
-    //     await course.save()
-    // }
 
-    // const course = await db.course.findOne({
-    //     where:{
-    //         slug: 'bcg01-xay-dung-he-thong-bao-cao-quan-tri-bang-excel'
-    //     },
-    //     includes:{model: db.rating}
-    // })
-    // await course.createRating({email:"muhalog@gmail.com",comments:'Đã nhận khoá học',star:3})
-    // console.log(course)
+const udemyCourses = await db.course.findAll(
+  {
+    where: {
+      url:  {[Op.like]: '%unica%',}
+    },
+     includes:[{required:true, model: db.Topic}]
+  }
+    )
+await hand_coursetoTopics(udemyCourses)
 
-    const ratings = [
-        {
-          "id": 1,
-          "email": "fullboot@gmail.com",
-          "comments": "Đầy đủ video",
-          "star": 4,
-          "courseId": 2575,
-          "createdAt": "2023-11-16T16:46:04.000Z",
-          "updatedAt": "2023-11-16T16:46:04.000Z"
-        },
-        {
-          "id": 2,
-          "email": "muhalog@gmail.com",
-          "comments": "Đã nhận khoá học",
-          "star": 3,
-          "courseId": 2575,
-          "createdAt": "2023-11-16T16:48:32.000Z",
-          "updatedAt": "2023-11-16T16:48:32.000Z"
-        }
-      ];
-      
-      function calculateStats(ratings) {
-        const stats = {
-          "1": { count: 0, percent: 0 },
-          "2": { count: 0, percent: 0 },
-          "3": { count: 0, percent: 0 },
-          "4": { count: 0, percent: 0 },
-          "5": { count: 0, percent: 0 },
-          avg: 0
-        };
-      
-        let totalStars = 0;
-      
-        for (const rating of ratings) {
-          stats[rating.star].count++;
-          totalStars += rating.star;
-        }
-      
-        stats.avg = (totalStars / (ratings.length * 5)) * 5;
-      
-        for (const key in stats) {
-          if (key !== 'avg') {
-            const percentage = ((stats[key].count / ratings.length) * 100).toFixed(0);
-            stats[key].percent = percentage + '%';
-          }
-        }
-      
-        return { avg: stats.avg.toFixed(2), ...stats };
-      }
-      
-      const result = calculateStats(ratings);
-      console.log(result);
       
 }
 main()
