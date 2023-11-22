@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { oneCourseLink, createNewCourse } = require("../service/course")
 const { gotScraping } = require('got-scraping');
-
+const db = require("../models")
 const cheerio = require("cheerio");
 
 const getDriveUdemy = async (links) => {
@@ -104,7 +104,22 @@ const cawnUnica = async (link) => {
     const price = 50000
     const description_log = $('#u-des-course').html()
     const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
-
+    const sections = []
+    const panel = $('.panel').map((i, e) => {
+        const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
+      
+        const items = $(e).find('.panel-body').find('.col').map((i,e) => {
+          
+                const title= $(e).find('.title').text().trim().replace(/\n/g, '')
+                const content_summary=  $(e).find('.time').text().trim().replace(/\n/g, '')
+          
+            return {title,content_summary};
+      }).get()
+      sections.push({title,items,lecture_count:items.length});
+    })
+    const originprice =  parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
+    const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
+    const parent = $(".breadcumb-detail-course").children().last().prev().prev().text()
 
     return {
       name,
@@ -115,6 +130,9 @@ const cawnUnica = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [],
+      sections:{sections},
+      originprice,
+      breadcrumb,parent
     }
   } catch (error) {
     console.log(error)
@@ -141,18 +159,37 @@ const unica = async (uri) => {
         is_practice_test_course,
         description_log,
         whatyouwilllearn,
-        requirements } = await cawnUnica(urlfixshare_udemy)
+        requirements,sections,
+        originprice,
+        breadcrumb,parent } = await cawnUnica(urlfixshare_udemy)
 
 
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,)
+      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,sections,originprice)
 
-      if (newCourse.is_practice_test_course) {
-        return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
-      }
+      const [topic, created]  = await db.Topic.findOrCreate(
+        {
+          where: {name: breadcrumb},
+          defaults: {
+            name: breadcrumb,
+          
+          }
+        }
+        )
+       
+      const [cparent, createdparent]  = await db.Topic.findOrCreate(
+          {
+            where: {name: parent},
+            defaults: {
+              name: parent,
+            
+            }
+          }
+          )
+      topic.parent_id = cparent.id
+      await topic.save()
+      await newCourse.addTopics([topic.id,cparent.id])
       return { success: true, data: newCourse }
     }
-
-
 
   } catch (error) {
     console.log(error)

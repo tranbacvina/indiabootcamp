@@ -1,5 +1,4 @@
 const app = require("express")()
-
 const Routers = require("express").Router();
 const course = require("./course")
 const order = require("./order")
@@ -12,8 +11,11 @@ const comments = require("./comments")
 const blogController = require("../controllers/blog")
 const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
-const db = require("../models");
 const blog = require('./blog')
+var path = require('path');
+const { SitemapStream, streamToPromise } = require('sitemap')
+const { createGzip } = require('zlib')
+const { Readable } = require('stream')
 
 Routers.get("/", (req, res) => {
   res.render("landing_Page/landing");
@@ -38,13 +40,39 @@ Routers.get("/myip", (req, res) => {
   const fbp = req.cookies._fbp
   res.send({ ipAddress, client_user_agent, fbc, fbp })
 })
+
+let sitemap;
+Routers.get('/sitemap.xml', function (req, res) {
+  res.header('Content-Type', 'application/xml');
+  res.header('Content-Encoding', 'gzip');
+  // if we have a cached entry send it
+  if (sitemap) {
+    res.send(sitemap);
+    return;
+  }
+  try {
+    const smStream = new SitemapStream({ hostname: process.env.DOMAIN })
+    const pipeline = smStream.pipe(createGzip())
+
+    smStream.write({ url: '/',  changefreq: 'always', priority: 1 })
+    smStream.write({ url: '/sitemaps/course.xml',  changefreq: 'daily',  priority: 0.85 })
+    smStream.write({ url: '/sitemaps/blog.xml',changefreq: 'daily',  priority: 0.85})   
+    streamToPromise(pipeline).then(sm => sitemap = sm)
+    smStream.end()
+    pipeline.pipe(res).on('error', (e) => {throw e})
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+});
+
+Routers.get('/sitemaps/:sitemap', (req, res) => {
+  const { sitemap } = req.params;
+  console.log(sitemap)
+  return res.sendFile(path.join(__dirname, '../sitemaps', sitemap));
+});
+
 Routers.get("/:slug", blogController.oneBlogPublic)
-
-
-
-
-
-
 
 
 Routers.get('*', function (req, res) {

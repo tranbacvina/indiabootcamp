@@ -106,8 +106,9 @@ const caounica = async(link) => {
         })
         
         const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
+        const parent = $(".breadcumb-detail-course").children().last().prev().prev().text()
 
-        console.log(breadcrumb)
+        console.log(parent)
         return {
           name,
           description,
@@ -123,9 +124,53 @@ const caounica = async(link) => {
         return error
       }
 }
-const main = async() => {
-    
 
+const cawnGitio = async (link) => {
+    try {
+        const get_web = await axios.get(link);
+        let $ = cheerio.load(get_web.data);
+
+        const name = $("h1").text();
+        const description = $("meta[name='description']").attr("content")
+        const image = $("meta[property='og:image']").attr("content")
+
+        const price = 50000
+        const description_log = $('.cou-description').html()
+        const whatyouwilllearn = $('.pixcel-content').map((i, e) => { return $(e).text().trim().replace(/[\t\n]/gm, '') }).get()
+        const sections = []
+
+        const contentList = $('.content-list').map((i,e) => {
+            const title = $(e).find('h3').text()
+            const items = $(e).find('li').map((i,e)=> {
+                const title = $(e).find('.lecture-title').text().split('.')[1].trim().replace(/[\t\n]/gm, '')
+                const content_summary = $(e).find('.duration').text().trim().replace(/[\t\n]/gm, '')
+                return {title,content_summary};
+            }).get()
+            sections.push({title,items,lecture_count:items.length});
+        })
+        
+        const originprice = parseInt($('.sale-price-display-js:first').text().replace(/[,.đ]/g, ''))
+        const breadcrumb = $(".gitiho-breadcrumb").children().last().text().trim()
+        const parent = $(".gitiho-breadcrumb").children().last().prev().text().trim()
+        return {
+            name,
+            description,
+            image,
+            price,
+            is_practice_test_course: false,
+            description_log,
+            whatyouwilllearn,
+            requirements: [],sections,
+            originprice,breadcrumb,parent
+        }
+    } catch (error) {
+    console.log(error)
+    return error
+    }
+  
+  }
+const main = async() => {
+    // await cawnGitio('https://gitiho.com/khoa-hoc/pbig01-thanh-thao-microsoft-powerbi-de-truc-quan-hoa-va-phan-tich-du-lieu')
     // const getTopics = await axios.get('https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=5726&source_page=topic_page&locale=vi_VN&currency=usd&skip_price=true')
     // for (let item of getTopics.data.units[3].items) {
     //     console.log('begin' , item.display_name)
@@ -154,14 +199,17 @@ const main = async() => {
 
 const udemyCourses = await db.course.findAll(
   {
-    where: {
-      url:  {[Op.like]: '%unica%',}
-    },
-     includes:[{required:true, model: db.Topic}]
+    includes:{
+        model: db.Topic,
+        where:{ id : 898}
+    }
+     
   }
     )
-await hand_coursetoTopics(udemyCourses)
+// await hand_coursetoTopics(udemyCourses)
 
-      
+  for (let topic of udemyCourses) {
+    await topic.removeTopic(898)
+  }
 }
 main()
