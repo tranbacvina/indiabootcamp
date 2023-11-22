@@ -210,6 +210,20 @@ const cawnGitio = async (link) => {
     const description_log = $('.cou-description').html()
     const whatyouwilllearn = $('.pixcel-content').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
 
+    const sections = []
+    const contentList = $('.content-list').map((i,e) => {
+      const title = $(e).find('h3').text()
+      const items = $(e).find('li').map((i,e)=> {
+          const title = $(e).find('.lecture-title').text().split('.')[1].trim().replace(/[\t\n]/gm, '')
+          const content_summary = $(e).find('.duration').text().trim().replace(/[\t\n]/gm, '')
+          return {title,content_summary};
+      }).get()
+      sections.push({title,items,lecture_count:items.length});
+  })
+  
+  const originprice = parseInt($('.sale-price-display-js:first').text().replace(/[,.đ]/g, ''))
+  const breadcrumb = $(".gitiho-breadcrumb").children().last().text().trim()
+  const parent = $(".gitiho-breadcrumb").children().last().prev().text().trim()
 
     return {
       name,
@@ -220,6 +234,8 @@ const cawnGitio = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [],
+      sections:{sections},
+          originprice,breadcrumb,parent
     }
   } catch (error) {
     console.log(error)
@@ -246,11 +262,21 @@ const gitiho = async (uri) => {
         is_practice_test_course,
         description_log,
         whatyouwilllearn,
-        requirements } = await cawnGitio(urlfixshare_udemy)
+        requirements,sections,
+        originprice,breadcrumb,parent } = await cawnGitio(urlfixshare_udemy)
 
-
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,)
-
+        const [topic, created]  = await db.Topic.findOrCreate(
+          {
+            where: {name: breadcrumb},
+            defaults: {
+              name: breadcrumb,
+            
+            }
+          }
+          )
+          
+      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,sections,originprice)
+      await newCourse.addTopic(topic.id)
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
       }
