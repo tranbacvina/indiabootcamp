@@ -12,7 +12,7 @@ const stripe = require("./service/stripe")
 var useragent = require('express-useragent');
 const urlService = require('./service/url')
 app.use(useragent.express());
-
+const sitemmapService = require('./service/sitemap')
 // Middleware để xoá dấu '/' cuối cùng của mỗi URL
 app.use((req, res, next) => {
   if (req.path[req.path.length - 1] === '/' && req.path.length > 1) {
@@ -61,9 +61,16 @@ app.use(
 app.use("/", Routers);
 
 cron.schedule('* * * * *', async () => {
-  // await cronBank.cron()
+  await cronBank.cron()
 });
 
+cron.schedule('0 1 * * *', async () => {
+  await sitemmapService.blogSitemap()
+  await sitemmapService.courseSitemap()
+}, {
+  scheduled: true,
+  timezone: "Asia/Ho_Chi_Minh"
+});
 
 app.listen(port, async () => {
   console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
