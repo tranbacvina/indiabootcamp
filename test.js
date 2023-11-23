@@ -199,17 +199,16 @@ const main = async() => {
 
 const udemyCourses = await db.course.findAll(
   {
-    includes:{
-        model: db.Topic,
-        where:{ id : 898}
+    where: {
+        url: {
+            [Op.like]: '%udemy%'
+        }
     }
      
   }
     )
-// await hand_coursetoTopics(udemyCourses)
+await hand_coursetoTopics(udemyCourses)
 
-  for (let topic of udemyCourses) {
-    await topic.removeTopic(898)
-  }
+
 }
 main()

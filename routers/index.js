@@ -16,12 +16,14 @@ var path = require('path');
 const { SitemapStream, streamToPromise } = require('sitemap')
 const { createGzip } = require('zlib')
 const { Readable } = require('stream')
+const courseController = require("../controllers/course")
 
 Routers.get("/", (req, res) => {
   res.render("landing_Page/landing");
 });
 
 Routers.use("/course", course)
+Routers.use("/tim-kiem", courseController.timKiemPage)
 Routers.use("/comments", comments)
 Routers.use("/blog", blog)
 Routers.use("/topic", topic)

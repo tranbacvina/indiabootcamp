@@ -82,6 +82,28 @@ const udemy = async (uri) => {
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
       }
+      const [topic, created]  = await db.Topic.findOrCreate(
+        {
+          where: {name: udemydata.context_info.label.title},
+          defaults: {
+            name: udemydata.context_info.label.title,
+          
+          }
+        }
+        )
+       
+      const [cparent, createdparent]  = await db.Topic.findOrCreate(
+          {
+            where: {name: udemydata.context_info.category.title},
+            defaults: {
+              name: udemydata.context_info.category.title,
+            
+            }
+          }
+          )
+      topic.parent_id = cparent.id
+      await topic.save()
+      await newCourse.addTopics([topic.id,cparent.id])
       return { success: true, data: newCourse }
     }
 

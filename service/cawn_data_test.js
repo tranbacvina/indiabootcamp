@@ -103,9 +103,18 @@ const udemy = async (uri) => {
         }
       }
       )
-    if (topic) {
-      uri.addTopic(topic.id)
-    }
+      const [cparent, createdparent]  = await db.Topic.findOrCreate(
+        {
+          where: {name: udemydata.context_info.category.title},
+          defaults: {
+            name: udemydata.context_info.category.title,
+          
+          }
+        }
+        )
+    topic.parent_id = cparent.id
+    await topic.save()
+    await uri.addTopics([topic.id,cparent.id])
     await uri.save()
 
 

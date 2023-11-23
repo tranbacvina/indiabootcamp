@@ -120,6 +120,26 @@ const all = async (req, res) => {
     }
 };
 
+const timKiemPage = async (req, res) => {
+    const { text, limit, } = req.query
+    const course = await findMany(text, limit, req.skip)
+    if (course.length === 0 || !text) {
+
+        res.render('layout/404')
+    } else {
+        const itemCount = course.count;
+        const pageCount = Math.ceil(course.count / req.query.limit);
+        res.render('course/timkiem', {
+            course: course.rows,
+            pageCount,
+            itemCount,
+            currentPage: req.query.page,
+            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        });
+
+    }
+};
+
 const allCourseTopic = async (req, res) => {
     const { text, limit, } = req.query
     const { slug } = req.params
@@ -275,4 +295,4 @@ const deleteCourseColtroler = async(req,res)=>{
     await deleteCourse(id)
     res.redirect('/admin/course')
 }
-module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse ,deleteCourseColtroler,addDriveToCourse,delDriveToCourse}
+module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse ,deleteCourseColtroler,addDriveToCourse,delDriveToCourse,timKiemPage}
