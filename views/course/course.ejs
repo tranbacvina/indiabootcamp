@@ -7,16 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        <%=topicOne.seotitle%>
+        <%=topicOne.seotitle ? topicOne.seotitle : "Khoá học " + topicOne.name %> - <%= locals.formattedDate %> 
     </title>
-    <script type="application/ld+json">
-        <%-JSON.stringify(structuredDataCourse)%>
-    </script>
  
     <link rel="canonical" href="<%=canonicalURL%>" />
 
     <meta name="title" content="<%=topicOne.seotitle%>" />
-    <meta name="description" content="<%=topicOne.seodescription%>" />
+    <meta name="description" content="<%=topicOne.seodescription %>  " />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">

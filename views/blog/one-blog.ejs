@@ -12,23 +12,7 @@
     <meta name="title" content="<%= blog.title %>" />
     <meta name="description" content="<%= blog.title %>" />
     <link rel="canonical" href="<%=canonicalURL%>" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": "<%= blog.title %>",
-      "image": [
-        "https://fullbootcamp.com/<%= blog.thumbnail %>"
-       ],
-      "datePublished": "<%= blog.createdAt %>",
-      "dateModified": "<%= blog.updatedAt %>",
-      "author": [{
-          "@type": "Organization",
-          "name": "Full Bootcamp",
-          "url": "https://fullbootcamp.com"
-        }]
-    }
-    </script>
+   
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">

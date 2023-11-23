@@ -197,18 +197,28 @@ const main = async() => {
     // }
 
 
-const udemyCourses = await db.course.findAll(
-  {
-    where: {
-        url: {
-            [Op.like]: '%udemy%'
-        }
-    }
+// const udemyCourses = await db.course.findAll(
+//   {
+//     where: {
+//         url: {
+//             [Op.like]: '%udemy%'
+//         }
+//     }
      
-  }
-    )
-await hand_coursetoTopics(udemyCourses)
+//   }
+//     )
+// await hand_coursetoTopics(udemyCourses)
 
-
+const months = [
+    'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+  ];
+  
+  const currentDate = new Date();
+  const currentMonth = months[currentDate.getMonth()];
+  const currentYear = currentDate.getFullYear();
+  
+  const formattedDate = `${currentMonth} ${currentYear}`;
+  console.log(formattedDate)
 }
 main()
