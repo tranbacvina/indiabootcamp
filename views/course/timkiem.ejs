@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+    <title>
+        Tim kiếm Full Bootcamp
+    </title>
+
+    <link rel="canonical" href="<%=canonicalURL%>" />
+
+    <meta name="title" content="Tim kiếm Full Bootcamp" />
+    <meta name="description" content="Danh sách khoá học của Full Bootcamp" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
+    <link rel="manifest" href="/img/redketchup/site.webmanifest">
+    <meta content="noindex,nofollow" name="robots" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%=canonicalURL%>" />
+    <meta property="og:title" content="Tim kiếm Full Bootcamp" />
+    <meta property="og:description" content="Danh sách khoá học của Full Bootcamp" />
+    <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <%- include('../layout/analytics'); %>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+
+    <main class="main-content  ">
+        <%- include('../layout/header'); %>
+
+                <section class="page-header -type-1">
+                    <div class="container">
+                        <div class="page-header__content">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                        <h1 class="page-header__title">
+                                            Tìm kiếm
+                                        </h1>
+
+                                    </div>
+
+                                    <div data-anim="slide-up delay-2" class="is-in-view">
+
+                                        <p class="page-header__text">
+                                            kết quả tìm kiếm
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="layout-pt-md layout-pb-md">
+                    <div data-anim="slide-up delay-2" class="container is-in-view">
+                        <div class="accordion js-accordion">
+                            <div class="accordion__item">
+                                <div class="row y-gap-20 items-center justify-between pb-30">
+                                    <div class="col-auto">
+                                        <div class="text-14 lh-12">Hiển thị <span class="text-dark-1 fw-500">
+                                                <%=itemCount%>
+                                            </span>
+                                            kết quả
+                                        </div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="row x-gap-20 y-gap-20">
+                                            <div class="col-auto">
+                                                <div class="d-flex items-center">
+                                                    <div class="text-14 lh-12 fw-500 text-dark-1 mr-20">Sort by:</div>
+
+                                                    <div class="dropdown js-dropdown js-category-active">
+                                                        <div class="dropdown__button d-flex items-center text-14 rounded-8 px-20 py-10 text-14 lh-12"
+                                                            data-el-toggle=".js-category-toggle"
+                                                            data-el-toggle-active=".js-category-active">
+                                                            <span class="js-dropdown-title">Most Popular</span>
+                                                            <i class="icon text-9 ml-40 icon-chevron-down"></i>
+                                                        </div>
+
+                                                        <div
+                                                            class="toggle-element -dropdown -dark-bg-dark-2 -dark-border-white-10 js-click-dropdown js-category-toggle">
+                                                            <div class="text-14 y-gap-15 js-dropdown-list">
+
+                                                                <div><a href="#"
+                                                                        class="d-block js-dropdown-link">Animation</a>
+                                                                </div>
+
+                                                                <div><a href="#"
+                                                                        class="d-block js-dropdown-link">Design</a>
+                                                                </div>
+
+                                                                <div><a href="#"
+                                                                        class="d-block js-dropdown-link">Illustration</a>
+                                                                </div>
+
+                                                                <div><a href="#"
+                                                                        class="d-block js-dropdown-link">Business</a>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-auto">
+                                                <div class="accordion__button w-unset">
+                                                    <button class="button h-50 px-30 -light-7 text-purple-1">
+                                                        <i class="icon-filter mr-10"></i>
+                                                        Filter
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion__content">
+                                    <div class="sidebar -courses px-30 py-30 rounded-8 bg-light-3 mb-50">
+                                        <div class="row x-gap-60 y-gap-40">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row y-gap-60">
+                            <% for (let item of course) { %>
+
+
+
+                                <div class="col-xl-3 col-lg-4 col-md-6">
+                                    <a href="/course/<%=item.slug%>" class="coursesCard -type-1 ">
+                                        <div class="relative">
+                                            <div class="coursesCard__image overflow-hidden rounded-8">
+                                                <img class="w-1/1" width="300" height="150" src="<%= item.image %>"
+                                                    alt="image">
+                                                <div class="coursesCard__image_overlay rounded-8"></div>
+                                            </div>
+                                            <div class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="h-100 pt-15">
+
+                                            <h3 class="text-18 lh-15 fw-700 text-dark-1 mt-10">
+                                                <%= item.name %>
+                                            </h3>
+
+
+                                            <div class="coursesCard-footer">
+                                                <%if (item.price == 0) {%>
+                                                    <div class="coursesCard-footer__price">
+                                                        <div><%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
+                                                            currency : 'VND' }); %></div>
+                                                        <div>Miễn phí</div>
+                                                    </div>
+                                                <%} else {%>    
+                                                <div class="coursesCard-footer__price">
+                                                    <div><%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
+                                                        currency : 'VND' }); %></div>
+                                                    <div>
+                                                        <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
+                                                            currency : 'VND' }); %>
+                                                    </div>
+                                                </div>
+                                                <%}%>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <% } %>
+
+
+
+                        </div>
+
+                        <div class="row justify-center pt-90 lg:pt-50">
+                            <div class="col-auto">
+                                <div class="pagination -buttons">
+                                    <% if (paginate.hasPreviousPages) { %>
+                                        <button class="pagination__button -prev">
+                                            <i class="icon icon-chevron-left"></i>
+                                        </button>
+                                        <%}%>
+
+                                            <div class="pagination__count">
+                                                <% pages.forEach(function(page) { %>
+                                                    <a href="<%=page.url%>"
+                                                        class="<%- currentPage == page.number ? '-count-is-active' : '' %> ">
+                                                        <%=page.number%>
+                                                    </a>
+                                                    <% }); %>
+                                            </div>
+                                            <% if (paginate.hasNextPages(pageCount)) { %>
+                                                <button class="pagination__button -next">
+                                                    <i class="icon icon-chevron-right"></i>
+                                                </button>
+                                                <%}%>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+    </main>
+
+    <%- include('../layout/footerjs'); %>
+
+</body>
+
+
+</html>
