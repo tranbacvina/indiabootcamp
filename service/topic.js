@@ -13,7 +13,14 @@ const findOne = async (slug) => {
     return allTopics
 }
 
+const findAllTopicChild = async(parent_id) => {
+    return await db.Topic.findAll({
+        where: {
+            parent_id 
+        }
+    })
+}
 // const findAllwithCourse = async () => {
 
 // }
-module.exports = { findAll, findOne }
+module.exports = { findAll, findOne ,findAllTopicChild}

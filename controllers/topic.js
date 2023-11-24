@@ -91,10 +91,14 @@ const topicSlugGetCourses = async (req, res) => {
     }
     const breadcrumb = await ulltilService.getTopicWithParents(topicOne.id)
     const course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
-    // res.send(course)
-    // const itemCount = course.count;
-    // const pageCount = Math.ceil(course.count / req.query.limit);
-    // const structuredDataCourse = courseService.createStrucDataCourses(course.rows)
+    let childTopics
+    if (topicOne.parent_id){
+        childTopics = await topic.findAllTopicChild(topicOne.parent_id)
+    } else {
+        childTopics = await topic.findAllTopicChild(topicOne.id)
+
+    }
+
     if (course.length === 0) {
 
         res.render('layout/404')
@@ -105,7 +109,7 @@ const topicSlugGetCourses = async (req, res) => {
         res.render('course/course', {
             course: course.rows,
             topicOne,
-            // structuredDataCourse,
+            childTopics,
             pageCount,
             itemCount,
             currentPage: req.query.page,

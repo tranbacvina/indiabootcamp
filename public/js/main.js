@@ -1174,7 +1174,9 @@ function SectionSlider() {
       loopAdditionalSlides: 1,
       preloadImages: false,
       lazy: true,
-      
+      grid: {
+        rows: 2,
+      },
       scrollbar: scrollbar,
       pagination: pagination,
 

@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        <%=topicOne.seotitle ? topicOne.seotitle : "Khoá học " + topicOne.name %> - <%= locals.formattedDate %> 
+        <%=topicOne.seotitle ? topicOne.seotitle : "Khoá học " + topicOne.name %> - <%= locals.formattedDate %>
     </title>
- 
+
     <link rel="canonical" href="<%=canonicalURL%>" />
 
     <meta name="title" content="<%=topicOne.seotitle%>" />
@@ -50,6 +50,33 @@
     <link rel="stylesheet" href="/css/tingle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <%- include('../layout/analytics'); %>
+        <style>
+            .swiper-item-tag {
+                width: auto !important;
+            }
+
+            .list-tag .item-tag .title-tag {
+                padding: 12px;
+                border: 1px solid #e1e1e1;
+                border-radius: 5px;
+            }
+
+
+            .tag-btn-next {
+                right: -30px;
+            }
+
+            .tag-btn-prev {
+                left: -30px;
+            }
+
+            .tag-btn {
+                font-size: 40px;
+                position: absolute;
+                top: 50%;
+                z-index: 2;
+            }
+        </style>
 </head>
 
 <body class="preloader-visible" data-barba="wrapper">
@@ -78,20 +105,22 @@
                                         <% for (let item of breadcrumb.parents) {%>
                                             <div class="breadcrumbs__item ">
                                                 <a href="/topic/<%=item.slug%>">
-                                                <%=item.name%>
-                                                    </a>
-                                            </div>
-                                        <%}%>
-                                            <div class="breadcrumbs__item ">
-                                                <a href="/topic/<%=breadcrumb.category.slug%>"><%=breadcrumb.category.name%></a>
-                                            </div>
-                                        <%}else {%>
-                                            <div class="breadcrumbs__item ">
-                                                <a href="/topic/<%=topicOne.slug%>">
-                                                    <%=topicOne.name%>
+                                                    <%=item.name%>
                                                 </a>
                                             </div>
-                                        <%}%>
+                                            <%}%>
+                                                <div class="breadcrumbs__item ">
+                                                    <a href="/topic/<%=breadcrumb.category.slug%>">
+                                                        <%=breadcrumb.category.name%>
+                                                    </a>
+                                                </div>
+                                                <%}else {%>
+                                                    <div class="breadcrumbs__item ">
+                                                        <a href="/topic/<%=topicOne.slug%>">
+                                                            <%=topicOne.name%>
+                                                        </a>
+                                                    </div>
+                                                    <%}%>
 
 
 
@@ -100,6 +129,37 @@
                         </div>
                     </div>
                 </section>
+
+                <div class="container pt-20">
+                    <p class="text-20 lh-1 text-dark-1 fw-500">Tất cả khóa học <%=topicOne.name%></p>
+                    <div class="relative pt-20">
+                        <div class="swiper mySwiper overflow-hidden">
+                            <div class="swiper-wrapper list-tag">
+                                <% for (let i of childTopics) {%>
+                                    <div class="swiper-slide item-tag swiper-item-tag">
+                                        <a type="button" href="/topic/<%= i.slug %>">
+                                            <div style="background-color: white; padding: 5px 15px !important;"
+                                                class="title-tag text-center ">
+                                                <%= i.name %>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <%}%>
+                            </div>
+                            <div class="col-auto sm:d-none tag-btn-prev tag-btn">
+                                <button class="d-flex items-center text-24 arrow-left-hover js-prev">
+                                    <i class="icon icon-arrow-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-auto sm:d-none tag-btn-next tag-btn">
+                                <button class="d-flex items-center text-24 arrow-right-hover js-next">
+                                    <i class="icon icon-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
 
 
                 <section class="page-header -type-1">
@@ -110,7 +170,7 @@
                                     <div data-anim="slide-up delay-1" class="is-in-view">
 
                                         <h1 class="page-header__title">
-                                            <%=topicOne.seotitle%>
+                                            <%=topicOne.seotitle ? topicOne.seotitle : topicOne.name%>
                                         </h1>
 
                                     </div>
@@ -128,63 +188,70 @@
                     </div>
                 </section>
 
-
-                <section class="layout-pt-md layout-pb-md">
+                <section class="layout-pb-md">
                     <div data-anim="slide-up delay-2" class="container is-in-view">
-                        
 
                         <div class="row y-gap-60">
                             <% for (let item of course) { %>
 
                                 <div class="col-12 border-bottom-light">
-                                    <a href="/course/<%=item.slug%>" class="coursesCard -type-1 row y-gap-20 flex-row items-center">
-                                    <div class="col-xl-3 col-lg-4">
-                                        <div class="coursesCard__image rounded-8 relative">
-                                        <img class="w-1/1 rounded-8" src="<%= item.image %>" alt="image">
-                                        <div class="coursesCard__image_overlay rounded-8"></div>
+                                    <a href="/course/<%=item.slug%>"
+                                        class="coursesCard -type-1 row y-gap-20 flex-row items-center">
+                                        <div class="col-xl-3 col-lg-4">
+                                            <div class="coursesCard__image rounded-8 relative">
+                                                <img class="w-1/1 rounded-8" src="<%= item.image %>" alt="image">
+                                                <div class="coursesCard__image_overlay rounded-8"></div>
+                                            </div>
                                         </div>
-                                    </div>
-                    
-                                    <div class="col">
-                                        <div class="d-flex items-center">
-                                        <div class="text-14 lh-1 text-yellow-1 mr-10">4.5</div>
-                                        <div class="d-flex x-gap-5 items-center">
-                                            <div class="icon-star text-9 text-yellow-1"></div>
-                                            <div class="icon-star text-9 text-yellow-1"></div>
-                                            <div class="icon-star text-9 text-yellow-1"></div>
-                                            <div class="icon-star text-9 text-yellow-1"></div>
-                                            <div class="icon-star text-9 text-yellow-1"></div>
+
+                                        <div class="col">
+                                            <div class="d-flex items-center">
+                                                <div class="text-14 lh-1 text-yellow-1 mr-10">4.5</div>
+                                                <div class="d-flex x-gap-5 items-center">
+                                                    <div class="icon-star text-9 text-yellow-1"></div>
+                                                    <div class="icon-star text-9 text-yellow-1"></div>
+                                                    <div class="icon-star text-9 text-yellow-1"></div>
+                                                    <div class="icon-star text-9 text-yellow-1"></div>
+                                                    <div class="icon-star text-9 text-yellow-1"></div>
+                                                </div>
+                                                <div class="text-13 lh-1 ml-10">(1991)</div>
+                                            </div>
+
+                                            <div class="col-xl-10 text-20 lh-15 fw-700 text-dark-1 mt-10">
+                                                <h3>
+                                                    <%= item.name %>
+                                                </h3>
+                                            </div>
+                                            <div class="mt-8">
+                                                <%= item.description %>
+                                            </div>
                                         </div>
-                                        <div class="text-13 lh-1 ml-10">(1991)</div>
+
+                                        <div class="col-auto md:d-none">
+                                            <div class="line -vertical -h-120 bg-light-5 ml-60 lg:ml-20 md:ml-0"></div>
                                         </div>
-                    
-                                        <div class="col-xl-10 text-20 lh-15 fw-700 text-dark-1 mt-10"><h3><%= item.name %></h3></div>
-                                        <div class="mt-8"><%= item.description %></div>
-                                    </div>
-                    
-                                    <div class="col-auto md:d-none">
-                                        <div class="line -vertical -h-120 bg-light-5 ml-60 lg:ml-20 md:ml-0"></div>
-                                    </div>
-                    
-                                    <div class="col-md-auto">
-                                        <div class="text-right md:text-left">
-                                        <div class="text-15 lh-1 fw-500 line-through"><%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                            currency : 'VND' }); %></div>
-                                        <div class="text-24 lh-1 fw-500 text-dark-1 mt-10">
-                                            <%if (item.price == 0) {%>
-                                                Miễn Phí
-                                            <%} else {%>  
-                                                <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                            currency : 'VND' }); %>
-                                            <%}%>
+
+                                        <div class="col-md-auto">
+                                            <div class="text-right md:text-left">
+                                                <div class="text-15 lh-1 fw-500 line-through">
+                                                    <%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
+                                                        currency : 'VND' }); %>
+                                                </div>
+                                                <div class="text-24 lh-1 fw-500 text-dark-1 mt-10">
+                                                    <%if (item.price==0) {%>
+                                                        Miễn Phí
+                                                        <%} else {%>
+                                                            <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
+                                                                currency : 'VND' }); %>
+                                                                <%}%>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        </div>
-                                        
-                                    </div>
                                     </a>
                                 </div>
-                            <% } %>
-                            
+                                <% } %>
+
                         </div>
 
                         <div class="row justify-center pt-90 lg:pt-50">
@@ -223,6 +290,16 @@
     <%- include('../layout/footerjs'); %>
 
 </body>
+<script>
+    var swiperTag = new Swiper(".mySwiper", {
+        slidesPerView: "auto",
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.tag-btn-next',
+            prevEl: '.tag-btn-prev',
+        },
 
+    });
+</script>
 
 </html>
