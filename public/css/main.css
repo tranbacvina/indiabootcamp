@@ -13591,3 +13591,12 @@ progress::-webkit-progress-value {
 .blogCard__image img {
   max-height: 220px;
 }
+
+.titleCourseCard{
+  min-height: 55px;
+  max-height: 55px;
+}
+
+.coursesCard__image{
+  max-height: 150px;
+}

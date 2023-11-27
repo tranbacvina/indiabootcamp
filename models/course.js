@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.driveCourse, { foreignKey: "idCourse" });
-      this.hasMany(models.orderItem, { foreignKey: "courseID" });
-      this.hasMany(models.rating, { foreignKey: "courseId" } );
+      this.hasMany(models.driveCourse, { foreignKey: "idCourse" ,onDelete: 'SET NULL',});
+      this.hasMany(models.orderItem, { foreignKey: "courseID",onDelete: 'SET NULL', });
+      this.hasMany(models.rating, { foreignKey: "courseId",onDelete: 'SET NULL', } );
       this.belongsToMany(models.Topic, { through: models.course_topic, foreignKey: "course_id" } );
     }
   }

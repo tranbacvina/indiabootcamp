@@ -7,25 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        Tim kiếm Full Bootcamp
+        Kết quả tìm kiếm <%=text ? text : ''%>
     </title>
 
     <link rel="canonical" href="<%=canonicalURL%>" />
 
-    <meta name="title" content="Tim kiếm Full Bootcamp" />
-    <meta name="description" content="Danh sách khoá học của Full Bootcamp" />
+    <meta name="title" content="Kết quả tìm kiếm <%=text ? text : ''%>" />
+    <meta name="description" content="Danh sách Kết quả tìm kiếm <%=text ? text : ''%>" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
     <link rel="manifest" href="/img/redketchup/site.webmanifest">
-    <meta content="noindex,nofollow" name="robots" />
+    <meta content="<%= course.length > 0 ? 'index, follow' : 'noindex,nofollow'%>" name="robots" />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="Tim kiếm Full Bootcamp" />
-    <meta property="og:description" content="Danh sách khoá học của Full Bootcamp" />
+    <meta property="og:title" content="Kết quả tìm kiếm <%=text ? text : ''%>" />
+    <meta property="og:description" content="Danh sách Kết quả tìm kiếm <%=text ? text : ''%>" />
     <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
-
+    <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,18 +71,11 @@
                                     <div data-anim="slide-up delay-1" class="is-in-view">
 
                                         <h1 class="page-header__title">
-                                            Tìm kiếm
+                                            Kết quả tìm kiếm <%=text ? text : ''%>
                                         </h1>
 
                                     </div>
 
-                                    <div data-anim="slide-up delay-2" class="is-in-view">
-
-                                        <p class="page-header__text">
-                                            kết quả tìm kiếm
-                                        </p>
-
-                                    </div>
                                 </div>
                             </div>
                         </div>

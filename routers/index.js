@@ -28,7 +28,7 @@ Routers.use((req, res, next) => {
   const currentMonth = months[currentDate.getMonth()];
   const currentYear = currentDate.getFullYear();
   
-  const formattedDate = `${currentMonth} ${currentYear}`;
+  const formattedDate = `${currentMonth}/${currentYear}`;
   
   res.locals.formattedDate = formattedDate
   next();

@@ -123,21 +123,18 @@ const all = async (req, res) => {
 const timKiemPage = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
-    if (course.length === 0 || !text) {
+  
+    const itemCount = course.count;
+    const pageCount = Math.ceil(course.count / req.query.limit);
+    res.render('course/timkiem', {
+        course: course.rows,
+        pageCount,
+        itemCount,
+        currentPage: req.query.page,text,
+        pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+    });
 
-        res.render('layout/404')
-    } else {
-        const itemCount = course.count;
-        const pageCount = Math.ceil(course.count / req.query.limit);
-        res.render('course/timkiem', {
-            course: course.rows,
-            pageCount,
-            itemCount,
-            currentPage: req.query.page,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
-        });
-
-    }
+   
 };
 
 const allCourseTopic = async (req, res) => {
@@ -221,39 +218,30 @@ const onePublic = async (req, res) => {
 
     if (course) {
         let breadcrumb
-        let include
-
         const ratings =  ultrilSevice.calculateStats(course.ratings)
-        
         const structuredDataCourse = createStrucDataOneCourse(course)
-
-        
-
         const originTopic = course.Topics.filter(item => item.parent_id !== null)[0]
 
        if(originTopic){
         breadcrumb = await ultrilSevice.getTopicWithParents(originTopic.id)
-
-        //nếu course trong topic thì lấy danh sách liên quan theo topic ID
-        include=[{model: db.Topic,where: {
-            id: originTopic.id
-        }}]
        } 
-       if (course.Topics.length !== 0){
-        include=[{model: db.Topic,where: {
-            id: course.Topics[0].id
-        }}]
-       }
-       
+      
        const courses = await db.course.findAll({
         where: {
             id: {
                 [Op.gt]: course.id
             }
         },
-        include,
-        limit: 8 // Limit the number of records returned (default: 10)
-      });
+        include: [
+            {
+                model: db.Topic,
+                where: {
+                    id: originTopic.id
+                }
+            }],
+        limit: 16 
+       } 
+      );
        
         res.render("course/one-course", { course, structuredDataCourse,breadcrumb,ratings,courses });
     } else {

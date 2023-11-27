@@ -8,7 +8,7 @@ const parsedURL = url.parse(originalURL, true);
 const queryParameters = parsedURL.query;
 
 // Lọc và xây dựng lại URL chỉ với tham số 'page'
-const filteredQuery = { page: queryParameters.page }; // Chỉ giữ lại tham số 'page'
+const filteredQuery = { page: queryParameters.page}; // Chỉ giữ lại tham số 'page'
 const newURL = url.format({
   protocol: parsedURL.protocol,
   host: parsedURL.host,

@@ -24,7 +24,7 @@
     <meta property="og:title" content="<%=course.name%>" />
     <meta property="og:description" content="<%=course.description%>" />
     <meta property="og:image" content="<%=course.image%>" />
-
+    <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -306,7 +306,7 @@
                                     </div>
                     
                                     <div id="overview" class="pt-60 lg:pt-40 to-over">
-                                    <h4 class="text-18 fw-500">Mô tả</h4>
+                                    <h3 class="text-18 fw-500">Mô tả</h3>
                     
                                     <div class="show-more mt-30 js-show-more">
                                         <div class="show-more__content">
@@ -317,7 +317,7 @@
                                     </div>
                     
                                     <div class="mt-60">
-                                        <h4 class="text-20 mb-30">Bạn sẽ học được gì</h4>
+                                        <h3 class="text-20 mb-30">Bạn sẽ học được gì</h3>
                                         <div class="row x-gap-100 justfiy-between">
                                             <% for (let item of course.whatyouwilllearn) { %>
                                                 <div class="col-md-6 y-gap-20">
@@ -347,7 +347,7 @@
                                     </div>
                     
                                     <div class="mt-60">
-                                        <h4 class="text-20">Yêu cầu</h4>
+                                        <h3 class="text-20">Yêu cầu</h3>
                                         <ul class="ul-list y-gap-15 pt-30">
                                             <% for (let item of course.requirements) { %>
                                                 <li>
@@ -631,9 +631,7 @@
             
                                 <div class="h-100 pt-15">
             
-                                  <h4 class="text-17 lh-15 fw-500 text-dark-1 mt-10"><%=i.name%></h4>
-            
-                            
+                                  <h4 class="text-17 lh-15 fw-500 text-dark-1 mt-10 overflow-hidden titleCourseCard"><%=i.name%></h4>
             
                                   <div class="coursesCard-footer">
                                     <div class="coursesCard-footer__author">

@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 const { includes, conforms } = require("lodash");
 const axios = require('axios')
 const cheerio = require("cheerio");
-
+const Sequelize = require('sequelize');
 
 const hand_coursetoTopics = async (links) => {
         const promises = []
@@ -209,16 +209,9 @@ const main = async() => {
 //     )
 // await hand_coursetoTopics(udemyCourses)
 
-const months = [
-    'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
-  ];
-  
-  const currentDate = new Date();
-  const currentMonth = months[currentDate.getMonth()];
-  const currentYear = currentDate.getFullYear();
-  
-  const formattedDate = `${currentMonth} ${currentYear}`;
-  console.log(formattedDate)
+const duplicates = await db.rating.findAll({
+   
+  });
+  console.log(JSON.stringify(duplicates, null, 2))
 }
 main()

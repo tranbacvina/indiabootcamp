@@ -28,7 +28,7 @@ app.use((req, res, next) => {
     if (req.query.page == 1 || req.query.page == null) {
          canonicalURL = `https://${req.host}${req.path}`;
     } else {
-        canonicalURL = urlService.getPageQuery(`https://${req.host}${req.originalUrl}`);
+        canonicalURL = urlService.getPageQuery(`https://${req.hostname}${req.originalUrl}`);
     }
   res.locals.canonicalURL = canonicalURL;
   next();

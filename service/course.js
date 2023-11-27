@@ -81,7 +81,7 @@ const findMany = async (text, limit, skip) => {
         limit: limit,
         offset: skip,
         order: [['id', 'DESC']],
-        include: { model: db.Topic }
+        include: { model: db.Topic },
     }
     if (text) {
         query['where'] = {
@@ -97,7 +97,13 @@ const findMany = async (text, limit, skip) => {
 }
 
 const findManyCourseTopic = async (text, limit, skip, topic) => {
-    const query = { limit: limit, offset: skip, order: [['updatedAt', 'DESC']] }
+    const query = { 
+        limit: limit,
+         offset: skip, 
+         order: [['updatedAt', 'DESC']],
+        attributes:['name','slug','image','updatedAt','description','price','originprice'],
+        include:[{model:db.rating}]
+        }
     if (text) {
         query['where'] = {
             [Op.or]: [
@@ -108,7 +114,7 @@ const findManyCourseTopic = async (text, limit, skip, topic) => {
         }
     }
     if (topic) {
-        query['include'] = [{
+        query['include'] = [...query['include'],{
             model: db.Topic,
             where: {
                 slug: topic
@@ -295,6 +301,7 @@ const deleteCourse = async(id) => {
     const course = await db.course.findOne({where: {id}})
     await course.setTopics([])
     await course.setDriveCourses([])
+    await course.setOrderItems([])
     await db.course.destroy({
         where:{id}
     })

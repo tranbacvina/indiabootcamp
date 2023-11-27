@@ -54,7 +54,10 @@ const scrapingUdemy = async (link) => {
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course`
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course`,{
+      headers: { 
+        'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw', }
+    }
   )
   const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
   return {udemydata:udemydata.data,sections:sections.data}
