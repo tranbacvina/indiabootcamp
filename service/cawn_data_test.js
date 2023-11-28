@@ -113,7 +113,8 @@ const udemy = async (uri) => {
       }
       )
       console.log('add course to topic', topics.name)
-      await uri.setTopic(topics.id)
+      uri.TopicId = topics.id
+      await uri.save()
 
       const [primary_subcategory, cprimary_subcategory]  = await db.Topic.findOrCreate(
         {
@@ -125,7 +126,7 @@ const udemy = async (uri) => {
           }
         }
         )
-        console.log('add topic to primary_subcategory', primary_subcategory.id)
+        console.log('add topic to primary_subcategory', primary_subcategory.name)
         topics.parent_id = primary_subcategory.id
         await topics.save()
 
@@ -139,11 +140,11 @@ const udemy = async (uri) => {
             }
           }
           )
-          console.log('add primary_subcategory to primary_category', primary_category.id)
+          console.log('add primary_subcategory to primary_category', primary_category.name)
           primary_subcategory.parent_id = primary_category.id
           await primary_subcategory.save()
 
-    console.log(topic)
+          await uri.setTopics([topics.id, primary_category.id,primary_subcategory.id])
 
 
   } catch (error) {

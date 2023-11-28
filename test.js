@@ -213,18 +213,18 @@ const main = async() => {
     // }
 
 
-// const udemyCourses = await db.course.findAll(
-//   {
-//     where: {
-//         url: {
-//             [Op.like]: '%udemy%'
-//         }
-//     },
-//     limit: 1
+const udemyCourses = await db.course.findAll(
+  {
+    where: {
+        url: {
+            [Op.like]: '%udemy%'
+        }
+    },
+    
      
-//   }
-//     )
-// await hand_coursetoTopics(udemyCourses)
+  }
+    )
+await hand_coursetoTopics(udemyCourses)
 // const { Op } = require("sequelize");
 // const children = await db.Topic.findAll({
 //     where:{
@@ -250,7 +250,7 @@ const main = async() => {
 
 //   });
 //   console.log(JSON.stringify(duplicates, null, 2))
-    const chil = await getTopicWithChildren(905)
-    console.log(chil)
+    // const chil = await getTopicWithChildren(905)
+    // console.log(chil)
 }
 main()
