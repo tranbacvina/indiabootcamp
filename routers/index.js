@@ -12,11 +12,9 @@ const blogController = require("../controllers/blog")
 const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
 const blog = require('./blog')
-var path = require('path');
-const { SitemapStream, streamToPromise } = require('sitemap')
-const { createGzip } = require('zlib')
-const { Readable } = require('stream')
+
 const courseController = require("../controllers/course")
+const sitemapController = require("../controllers/sitemap")
 
 Routers.use((req, res, next) => {
   const months = [
@@ -59,41 +57,15 @@ Routers.get("/myip", (req, res) => {
   res.send({ ipAddress, client_user_agent, fbc, fbp })
 })
 
-let sitemap;
-Routers.get('/sitemap.xml', function (req, res) {
-  res.header('Content-Type', 'application/xml');
-  res.header('Content-Encoding', 'gzip');
-  // if we have a cached entry send it
-  if (sitemap) {
-    res.send(sitemap);
-    return;
-  }
-  try {
-    const smStream = new SitemapStream({ hostname: process.env.DOMAIN })
-    const pipeline = smStream.pipe(createGzip())
+Routers.get('/sitemap.xml', sitemapController.mainSitemap);
 
-    smStream.write({ url: '/',  changefreq: 'always', priority: 1 })
-    smStream.write({ url: '/sitemaps/course.xml',  changefreq: 'daily',  priority: 0.85 })
-    smStream.write({ url: '/sitemaps/blog.xml',changefreq: 'daily',  priority: 0.85})   
-    streamToPromise(pipeline).then(sm => sitemap = sm)
-    smStream.end()
-    pipeline.pipe(res).on('error', (e) => {throw e})
-  } catch (e) {
-    console.error(e);
-    res.status(500).end();
-  }
-});
-
-Routers.get('/sitemaps/:sitemap', (req, res) => {
-  const { sitemap } = req.params;
-  console.log(sitemap)
-  return res.sendFile(path.join(__dirname, '../sitemaps', sitemap));
-});
+Routers.get('/sitemaps/:sitemap', sitemapController.fileSitemap);
+Routers.get("/lienhe", blogController.lienhe)
 
 Routers.get("/:slug", blogController.oneBlogPublic)
 
 
 Routers.get('*', function (req, res) {
-  res.render('layout/404')
+  res.status(404).render('layout/404')
 });
 module.exports = Routers;

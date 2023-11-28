@@ -2,7 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const SequelizeSlugify = require('sequelize-slugify')
 
 module.exports = (sequelize, DataTypes) => {
   class Topic extends Model {
@@ -15,11 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // this.belongsTo(models.course)
       this.belongsToMany(models.course, { through: models.course_topic, foreignKey: "topic_id" } );
+      // this.hasOne(models.course, {
+      //   foreignKey: 'topicId'
+      // })
     }
   }
   Topic.init({
     name: DataTypes.STRING,
-    slug: { type: DataTypes.STRING, unique: true },
+    slug: { type: DataTypes.STRING, },
     seotitle: DataTypes.STRING,
     seodescription: DataTypes.TEXT('medium'),
     parent_id: DataTypes.INTEGER,            
@@ -34,8 +36,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Topic',
     timestamps: false,
   });
-  SequelizeSlugify.slugifyModel(Topic, {
-    source: ['name']
-  });
+  
   return Topic;
 }; 

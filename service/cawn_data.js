@@ -39,7 +39,11 @@ const base_url = async (link) => {
   }
 
 };
-
+const getlastpart = (url) => {
+  const parts = url.split('/'); ; // Tìm vị trí của dấu '/' cuối cùng trong chuỗi
+  const lastPart = parts[parts.length - 2];
+return lastPart
+}
 const scrapingUdemy = async (link) => {
   const response = await gotScraping({
     url: link,
@@ -48,19 +52,24 @@ const scrapingUdemy = async (link) => {
   let $ = cheerio.load(response.body);
   const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
   const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
-  const data = { requirements, whatyouwilllearn }
+  const lastAnchor = $(".topic-menu").find("a").last()
+  const href = getlastpart(lastAnchor.attr('href')); // Lấy giá trị của thuộc tính href
+  const text = lastAnchor.text();
+  const data = { requirements, whatyouwilllearn, topic: { text, href } }
+
   return data
 }
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course`,{
-      headers: { 
-        'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw', }
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course`, {
+    headers: {
+      'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
     }
+  }
   )
   const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
-  return {udemydata:udemydata.data,sections:sections.data}
+  return { udemydata: udemydata.data, sections: sections.data }
 }
 
 const udemy = async (uri) => {
@@ -77,36 +86,58 @@ const udemy = async (uri) => {
       }
       return { success: true, data: course }
     } else {
-      const {udemydata,sections} = await cawnUdemy(patch)
-      const { requirements, whatyouwilllearn } = await scrapingUdemy(fixURL)
+      const { udemydata, sections } = await cawnUdemy(patch)
+      const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(fixURL)
 
-      const newCourse = await createNewCourse(udemydata.title, fixURL, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements,sections.curriculum_context.data,udemydata.price_detail.amount)
+      const newCourse = await createNewCourse(udemydata.title, fixURL, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements, sections.curriculum_context.data, udemydata.price_detail.amount)
 
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
       }
-      const [topic, created]  = await db.Topic.findOrCreate(
-        {
-          where: {name: udemydata.context_info.label.title},
-          defaults: {
-            name: udemydata.context_info.label.title,
-          
-          }
-        }
-        )
-       
-      const [cparent, createdparent]  = await db.Topic.findOrCreate(
-          {
-            where: {name: udemydata.context_info.category.title},
-            defaults: {
-              name: udemydata.context_info.category.title,
-            
-            }
-          }
-          )
-      topic.parent_id = cparent.id
-      await topic.save()
-      await newCourse.addTopics([topic.id,cparent.id])
+      // const [topics, created] = await db.Topic.findOrCreate(
+      //   {
+      //     where: { slug: topic.href },
+      //     defaults: {
+      //       slug: topic.href,
+      //       name: topic.text
+      //     }
+      //   }
+      // )
+      // //add to true topic
+      //  newCourse.TopicId = topics.id
+      //  await newCourse.save()
+
+      // const [primary_subcategory, cprimary_subcategory] = await db.Topic.findOrCreate(
+      //   {
+      //     where: { slug: udemydata.primary_subcategory.title_cleaned },
+      //     defaults: {
+      //       name: udemydata.primary_subcategory.title,
+      //       slug: udemydata.primary_subcategory.title_cleaned
+
+      //     }
+      //   }
+      // )
+      // console.log('add topic to primary_subcategory', primary_subcategory.id)
+      // topics.parent_id = primary_subcategory.id
+      // await topics.save()
+
+      // const [primary_category, cprimary_category] = await db.Topic.findOrCreate(
+      //   {
+      //     where: { slug: udemydata.primary_category.title_cleaned },
+      //     defaults: {
+      //       name: udemydata.primary_category.title,
+      //       slug: udemydata.primary_category.title_cleaned
+
+      //     }
+      //   }
+      // )
+      // console.log('add primary_subcategory to primary_category', primary_category.id)
+      // primary_subcategory.parent_id = primary_category.id
+      // await primary_subcategory.save()
+
+      // console.log('add course to many topic', topics.name)
+      // await newCourse.addTopics([topics.id, primary_category.id,primary_subcategory.id])
+      
       return { success: true, data: newCourse }
     }
 
@@ -131,18 +162,18 @@ const cawnUnica = async (link) => {
     const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
     const sections = []
     const panel = $('.panel').map((i, e) => {
-        const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
-      
-        const items = $(e).find('.panel-body').find('.col').map((i,e) => {
-          
-                const title= $(e).find('.title').text().trim().replace(/\n/g, '')
-                const content_summary=  $(e).find('.time').text().trim().replace(/\n/g, '')
-          
-            return {title,content_summary};
+      const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
+
+      const items = $(e).find('.panel-body').find('.col').map((i, e) => {
+
+        const title = $(e).find('.title').text().trim().replace(/\n/g, '')
+        const content_summary = $(e).find('.time').text().trim().replace(/\n/g, '')
+
+        return { title, content_summary };
       }).get()
-      sections.push({title,items,lecture_count:items.length});
+      sections.push({ title, items, lecture_count: items.length });
     })
-    const originprice =  parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
+    const originprice = parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
     const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
     const parent = $(".breadcumb-detail-course").children().last().prev().prev().text()
 
@@ -155,9 +186,9 @@ const cawnUnica = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [],
-      sections:{sections},
+      sections: { sections },
       originprice,
-      breadcrumb,parent
+      breadcrumb, parent
     }
   } catch (error) {
     console.log(error)
@@ -184,35 +215,35 @@ const unica = async (uri) => {
         is_practice_test_course,
         description_log,
         whatyouwilllearn,
-        requirements,sections,
+        requirements, sections,
         originprice,
-        breadcrumb,parent } = await cawnUnica(urlfixshare_udemy)
+        breadcrumb, parent } = await cawnUnica(urlfixshare_udemy)
 
 
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,sections,originprice)
+      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice)
 
-      const [topic, created]  = await db.Topic.findOrCreate(
+      const [topic, created] = await db.Topic.findOrCreate(
         {
-          where: {name: breadcrumb},
+          where: { name: breadcrumb },
           defaults: {
             name: breadcrumb,
-          
+
           }
         }
-        )
-       
-      const [cparent, createdparent]  = await db.Topic.findOrCreate(
-          {
-            where: {name: parent},
-            defaults: {
-              name: parent,
-            
-            }
+      )
+
+      const [cparent, createdparent] = await db.Topic.findOrCreate(
+        {
+          where: { name: parent },
+          defaults: {
+            name: parent,
+
           }
-          )
+        }
+      )
       topic.parent_id = cparent.id
       await topic.save()
-      await newCourse.addTopics([topic.id,cparent.id])
+      await newCourse.addTopics([topic.id, cparent.id])
       return { success: true, data: newCourse }
     }
 
@@ -236,19 +267,19 @@ const cawnGitio = async (link) => {
     const whatyouwilllearn = $('.pixcel-content').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
 
     const sections = []
-    const contentList = $('.content-list').map((i,e) => {
+    const contentList = $('.content-list').map((i, e) => {
       const title = $(e).find('h3').text()
-      const items = $(e).find('li').map((i,e)=> {
-          const title = $(e).find('.lecture-title').text().split('.')[1].trim().replace(/[\t\n]/gm, '')
-          const content_summary = $(e).find('.duration').text().trim().replace(/[\t\n]/gm, '')
-          return {title,content_summary};
+      const items = $(e).find('li').map((i, e) => {
+        const title = $(e).find('.lecture-title').text().split('.')[1].trim().replace(/[\t\n]/gm, '')
+        const content_summary = $(e).find('.duration').text().trim().replace(/[\t\n]/gm, '')
+        return { title, content_summary };
       }).get()
-      sections.push({title,items,lecture_count:items.length});
-  })
-  
-  const originprice = parseInt($('.sale-price-display-js:first').text().replace(/[,.đ]/g, ''))
-  const breadcrumb = $(".gitiho-breadcrumb").children().last().text().trim()
-  const parent = $(".gitiho-breadcrumb").children().last().prev().text().trim()
+      sections.push({ title, items, lecture_count: items.length });
+    })
+
+    const originprice = parseInt($('.sale-price-display-js:first').text().replace(/[,.đ]/g, ''))
+    const breadcrumb = $(".gitiho-breadcrumb").children().last().text().trim()
+    const parent = $(".gitiho-breadcrumb").children().last().prev().text().trim()
 
     return {
       name,
@@ -259,8 +290,8 @@ const cawnGitio = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [],
-      sections:{sections},
-          originprice,breadcrumb,parent
+      sections: { sections },
+      originprice, breadcrumb, parent
     }
   } catch (error) {
     console.log(error)
@@ -287,20 +318,20 @@ const gitiho = async (uri) => {
         is_practice_test_course,
         description_log,
         whatyouwilllearn,
-        requirements,sections,
-        originprice,breadcrumb,parent } = await cawnGitio(urlfixshare_udemy)
+        requirements, sections,
+        originprice, breadcrumb, parent } = await cawnGitio(urlfixshare_udemy)
 
-        const [topic, created]  = await db.Topic.findOrCreate(
-          {
-            where: {name: breadcrumb},
-            defaults: {
-              name: breadcrumb,
-            
-            }
+      const [topic, created] = await db.Topic.findOrCreate(
+        {
+          where: { name: breadcrumb },
+          defaults: {
+            name: breadcrumb,
+
           }
-          )
-          
-      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,sections,originprice)
+        }
+      )
+
+      const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice)
       await newCourse.addTopic(topic.id)
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }

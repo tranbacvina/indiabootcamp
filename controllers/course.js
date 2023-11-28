@@ -215,34 +215,22 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
-
     if (course) {
-        let breadcrumb
         const ratings =  ultrilSevice.calculateStats(course.ratings)
         const structuredDataCourse = createStrucDataOneCourse(course)
-        const originTopic = course.Topics.filter(item => item.parent_id !== null)[0]
-
-       if(originTopic){
-        breadcrumb = await ultrilSevice.getTopicWithParents(originTopic.id)
-       } 
-      
+        const breadcrumb = await ultrilSevice.getTopicWithParents(course.TopicId)
        const courses = await db.course.findAll({
-        where: {
-            id: {
-                [Op.gt]: course.id
-            }
-        },
+       
         include: [
             {
                 model: db.Topic,
                 where: {
-                    id: originTopic.id
+                    id: course.TopicId
                 }
             }],
         limit: 16 
        } 
       );
-       
         res.render("course/one-course", { course, structuredDataCourse,breadcrumb,ratings,courses });
     } else {
         res.render("layout/404")

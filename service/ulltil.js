@@ -30,6 +30,8 @@ async function getTopicWithParents(topicID) {
       parents: parents.reverse(), // Đảo ngược thứ tự để có thứ tự từ gốc đến category
     };
   }
+
+
 function calculateStats(ratings) {
     const stats = {
       s1: { count: 0, percent: 0 },

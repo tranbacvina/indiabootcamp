@@ -82,6 +82,7 @@ const findMany = async (text, limit, skip) => {
         offset: skip,
         order: [['id', 'DESC']],
         include: { model: db.Topic },
+        attributes: ['image','id','name','url','slug','price','originprice']
     }
     if (text) {
         query['where'] = {

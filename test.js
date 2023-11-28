@@ -169,6 +169,22 @@ const cawnGitio = async (link) => {
     }
   
   }
+
+  async function getTopicWithChildren(topicID) {
+ 
+  
+    let  children = [];
+  
+      const childTopics = await db.Topic.findAll({ where: { parent_id: topicID } });
+        for (let item of childTopics) {
+            children.push(item)
+            const grandchildren = await getTopicWithChildren(item.id);
+            children = children.concat(grandchildren);
+        }
+     
+  
+    return children
+  }
 const main = async() => {
     // await cawnGitio('https://gitiho.com/khoa-hoc/pbig01-thanh-thao-microsoft-powerbi-de-truc-quan-hoa-va-phan-tich-du-lieu')
     // const getTopics = await axios.get('https://www.udemy.com/api-2.0/discovery-units/?context=topic&from=0&page_size=6&item_count=12&label_id=5726&source_page=topic_page&locale=vi_VN&currency=usd&skip_price=true')
@@ -203,15 +219,38 @@ const main = async() => {
 //         url: {
 //             [Op.like]: '%udemy%'
 //         }
-//     }
+//     },
+//     limit: 1
      
 //   }
 //     )
 // await hand_coursetoTopics(udemyCourses)
+// const { Op } = require("sequelize");
+// const children = await db.Topic.findAll({
+//     where:{
+//         parent_id: 15
+//     },
+//     attributes: ['id']
+    
+// })
+// const q = [...JSON.parse(JSON.stringify(children, null, 2)), {id: 15}]
+// console.log(q)
+// const duplicates = await db.course.findAll({
+//    include: [
+//     {
+//         model: db.Topic,
+//         where: {
+//             [Op.or]: q
+//         }
+//     },
 
-const duplicates = await db.rating.findAll({
-   
-  });
-  console.log(JSON.stringify(duplicates, null, 2))
+//    ],
+//    limit:3,
+//    attributes: ['id','name']
+
+//   });
+//   console.log(JSON.stringify(duplicates, null, 2))
+    const chil = await getTopicWithChildren(905)
+    console.log(chil)
 }
 main()

@@ -41,6 +41,12 @@ const base_url = async (link) => {
 
 };
 
+const getlastpart = (url) => {
+  const parts = url.split('/'); ; // Tìm vị trí của dấu '/' cuối cùng trong chuỗi
+  const lastPart = parts[parts.length - 2];
+return lastPart
+}
+
 const scrapingUdemy = async (link) => {
   const response = await gotScraping({
     url: link,
@@ -49,7 +55,10 @@ const scrapingUdemy = async (link) => {
   let $ = cheerio.load(response.body);
   const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
   const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
-  const data = { requirements, whatyouwilllearn }
+  const lastAnchor = $(".topic-menu").find("a").last()
+  const href = getlastpart(lastAnchor.attr('href')); // Lấy giá trị của thuộc tính href
+  const text = lastAnchor.text(); // Lấy nội dung của thẻ a
+  const data = { requirements, whatyouwilllearn,topic:{text,href} }
   return data
 }
 
@@ -91,32 +100,50 @@ const udemy = async (uri) => {
     // }
 
     const {udemydata,sections} = await cawnUdemy(patch)
-    
-    uri.originprice = udemydata.price_detail.amount
-    uri.sections = sections.curriculum_context.data
-    const [topic, created]  = await db.Topic.findOrCreate(
+    const  { requirements, whatyouwilllearn,topic } = await scrapingUdemy(urlfixshare_udemy)
+    // uri.originprice = udemydata.price_detail.amount
+    // uri.sections = sections.curriculum_context.data
+    const [topics, created]  = await db.Topic.findOrCreate(
       {
-        where: {name: udemydata.context_info.label.title},
+        where: {slug: topic.href},
         defaults: {
-          name: udemydata.context_info.label.title,
-        
+          slug: topic.href,
+          name:topic.text
         }
       }
       )
-      const [cparent, createdparent]  = await db.Topic.findOrCreate(
+      console.log('add course to topic', topics.name)
+      await uri.setTopic(topics.id)
+
+      const [primary_subcategory, cprimary_subcategory]  = await db.Topic.findOrCreate(
         {
-          where: {name: udemydata.context_info.category.title},
+          where: {slug: udemydata.primary_subcategory.title_cleaned},
           defaults: {
-            name: udemydata.context_info.category.title,
+            name: udemydata.primary_subcategory.title,
+            slug: udemydata.primary_subcategory.title_cleaned
           
           }
         }
         )
-    topic.parent_id = cparent.id
-    await topic.save()
-    await uri.addTopics([topic.id,cparent.id])
-    await uri.save()
+        console.log('add topic to primary_subcategory', primary_subcategory.id)
+        topics.parent_id = primary_subcategory.id
+        await topics.save()
 
+        const [primary_category, cprimary_category]  = await db.Topic.findOrCreate(
+          {
+            where: {slug: udemydata.primary_category.title_cleaned},
+            defaults: {
+              name: udemydata.primary_category.title,
+              slug: udemydata.primary_category.title_cleaned
+            
+            }
+          }
+          )
+          console.log('add primary_subcategory to primary_category', primary_category.id)
+          primary_subcategory.parent_id = primary_category.id
+          await primary_subcategory.save()
+
+    console.log(topic)
 
 
   } catch (error) {

@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        <%= blog.title %>
+        Liên Hệ
     </title>
-    <meta name="title" content="<%= blog.title %>" />
-    <meta name="description" content="<%= blog.title %>" />
+    <meta name="title" content="Liên Hệ" />
+    <meta name="description" content="Liên Hệ" />
     <link rel="canonical" href="<%=canonicalURL%>" />
    
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
@@ -21,9 +21,9 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="<%= blog.title %>" />
-    <meta property="og:description" content="<%= blog.title %>" />
-    <meta property="og:image" content="/<%=blog.thumbnail%>" />
+    <meta property="og:title" content="Liên Hệ" />
+    <meta property="og:description" content="Liên Hệ" />
+    <meta property="og:image" content="" />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,16 +73,8 @@
                                     <div class="breadcrumbs__item ">
                                         <a href="/">Home</a>
                                     </div>
-
                                     <div class="breadcrumbs__item ">
-                                        <a href="/category/<%= blog.Category.slug %>">
-                                            <%= blog.Category.name %>
-                                        </a>
-                                    </div>
-                                    <div class="breadcrumbs__item ">
-                                        <a>
-                                            <%= blog.title %>
-                                        </a>
+                                            Liên hệ
                                     </div>
                                 </div>
                             </div>
@@ -91,50 +83,59 @@
                 </section>
 
 
-                <section class="page-header -type-1">
+                <section class="page-header -type-4 bg-beige-1">
                     <div class="container">
-                        <div class="page-header__content">
-                            <div class="row justify-center text-center">
-                                <div class="col-xl-8 col-lg-9 col-md-11">
-                                    <div data-anim="slide-up delay-1" class="is-in-view">
-                                        <div class="text-14 text-purple-1 uppercase fw-500 mb-8">
-                                            <%= blog.Category.name %>
-                                        </div>
-
-
-                                        <h1 class="page-header__title lh-14">
-                                            <%= blog.title %>
-                                        </h1>
-
-
-                                        <p class="page-header__text">
-                                            <%= blog.updatedAt.toLocaleString() %>
-                                        </p>
-
-                                    </div>
-                                </div>
+                      <div class="page-header__content">
+                        <div class="row">
+                          <div class="col-md-6 col-sm-12">
+                            <div data-anim="slide-up delay-1">
+                              <h1 class="page-header__title">Liên hệ với chúng tôi</h1>
                             </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="layout-pt-md layout-pb-lg">
-                    <div class="container">
-                        <div class="blogSection">
-                            <div class="blogCard">
-                                <div class="row justify-center">
-                                    <div class="col-xl-8 col-lg-9 col-md-11">
-                                        <div class="blogCard__content">
-                                            <%- blog.content %>
-                                        </div>
-
-                                    </div>
-                                </div>
+            
+                            <div data-anim="slide-up delay-2">
+                              <p class="page-header__text">Nếu bạn cần hỗ trợ hãy liên hệ với chúng tôi, chúng tôi sẽ hỗ trợ bạn. Dù bạn cần tìm hiểu thêm về các khóa học của chúng tôi, cần hỗ trợ kỹ thuật, hay chỉ muốn chia sẻ trải nghiệm học tập của mình, hãy liên hệ với chúng tôi, đội ngũ của Fullbootcamp luôn ở đây để giúp đỡ bạn.</p>
+                            
                             </div>
-
+                            <div data-anim="slide-up delay-3">
+                                <p class="page-header__text">Chúng tôi cam kết phản hồi mọi yêu cầu trong vòng 24 giờ làm việc. Trân trọng cảm ơn sự quan tâm và tin tưởng của bạn dành cho Fullbootcamp. Hãy kết nối với chúng tôi để cùng nhau mở rộng chân trời tri thức nhé!</p>
+                              
+                              </div>
+                            <div class="pt-30">
+                                <h3 class="text-24 lh-1 fw-500">Địa chỉ</h3>
+                                <div class="row y-gap-30 pt-40">
+                  
+                                  <div class="col-sm-6">
+                                    <div class="text-20 fw-500 text-dark-1">Hà Nội</div>
+                                    <div class="y-gap-10 pt-15">
+                                      <a href="#" class="d-block">99 Trích Sài - Tây Hồ</a>
+                                      <a href="#" class="d-block">fullbootcamp@gmail.com</a>
+                                    </div>
+                                  </div>
+                  
+                                </div>
+                              </div>
+                          </div>
+                          <div data-anim="slide-up delay-4" class="col-md-6 col-sm-12 pt-40">
+                            <div class="px-40 py-40 bg-white border-light shadow-1 rounded-8 ">
+                              <h3 class="text-24 fw-500">Chat với hỗ trợ</h3>
+                              <p class="mt-25">Bạn cần hỗ trợ ngay lập tức? <br>
+                                  Bấm vào nút bên dưới dễ chat messenger
+                              </p>
+                              <div class="pt-20">
+                                  <a href="https://m.me/108479422217669" target="_blank" class="button -md -purple-1 text-white ">
+                                      Send Message
+                                  </a>
+                              </div>
+                              
+                              
+                            </div>
+                          
+                          </div>
                         </div>
+                      </div>
                     </div>
-                </section>
+                  </section>
+
                 <section class="layout-pt-lg layout-pb-lg mb-90 section-bg">
                     <div class="section-bg__item">
                         <img class="img-full rounded-16" src="img/home-3/cta/bg.png" alt="image">

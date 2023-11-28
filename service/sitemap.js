@@ -7,6 +7,7 @@ const {
   // lineSeparatedURLsToSitemapOptions,
 } = require('sitemap');
 const db = require('../models')
+
 const courseSitemap = async () => {
     const sms = new SitemapAndIndexStream({
         limit: 50000,
@@ -78,4 +79,40 @@ const blogSitemap = async () => {
     arrayOfSitemapItems.forEach((item) => sms.write(item));
     sms.end();
 }
-module.exports = {courseSitemap,blogSitemap}
+
+const topicSitemap = async () => {
+  const sms = new SitemapAndIndexStream({
+      limit: 50000,
+      getSitemapStream: (i) => {
+        const sitemapStream = new SitemapStream({
+          hostname: 'https://fullbootcamp.com',
+        });
+        const path = `../sitemaps/topic_${i}.xml`;
+    
+        const ws = createWriteStream(resolve(path));
+        sitemapStream
+          .pipe(ws); // write it to sitemap-NUMBER.xml
+    
+        return [
+          new URL(path, `https://fullbootcamp.com/sitemaps/`).toString(),
+          sitemapStream,
+          ws,
+        ];
+      },
+    });
+    
+    
+    sms
+      .pipe(createWriteStream(resolve('../sitemaps/topic.xml')));
+    
+  const courses = await db.Topic.findAll()
+
+    const arrayOfSitemapItems = courses.map( item => {
+      return { url: `/${item.slug}`, changefreq: 'daily' }
+    })
+      
+
+    arrayOfSitemapItems.forEach((item) => sms.write(item));
+    sms.end();
+}
+module.exports = {courseSitemap,blogSitemap,topicSitemap}

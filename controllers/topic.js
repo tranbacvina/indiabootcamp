@@ -90,14 +90,12 @@ const topicSlugGetCourses = async (req, res) => {
         return
     }
     const breadcrumb = await ulltilService.getTopicWithParents(topicOne.id)
-    const course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
-    let childTopics
-    if (topicOne.parent_id){
-        childTopics = await topic.findAllTopicChild(topicOne.parent_id)
-    } else {
-        childTopics = await topic.findAllTopicChild(topicOne.id)
-
-    }
+    let course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
+    course= JSON.parse(JSON.stringify(course, null, 2))
+    course.rows = course.rows.map(item => {
+        return { ...item, ratings: ulltilService.calculateStats(item.ratings)}
+    })
+    let childTopics =await topic.findAllTopicChild(topicOne.id)
 
     if (course.length === 0) {
 

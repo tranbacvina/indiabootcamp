@@ -225,4 +225,8 @@ const allBlogPublic = async (req, res) => {
 
     }
 };
-module.exports = { oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove,allBlogPublic }
+
+const lienhe = async (req,res) => {
+    res.render('blog/lienhe')
+}
+module.exports = { lienhe,oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove,allBlogPublic }

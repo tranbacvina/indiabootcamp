@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.orderItem, { foreignKey: "courseID",onDelete: 'SET NULL', });
       this.hasMany(models.rating, { foreignKey: "courseId",onDelete: 'SET NULL', } );
       this.belongsToMany(models.Topic, { through: models.course_topic, foreignKey: "course_id" } );
+      // this.belongsTo(models.Topic)
     }
   }
   course.init(
@@ -30,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       image: DataTypes.STRING,
       price: DataTypes.FLOAT,
       originprice: DataTypes.FLOAT,
-      // TopicID:DataTypes.INTEGER, 
+      TopicId:DataTypes.INTEGER, 
       priceindia: {
         type: DataTypes.FLOAT,
         defaultValue: 9900,
