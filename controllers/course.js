@@ -222,9 +222,9 @@ const onePublic = async (req, res) => {
     
     const breadcrumbSchemaCourseOne = schema.breadcumbCourse(breadcrumb,course)
 
-    const schemaCreativeWorkSeries = schema.CreativeWorkSeries(course,ratings)
+    // const schemaCreativeWorkSeries = schema.CreativeWorkSeries(course,ratings)
 
-    const schemaCourse= schema.createStrucDataOneCourse(course)
+    const schemaCourse= schema.createStrucDataOneCourse(course,ratings)
 
     const courses = await db.course.findAll({
 
@@ -238,7 +238,7 @@ const onePublic = async (req, res) => {
         limit: 16
     }
     );
-    res.render("course/one-course", { course, breadcrumb, ratings, courses,breadcrumbSchemaCourseOne,schemaCreativeWorkSeries,schemaCourse });
+    res.render("course/one-course", { course, breadcrumb, ratings, courses,breadcrumbSchemaCourseOne,schemaCourse });
    
 };
 

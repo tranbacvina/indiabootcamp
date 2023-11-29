@@ -89,11 +89,13 @@ const udemy = async (uri) => {
       const { udemydata, sections } = await cawnUdemy(patch)
       const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(fixURL)
 
+      if (udemydata.is_practice_test_course) {
+        return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này" }
+      }
+
       const newCourse = await createNewCourse(udemydata.title, fixURL, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements, sections.curriculum_context.data, udemydata.price_detail.amount)
 
-      if (newCourse.is_practice_test_course) {
-        return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
-      }
+      
       // const [topics, created] = await db.Topic.findOrCreate(
       //   {
       //     where: { slug: topic.href },

@@ -75,6 +75,7 @@ cron.schedule('0 1 * * *', async () => {
 
 app.listen(port, async () => {
   console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
+
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");

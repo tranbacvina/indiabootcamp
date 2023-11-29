@@ -15,7 +15,7 @@ const courseSitemap = async () => {
           const sitemapStream = new SitemapStream({
             hostname: 'https://fullbootcamp.com',
           });
-          const path = `../sitemaps/course_${i}.xml`;
+          const path = `./sitemaps/course_${i}.xml`;
       
           const ws = createWriteStream(resolve(path));
           sitemapStream
@@ -31,7 +31,7 @@ const courseSitemap = async () => {
       
       
       sms
-        .pipe(createWriteStream(resolve('../sitemaps/course.xml')));
+        .pipe(createWriteStream(resolve('./sitemaps/course.xml')));
       
     const courses = await db.course.findAll()
 
@@ -51,7 +51,7 @@ const blogSitemap = async () => {
         const sitemapStream = new SitemapStream({
           hostname: 'https://fullbootcamp.com',
         });
-        const path = `../sitemaps/blog_${i}.xml`;
+        const path = `./sitemaps/blog_${i}.xml`;
     
         const ws = createWriteStream(resolve(path));
         sitemapStream
@@ -67,7 +67,7 @@ const blogSitemap = async () => {
     
     
     sms
-      .pipe(createWriteStream(resolve('../sitemaps/blog.xml')));
+      .pipe(createWriteStream(resolve('./sitemaps/blog.xml')));
     
   const courses = await db.Blog.findAll()
 
@@ -87,7 +87,7 @@ const topicSitemap = async () => {
         const sitemapStream = new SitemapStream({
           hostname: 'https://fullbootcamp.com',
         });
-        const path = `../sitemaps/topic_${i}.xml`;
+        const path = `./sitemaps/topic_${i}.xml`;
     
         const ws = createWriteStream(resolve(path));
         sitemapStream
@@ -103,7 +103,7 @@ const topicSitemap = async () => {
     
     
     sms
-      .pipe(createWriteStream(resolve('../sitemaps/topic.xml')));
+      .pipe(createWriteStream(resolve('./sitemaps/topic.xml')));
     
   const courses = await db.Topic.findAll()
 

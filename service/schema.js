@@ -217,13 +217,41 @@ const createStrucDataCourses = (courses) => {
   return structuredDataCourse
 }
 
-const createStrucDataOneCourse = (course) => {
+const createStrucDataOneCourse = (course,ratings) => {
   const structuredDataCourse = {
     "@context": "https://schema.org",
     "@type": "Course",
     "name": course.name,
     "description": course.description,
     "provider": handleProviderStructure(course.url)
+    ,
+    "@id":  course.url,
+
+    "isAccessibleForFree": course.price == 0 ? true : false,
+    "image": course.image,
+    "offers": [
+      {
+        "@type": "Offer",
+        "category": "Paid",
+        "price": course.priceus,
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "category": "Paid",
+        "price": course.price,
+        "priceCurrency": "VND"
+      }
+    ],
+  
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": ratings.avg || 0,
+      "ratingCount": course.ratings.length,
+      "bestRating": 5,
+      "worstRating": 0.5
+    }
+
   }
   return structuredDataCourse
 }
