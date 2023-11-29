@@ -1,13 +1,16 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update,deleteCourse } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse } = require("../service/course")
 const serverCourse = require('../service/course')
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
 const topic = require("../service/topic")
 const ultrilSevice = require('../service/ulltil')
 const db = require("../models")
-const { Op,Sequelize } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
+
+const schema = require("../service/schema")
+
 const check = async (req, res) => {
     const errors = validationResult(req);
 
@@ -95,17 +98,16 @@ const coursedownload = async (req, res) => {
 const all = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
-//    const course= await db.course.findAndCountAll({include: { model: db.Topic }})
+
     const topics = await topic.findAll()
 
-    const itemCount = course.count;
-    const pageCount = Math.ceil(course.count / req.query.limit);
-
-
+    
     if (course.length === 0) {
 
         res.render('layout/404')
     } else {
+       
+
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('admin/course/course', {
@@ -123,18 +125,18 @@ const all = async (req, res) => {
 const timKiemPage = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
-  
+
     const itemCount = course.count;
     const pageCount = Math.ceil(course.count / req.query.limit);
     res.render('course/timkiem', {
         course: course.rows,
         pageCount,
         itemCount,
-        currentPage: req.query.page,text,
+        currentPage: req.query.page, text,
         pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
     });
 
-   
+
 };
 
 const allCourseTopic = async (req, res) => {
@@ -189,22 +191,18 @@ const sendEmailCourse = async (req, res) => {
 const publicall = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
-    // res.send(course)
-    // const itemCount = course.count;
-    // const pageCount = Math.ceil(course.count / req.query.limit);
-    
-    const structuredDataCourse = createStrucDataCourses(course.rows)
-    if (course.length === 0) {
+   
 
+    if (course.length === 0) {
         res.render('layout/404')
     } else {
+        const schemaCourses = schema.createStrucDataCourses(course.rows)
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('course/allcourse', {
             course: course.rows,
-            structuredDataCourse,
             pageCount,
-            itemCount,
+            itemCount,schemaCourses,
             currentPage: req.query.page,
             pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
         });
@@ -215,12 +213,21 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
-    if (course) {
-        const ratings =  ultrilSevice.calculateStats(course.ratings)
-        const structuredDataCourse = createStrucDataOneCourse(course)
-        const breadcrumb = await ultrilSevice.getTopicWithParents(course.TopicId)
-       const courses = await db.course.findAll({
-       
+    if (!course) {
+        res.status(404).render("layout/404")
+        return
+    }
+    const ratings = ultrilSevice.calculateStats(course.ratings)
+    const breadcrumb = await ultrilSevice.getTopicWithParents(course.TopicId)
+    
+    const breadcrumbSchemaCourseOne = schema.breadcumbCourse(breadcrumb,course)
+
+    const schemaCreativeWorkSeries = schema.CreativeWorkSeries(course,ratings)
+
+    const schemaCourse= schema.createStrucDataOneCourse(course)
+
+    const courses = await db.course.findAll({
+
         include: [
             {
                 model: db.Topic,
@@ -228,18 +235,16 @@ const onePublic = async (req, res) => {
                     id: course.TopicId
                 }
             }],
-        limit: 16 
-       } 
-      );
-        res.render("course/one-course", { course, structuredDataCourse,breadcrumb,ratings,courses });
-    } else {
-        res.render("layout/404")
+        limit: 16
     }
+    );
+    res.render("course/one-course", { course, breadcrumb, ratings, courses,breadcrumbSchemaCourseOne,schemaCreativeWorkSeries,schemaCourse });
+   
 };
 
 const create = async (req, res) => {
-    const { name, url, slug, price, priceus, priceindia,topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId } = req.body
-   
+    const { name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId } = req.body
+
     const newCourse = await createCourse(name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, drivecoursename, drivecourID, isOneDrive, OneDriveParentReferenceId)
     res.redirect(`/admin/course/${newCourse.id}`)
 }
@@ -248,27 +253,27 @@ const updateCourse = async (req, res) => {
     const { id } = req.params
     const {
         name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image
-    ,sharelinkfree} = req.body
-    const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image,sharelinkfree)
+        , sharelinkfree } = req.body
+    const updateC = await update(id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image, sharelinkfree)
     res.redirect(`/admin/course/${id}`)
 }
 const addDriveToCourse = async (req, res) => {
     const { id } = req.params
     const {
-        DriveName,DriveID,isOnedrive,OneDriveParentReferenceId} = req.body
-    await serverCourse.addDriveToCourse(id, DriveName,DriveID,isOnedrive,OneDriveParentReferenceId)
+        DriveName, DriveID, isOnedrive, OneDriveParentReferenceId } = req.body
+    await serverCourse.addDriveToCourse(id, DriveName, DriveID, isOnedrive, OneDriveParentReferenceId)
     res.redirect(`/admin/course/${id}`)
 }
 const delDriveToCourse = async (req, res) => {
-    const { id, iddrive} = req.params
+    const { id, iddrive } = req.params
     // const {idDrive,isOneDrive,OneDriveParentReferenceId} = req.body
     await serverCourse.removeDriveToCourse(id, iddrive)
 
     res.redirect(`/admin/course/${id}`)
 }
-const deleteCourseColtroler = async(req,res)=>{
-    const { id} = req.params
+const deleteCourseColtroler = async (req, res) => {
+    const { id } = req.params
     await deleteCourse(id)
     res.redirect('/admin/course')
 }
-module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse ,deleteCourseColtroler,addDriveToCourse,delDriveToCourse,timKiemPage}
+module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse, deleteCourseColtroler, addDriveToCourse, delDriveToCourse, timKiemPage }

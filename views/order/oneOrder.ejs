@@ -70,99 +70,121 @@
                                                 </div>
 
                                             </div>
-                                            <%} else { %>
-                                                <div class="col-12">
-                                                    <div data-anim="slide-up delay-1" class="is-in-view">
+                                        <%} else if (order.price > 0) { %>
+                                            <div class="col-12">
+                                                <div data-anim="slide-up delay-1" class="is-in-view">
 
-                                                        <h1 class="page-header__title">Đơn hàng của bạn đã được tạo</h1>
+                                                    <h1 class="page-header__title">Đơn hàng của bạn đã được tạo</h1>
 
-                                                    </div>
+                                                </div>
 
-                                                    <div data-anim="slide-up delay-2"
-                                                        class="is-in-view text-left layout-pt-sm">
-                                                        <p class="page-header__text">Hello, <%=order.email%>
-                                                                Đơn hàng của bạn đã được xác nhận. Các khoá học sẽ được
-                                                                gửi
-                                                                về
-                                                                email của bạn trong khoảng 2 giờ làm việc sau khi bạn
-                                                                thanh toán !</p>
-                                                        <p class="page-header__text">Khoá học tự động gửi. Bạn chuyển
-                                                            khoản
-                                                            hãy
-                                                            ghi ĐÚNG NỘI DUNG CHUYỂN KHOẢN
+                                                <div data-anim="slide-up delay-2"
+                                                    class="is-in-view text-left layout-pt-sm">
+                                                    <p class="page-header__text">Hello, <%=order.email%>
+                                                            Đơn hàng của bạn đã được xác nhận. Các khoá học sẽ được
+                                                            gửi
+                                                            về
+                                                            email của bạn trong khoảng 2 giờ làm việc sau khi bạn
+                                                            thanh toán !</p>
+                                                    <p class="page-header__text">Khoá học tự động gửi. Bạn chuyển
+                                                        khoản
+                                                        hãy
+                                                        ghi ĐÚNG NỘI DUNG CHUYỂN KHOẢN
 
-                                                            Cảm ơn bạn đã Get khoá học tại Full Bootcamp
+                                                        Cảm ơn bạn đã Get khoá học tại Full Bootcamp
 
-                                                            Full Bootcamp Team</p>
-
-
-                                                    </div>
-
-                                                    <div class="row layout-pt-md">
-
-                                                        <div class="col-md-12 col-sm-12 ">
-                                                            <div
-                                                                class="text-left pt-20 pb-30 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
-                                                                <h5 class="text-17 mb-20">Vietcombank - Trần Duy Bắc
-                                                                </h5>
-
-                                                                <div class="">
-                                                                    <div class="d-flex">
-                                                                        <div class="shrink-0">
-                                                                            <img width="100" height="100"
-                                                                                src="<%=qrcode.data.qrDataURL%>"
-                                                                                alt="badge">
-                                                                        </div>
-
-                                                                        <div class="ml-20">
-                                                                            <h6 class="text-17 fw-500">0141000836982
-                                                                            </h6>
-                                                                            <div class="text-14 mt-5">Nội dung ck:
-                                                                                <span class="fw-600">
-                                                                                    bootcamp <%=order.id%>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- <div class="col-md-6 col-sm-12 ">
-                                                            <div
-                                                                class="text-left pt-20 pb-30 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
-                                                                <h5 class="text-17 mb-20">Momo - Đỗ Ngọc Thắng</h5>
-
-                                                                <div class="">
-                                                                    <div class="d-flex">
-                                                                        <div class="shrink-0">
-                                                                            <img width="50" height="50"
-                                                                                src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png"
-                                                                                alt="badge">
-                                                                        </div>
-
-                                                                        <div class="ml-20">
-                                                                            <h6 class="text-17 fw-500">0946645803
-                                                                            </h6>
-                                                                            <div class="text-14 mt-5">Nội dung ck:
-                                                                                <span class="fw-600">
-                                                                                    bootcamp <%=order.id%>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div> -->
-                                                    </div>
-
+                                                        Full Bootcamp Team</p>
 
 
                                                 </div>
-                                                <% } %>
+
+                                                <div class="row layout-pt-md">
+
+                                                    <div class="col-md-12 col-sm-12 ">
+                                                        <div
+                                                            class="text-left pt-20 pb-30 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
+                                                            <h5 class="text-17 mb-20">Vietcombank - Trần Duy Bắc
+                                                            </h5>
+
+                                                            <div class="">
+                                                                <div class="d-flex">
+                                                                    <div class="shrink-0">
+                                                                        <img width="100" height="100"
+                                                                            src="<%=qrcode.data.qrDataURL%>"
+                                                                            alt="badge">
+                                                                    </div>
+
+                                                                    <div class="ml-20">
+                                                                        <h6 class="text-17 fw-500">0141000836982
+                                                                        </h6>
+                                                                        <div class="text-14 mt-5">Nội dung ck:
+                                                                            <span class="fw-600">
+                                                                                bootcamp <%=order.id%>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-6 col-sm-12 ">
+                                                        <div
+                                                            class="text-left pt-20 pb-30 px-30 rounded-16 bg-white -dark-bg-dark-1 shadow-4">
+                                                            <h5 class="text-17 mb-20">Momo - Đỗ Ngọc Thắng</h5>
+
+                                                            <div class="">
+                                                                <div class="d-flex">
+                                                                    <div class="shrink-0">
+                                                                        <img width="50" height="50"
+                                                                            src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png"
+                                                                            alt="badge">
+                                                                    </div>
+
+                                                                    <div class="ml-20">
+                                                                        <h6 class="text-17 fw-500">0946645803
+                                                                        </h6>
+                                                                        <div class="text-14 mt-5">Nội dung ck:
+                                                                            <span class="fw-600">
+                                                                                bootcamp <%=order.id%>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+
+
+
+                                            </div>
+                                        <% } else { %>
+                                            <div class="col-12 ">
+                                                <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                                    <h1 class="page-header__title text-red-3">Đơn hàng tạo không thành công</h1>
+
+                                                </div>
+
+                                                <div data-anim="slide-up delay-2" class="is-in-view">
+                                                    <p class="page-header__text">Bạn vui lòng quay lại trang chủ và thực hiện lại!</p>
+                                                </div>
+                                                <div class="col-12 pt-30">
+                                                    <div class="row x-gap-10 y-gap-10 justify-center">
+                                                      <div class="col-auto">
+                                                        <a href="/" class="button -md -green-1 text-dark-1"> < Quay lại</a>
+                                                      </div>
+                                                      <div class="col-auto">
+                                                        <a target="_blank" href="https://m.me/108479422217669" class="button -md -outline-green-1 text-green-1">Chat với Hỗ trợ</a>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        <%}%>
                                     </div>
 
                                 </div>

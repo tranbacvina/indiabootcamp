@@ -12,6 +12,7 @@ const blogController = require("../controllers/blog")
 const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
 const blog = require('./blog')
+const schema = require("../service/schema")
 
 const courseController = require("../controllers/course")
 const sitemapController = require("../controllers/sitemap")
@@ -33,7 +34,8 @@ Routers.use((req, res, next) => {
 });
 
 Routers.get("/", (req, res) => {
-  res.render("landing_Page/landing");
+  const schemaHome = schema.home()
+  res.render("landing_Page/landing",{schemaHome});
 });
 
 Routers.use("/course", course)

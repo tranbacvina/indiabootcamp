@@ -44,7 +44,12 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/tingle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <script type="application/ld+json">
+        <%-JSON.stringify(schemaHome)%>
+    </script>
+
     <%- include('../layout/analytics'); %>
+
 </head>
 
 <body class="preloader-visible" data-barba="wrapper">
@@ -800,7 +805,7 @@
             let links = Array.from(uri.match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig))
 
             modalCheckCourse.open()
-            modalCheckCourse.setContent('Fetching data, please wait...');
+            modalCheckCourse.setContent('Đang lấy dữ liệu, vui lòng đợi...');
             const checkCourseRequest = await axios.post('/course/check', {
                 email, links
             })

@@ -2,7 +2,7 @@ const catgoriesServices = require("../service/catgories")
 const db = require("../models")
 const blogService = require("../service/blog")
 const paginate = require('express-paginate');
-
+const schema = require("../service/schema")
 const allcategoriesShow = async (req, res) => {
     const catgories = await catgoriesServices.findAll()
     res.render('admin/categories/categories', { catgories })
@@ -82,7 +82,7 @@ const findAllBlogBySlugcatgories = async (req, res) => {
     const categorie = await catgoriesServices.findOne(slug)
     console.log(categorie)
     const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
-
+    const schemaBreadcum = schema.breadcrumbBlogCate(categorie)
     if (blogs.length === 0 | !categorie) {
 
         res.status(404).render('layout/404')
@@ -103,6 +103,7 @@ const findAllBlogBySlugcatgories = async (req, res) => {
             pageCount,
             itemCount,
             currentPage: req.query.page,
+            schemaBreadcum,
             pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
         });
 

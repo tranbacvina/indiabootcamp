@@ -6,7 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>Khoá học <%=course.name%></title>
+    <title>
+        <% if (!course.name.toLocaleLowerCase().includes("khoá học".toLocaleLowerCase())) { %>
+          Khoá Học 
+        <% } %>
+        <%= course.name %>
+      </title>
     <link rel="canonical" href="<%=canonicalURL%>" />
         
     <meta name="title" content="Khoá học <%=course.name%>" />
@@ -90,6 +95,18 @@
             background-color: #04AA6D;
         }
     </style>
+
+    <script type="application/ld+json">
+        <%-JSON.stringify(breadcrumbSchemaCourseOne)%>
+    </script>
+
+    <script type="application/ld+json">
+        <%-JSON.stringify(schemaCreativeWorkSeries)%>
+    </script>
+
+    <script type="application/ld+json">
+        <%-JSON.stringify(schemaCourse)%>
+    </script>
     <%- include('../layout/analytics'); %>
 </head>
 
@@ -517,8 +534,8 @@
                                                     </div>
                         
                                                     <div class="comments__body md:mt-15">
-                                                    <div class="comments__header">
-                                                        <h4 class="text-17 fw-500 lh-15">
+                                                    <div class="comments__header justify-between items-center">
+                                                        <h4 class="text-17 fw-500 lh-15 ">
                                                             <%=item.email%>
                                                             <span class="text-13 text-light-1 fw-400">
                                                                 <%=item.createdAt.toLocaleDateString('vi-VN', { 
@@ -532,7 +549,11 @@
                                                             </span>
                                                         </h4>
                         
-                                                        <div class="stars"></div>
+                                                        <div class="stars d-flex">
+                                                                <% for (let star = 1;star <= Math.floor(item.star); star ++ ) {%>
+                                                                    <div class="icon-star text-11 text-yellow-1"></div>
+                                                                <%}%>
+                                                            </div>
                                                     </div>
                         
                                                     <div class="comments__text mt-15">

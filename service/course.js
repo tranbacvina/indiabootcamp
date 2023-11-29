@@ -102,7 +102,7 @@ const findManyCourseTopic = async (text, limit, skip, topic) => {
         limit: limit,
          offset: skip, 
          order: [['updatedAt', 'DESC']],
-        attributes:['name','slug','image','updatedAt','description','price','originprice'],
+        attributes:['name','slug','image','updatedAt','description','price','originprice','url'],
         include:[{model:db.rating}]
         }
     if (text) {
@@ -308,70 +308,7 @@ const deleteCourse = async(id) => {
     })
 }
 
-const handleProviderStructure = (url) => {
 
-    if (url.includes("unica")) {
-        return {
-            "@type": "Organization",
-            "name": "Unica",
-            "sameAs": "https://unica.vn/"
-        }
-    }
-    if (url.includes("udemy")) {
-        return {
-            "@type": "Organization",
-            "name": "Udemy",
-            "sameAs": "https://www.udemy.com/"
-        }
-    }
-    if (url.includes("cyberlearn")) {
-        return {
-            "@type": "Organization",
-            "name": "Cyberlearn",
-            "sameAs": "https://cyberlearn.vn/"
-        }
-    }
-    if (url.includes("gitiho")) {
-        return {
-            "@type": "Organization",
-            "name": "gitiho",
-            "sameAs": "https://gitiho.com/"
-        }
-    }
-}
-
-const createStrucDataCourses = (courses) => {
-    const itemListElement = courses.map((item, index) => {
-
-        return {
-            "@type": "ListItem",
-            "position": index + 1,
-            "item": {
-                "@type": "Course",
-                "url": `${process.env.DOMAIN}/course/${item.slug}`,
-                "name": item.name,
-                "description": item.description,
-                "provider": handleProviderStructure(item.url)
-            }
-        }
-    })
-    const structuredDataCourse = {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        itemListElement
-    }
-    return structuredDataCourse
-}
-const createStrucDataOneCourse = (course) => {
-    const structuredDataCourse = {
-        "@context": "https://schema.org",
-        "@type": "Course",
-        "name": course.name,
-        "description": course.description,
-        "provider": handleProviderStructure(course.url)
-    }
-    return structuredDataCourse
-}
 module.exports = {
-    createStrucDataOneCourse, createStrucDataCourses, createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse,addDriveToCourse,removeDriveToCourse
+    createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse,addDriveToCourse,removeDriveToCourse
 };

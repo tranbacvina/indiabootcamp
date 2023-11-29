@@ -3,7 +3,7 @@ const catgoriesServices = require("../service/catgories")
 const paginate = require('express-paginate');
 const serviceCategories = require("../service/catgories")
 const db = require("../models");
-
+const schema = require('../service/schema')
 const allBlogAdmin = async (req, res) => {
     const { text, limit, } = req.query
     const blogs = await serviceBlog.findMany(text, limit, req.skip)
@@ -199,7 +199,8 @@ const oneBlogPublic = async (req, res) => {
         }
     })
     if (blog) {
-        res.render('blog/one-blog', { blog: blog })
+        const schemaBreadcum = schema.schemaBlog(blog)
+        res.render('blog/one-blog', { blog: blog,schemaBreadcum })
     }
     else {
         res.render('layout/404')
