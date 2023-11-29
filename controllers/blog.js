@@ -200,7 +200,8 @@ const oneBlogPublic = async (req, res) => {
     })
     if (blog) {
         const schemaBreadcum = schema.schemaBlog(blog)
-        res.render('blog/one-blog', { blog: blog,schemaBreadcum })
+        const schemablog =schema.blogPage(blog)
+        res.render('blog/one-blog', { blog: blog,schemablog,schemaBreadcum })
     }
     else {
         res.render('layout/404')
