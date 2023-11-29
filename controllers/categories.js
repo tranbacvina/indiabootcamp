@@ -83,9 +83,10 @@ const findAllBlogBySlugcatgories = async (req, res) => {
     console.log(categorie)
     const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
 
-    if (blogs.length === 0) {
+    if (blogs.length === 0 | !categorie) {
 
-        res.render('layout/404')
+        res.status(404).render('layout/404')
+        return
     } else {
         const itemCount = blogs.count;
         const pageCount = Math.ceil(blogs.count / req.query.limit);
