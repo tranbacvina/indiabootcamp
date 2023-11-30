@@ -105,10 +105,21 @@ const caounica = async(link) => {
            sections.push({title,items,lecture_count:items.length});
         })
         
-        const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
-        const parent = $(".breadcumb-detail-course").children().last().prev().prev().text()
+        const breadcrumb = $(".breadcumb-detail-course").children('a')
+        let parentTopic
+        let topic
+        if (breadcrumb.length == 3) {
+            parentTopic = {name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href')}
+            topic = {name: $(breadcrumb[2]).text(), href: $(breadcrumb[2]).attr('href')}
+        }
 
-        console.log(parent)
+        if (breadcrumb.length == 2) {
+            parentTopic = null
+            topic = {name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href')}
+        }
+
+        console.log(parentTopic,topic)
+
         return {
           name,
           description,
@@ -235,32 +246,13 @@ const main = async() => {
 // })
 // const q = [...JSON.parse(JSON.stringify(children, null, 2)), {id: 15}]
 // console.log(q)
-// const duplicates = await db.course.findAll({
-//    include: [
-//     {
-//         model: db.Topic,
-//         where: {
-//             [Op.or]: q
-//         }
-//     },
-
-//    ],
-//    limit:3,
-//    attributes: ['id','name']
-
-//   });
-//   console.log(JSON.stringify(duplicates, null, 2))
+const duplicates = await db.Topic.findAll({
+    include: { module: db.course}
+  });
+  console.log(JSON.stringify(duplicates, null, 2))
     // const chil = await getTopicWithChildren(905)
     // console.log(chil)
-    const rattings = await db.Topic.findOne({
-        where:
-        {
-            id: 171
-        }
-    })
-     rattings.parent_id = 171
-     await rattings.save()
-    console.log(rattings)
+
 
 }
 main()

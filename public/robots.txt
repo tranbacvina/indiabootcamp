@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /order/
+Disallow: /js/
+Disallow: /cdn-cgi/
 Sitemap: https://fullbootcamp.com/sitemap.xml

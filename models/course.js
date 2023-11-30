@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.driveCourse, { foreignKey: "idCourse" ,onDelete: 'SET NULL',});
       this.hasMany(models.orderItem, { foreignKey: "courseID",onDelete: 'SET NULL', });
       this.hasMany(models.rating, { foreignKey: "courseId",onDelete: 'SET NULL', } );
-      this.belongsToMany(models.Topic, { through: models.course_topic, foreignKey: "course_id" } );
+      this.belongsToMany(models.Topic, { through: models.course_topic, foreignKey: "course_id",onDelete: 'SET NULL', } );
       // this.belongsTo(models.Topic)
     }
   }

@@ -175,8 +175,19 @@ const cawnUnica = async (link) => {
       sections.push({ title, items, lecture_count: items.length });
     })
     const originprice = parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
-    const breadcrumb = $(".breadcumb-detail-course").children().last().text().trim()
-    const parent = $(".breadcumb-detail-course").children().last().prev().prev().text()
+
+    const breadcrumb = $(".breadcumb-detail-course").children('a')
+        let parentTopic
+        let topic
+        if (breadcrumb.length == 3) {
+            parentTopic = {name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href')}
+            topic = {name: $(breadcrumb[2]).text(), href: $(breadcrumb[2]).attr('href')}
+        }
+
+        if (breadcrumb.length == 2) {
+            parentTopic = null
+            topic = {name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href')}
+        }
 
     return {
       name,
@@ -189,7 +200,7 @@ const cawnUnica = async (link) => {
       requirements: [],
       sections: { sections },
       originprice,
-      breadcrumb, parent
+      parentTopic, topic
     }
   } catch (error) {
     console.log(error)
@@ -218,33 +229,12 @@ const unica = async (uri) => {
         whatyouwilllearn,
         requirements, sections,
         originprice,
-        breadcrumb, parent } = await cawnUnica(urlfixshare_udemy)
+        parentTopic, topic } = await cawnUnica(urlfixshare_udemy)
 
 
       const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice)
 
-      const [topic, created] = await db.Topic.findOrCreate(
-        {
-          where: { name: breadcrumb },
-          defaults: {
-            name: breadcrumb,
-
-          }
-        }
-      )
-
-      const [cparent, createdparent] = await db.Topic.findOrCreate(
-        {
-          where: { name: parent },
-          defaults: {
-            name: parent,
-
-          }
-        }
-      )
-      topic.parent_id = cparent.id
-      await topic.save()
-      await newCourse.addTopics([topic.id, cparent.id])
+     
       return { success: true, data: newCourse }
     }
 
