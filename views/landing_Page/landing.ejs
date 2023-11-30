@@ -842,7 +842,7 @@
                 <div class="col-2">
                   <div class="text-right md:text-left">
                     <div class="text-15 lh-1 fw-500 line-through">
-                        ${course.data.originprice.toLocaleString('it-IT', {
+                        ${course.data.originprice?.toLocaleString('it-IT', {
                     style: 'currency', currency
                         : 'VND'
                 })}
@@ -861,6 +861,7 @@
             modalCheckCourse.setContent(codeHtml);
 
         } catch (error) {
+            console.log(error)
             toastr.error('Something is wrong, please check again or contact the administrator')
         }
 

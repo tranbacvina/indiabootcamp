@@ -252,8 +252,13 @@ const main = async() => {
 //   console.log(JSON.stringify(duplicates, null, 2))
     // const chil = await getTopicWithChildren(905)
     // console.log(chil)
-    const rattings = await db.rating.findAll()
-
+    const rattings = await db.orderItem.destroy({
+        where:
+        {
+            orderID: 2999
+        }
+    })
     console.log(rattings)
+
 }
 main()
