@@ -252,12 +252,14 @@ const main = async() => {
 //   console.log(JSON.stringify(duplicates, null, 2))
     // const chil = await getTopicWithChildren(905)
     // console.log(chil)
-    const rattings = await db.orderItem.destroy({
+    const rattings = await db.Topic.findOne({
         where:
         {
-            orderID: 2999
+            id: 171
         }
     })
+     rattings.parent_id = 171
+     await rattings.save()
     console.log(rattings)
 
 }

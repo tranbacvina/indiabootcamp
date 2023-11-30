@@ -13,7 +13,8 @@ async function getTopicWithParents(topicID) {
   
     while (currentTopicId !== 0) {
       const parentTopic = await  db.Topic.findOne({ where: { id: currentTopicId } });
-      if (!parentTopic) {
+      if (!parentTopic || topic.parent_id == parentTopic.id) {
+        
         break; // Dừng nếu không tìm thấy parent category
       }
   

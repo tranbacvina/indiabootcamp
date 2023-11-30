@@ -100,6 +100,7 @@ const topicSlugGetCourses = async (req, res) => {
         } 
     
         const breadcrumb = await ulltilService.getTopicWithParents(topicOne.id)
+        console.log(breadcrumb)
         const schemaBreadcum = schema.breadcumbCourseTopic(breadcrumb)
     
         course = JSON.parse(JSON.stringify(course, null, 2))
