@@ -262,7 +262,7 @@ const createStrucDataOneCourse = (course, ratings) => {
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": ratings.avg || 1,
-      "ratingCount": course.ratings.length,
+      "ratingCount": course.ratings.length||1,
       "bestRating": 5,
       "worstRating": 0.5
     }
