@@ -27,6 +27,11 @@ const check = async (req, res) => {
     for (let link of links) {
         const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
         const expression = link.match(regex);
+        if(expression == null) {
+            promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+            continue
+        } 
+
         switch (expression[0]) {
             case "unica.vn":
                 promises.push(cawn_data.unica(link))

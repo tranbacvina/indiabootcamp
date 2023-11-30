@@ -146,7 +146,6 @@ const udemy = async (uri) => {
 
 
   } catch (error) {
-    console.log(error)
     return { success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" }
   }
 };

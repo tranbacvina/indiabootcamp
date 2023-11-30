@@ -786,7 +786,6 @@
                     quantity: 1
                 }
             })
-            console.log(itemsForGtag)
             gtag("event", "purchase", {
                 transaction_id: createOrder.data.order.uuid,
                 value: createOrder.data.order.price,
@@ -796,7 +795,9 @@
             fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.order.price });
             window.location.href = `/order/${createOrder.data.order.uuid}`
         } catch (error) {
-            alert(error)
+            for (let e of error.response.data.error){
+                toastr.error(e.msg)
+            }
         }
 
     });

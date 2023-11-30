@@ -16,6 +16,7 @@ Routers.post("/createvn", [
 Routers.post("/createvnapi", [
     check('email', 'Không được để trống email').not().isEmpty(),
     check('email', 'Vui lòng điền đúng định dạng email').isEmail(),
+    check('items', 'Đơn hàng chưa có khoá học, vui lòng thực hiện lại').not().isEmpty(),
     order.createvnapi
 ])
 Routers.get('/success', order.stripeSuccess);
