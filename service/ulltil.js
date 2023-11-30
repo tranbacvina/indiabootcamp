@@ -13,7 +13,7 @@ async function getTopicWithParents(topicID) {
   
     while (currentTopicId !== 0) {
       const parentTopic = await  db.Topic.findOne({ where: { id: currentTopicId } });
-      if (!parentTopic || topic.parent_id == parentTopic.id) {
+      if (!parentTopic || topic.parent_id == topic.id) {
         
         break; // Dừng nếu không tìm thấy parent category
       }
@@ -23,6 +23,9 @@ async function getTopicWithParents(topicID) {
         slug: parentTopic.slug,
       });
   
+      if(parentTopic.parent_id == parentTopic.id){
+        break
+      }
       currentTopicId = parentTopic.parent_id;
     }
   

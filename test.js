@@ -228,7 +228,7 @@ const main = async() => {
 //   {
 //     where: {
 //         url: {
-//             [Op.like]: '%udemy%'
+//             [Op.like]: '%gitiho%'
 //         }
 //     },
     
@@ -247,7 +247,9 @@ const main = async() => {
 // const q = [...JSON.parse(JSON.stringify(children, null, 2)), {id: 15}]
 // console.log(q)
 const duplicates = await db.Topic.findAll({
-    include: { module: db.course}
+    where: {
+        slug: 'game-development-fundamentals'
+    }
   });
   console.log(JSON.stringify(duplicates, null, 2))
     // const chil = await getTopicWithChildren(905)

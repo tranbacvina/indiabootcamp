@@ -287,7 +287,7 @@ const cawnGitio = async (link) => {
       let $ = cheerio.load(get_web.data);
 
       const name = $("h1").text();
-      const description = $("meta[name='description']").attr("content")
+      const description = $(".line-clamp-2-lines").text()
       const image = $("meta[property='og:image']").attr("content")
 
       const price = 50000
@@ -371,34 +371,8 @@ const gitiho = async (uri) => {
       originprice,breadcrumb,parent
     }= await cawnGitio(urlfixshare_udemy)
 
-    uri.originprice = originprice
-    uri.sections = {sections: sections}
-    const [topic, created]  = await db.Topic.findOrCreate(
-      {
-        where: {name: breadcrumb},
-        defaults: {
-          name: breadcrumb,
-        
-        }
-      }
-      )
-     
-      if (parent !== 'Khoá học') {
-        const [cparent, createdparent]  = await db.Topic.findOrCreate(
-          {
-            where: {name: parent},
-            defaults: {
-              name: parent,
-            
-            }
-          }
-          )
-          topic.parent_id =cparent.id
-          await topic.save()
-        await uri.addTopic(cparent.id)
-      }
-      
-      await uri.addTopic(topic.id)
+      uri.description = description
+
       await uri.save()
 
   } catch (error) {

@@ -205,8 +205,21 @@ const createStrucDataCourses = (courses) => {
         "url": `${process.env.DOMAIN}/course/${item.slug}`,
         "name": item.name,
         "description": item.description,
-        "provider": handleProviderStructure(item.url)
-      }
+        "provider": handleProviderStructure(item.url),
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "Online",
+          "courseWorkload": "PT8H53M", 
+        },
+        "offers": [
+          {
+            "@type": "Offer",
+            "category": "Paid",
+            "price": item.price,
+            "priceCurrency": "VND"
+          }
+        ],
+      },
     }
   })
   const structuredDataCourse = {
@@ -217,25 +230,27 @@ const createStrucDataCourses = (courses) => {
   return structuredDataCourse
 }
 
-const createStrucDataOneCourse = (course,ratings) => {
+const createStrucDataOneCourse = (course, ratings) => {
   const structuredDataCourse = {
     "@context": "https://schema.org",
     "@type": "Course",
     "name": course.name,
     "description": course.description,
-    "provider": handleProviderStructure(course.url)
+    "provider": {
+      "@type": "EducationalOrganization",
+      "name": "Full Bootcamp",
+      "sameAs": DOMAIN
+    }
     ,
-    "@id":  course.url,
-
+    "@id": `${DOMAIN}/${course.url}`,
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "Online",
+      "courseWorkload": "PT8H53M", 
+    },
     "isAccessibleForFree": course.price == 0 ? true : false,
     "image": course.image,
     "offers": [
-      {
-        "@type": "Offer",
-        "category": "Paid",
-        "price": course.priceus,
-        "priceCurrency": "USD"
-      },
       {
         "@type": "Offer",
         "category": "Paid",
@@ -243,10 +258,10 @@ const createStrucDataOneCourse = (course,ratings) => {
         "priceCurrency": "VND"
       }
     ],
-  
+
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": ratings.avg || 0,
+      "ratingValue": ratings.avg || 1,
       "ratingCount": course.ratings.length,
       "bestRating": 5,
       "worstRating": 0.5
@@ -265,17 +280,18 @@ const blogPage = (blog) => {
     "description": blog.description,
     "datePublished": blog.createdAt,
     "dateModified": blog.updatedAt,
-    "articleBody":blog.content,
+    "articleBody": blog.content,
     "author": {
       "@type": "EducationalOrganization",
       "url": process.env.DOMAIN,
       "name": "Full Bootcamp"
     },
-    "publisher": { 
-      "@type": "EducationalOrganization", 
+    "publisher": {
+      "@type": "EducationalOrganization",
       "url": process.env.DOMAIN,
-    name: "Full Bootcamp" }
+      name: "Full Bootcamp"
+    }
   }
   return schema
 }
-module.exports = { schemaBlog, breadcumbCourse, breadcumbCourseTopic, breadcrumbBlogCate, home, CreativeWorkSeries, createStrucDataOneCourse, createStrucDataCourses,blogPage }
+module.exports = { schemaBlog, breadcumbCourse, breadcumbCourseTopic, breadcrumbBlogCate, home, CreativeWorkSeries, createStrucDataOneCourse, createStrucDataCourses, blogPage }

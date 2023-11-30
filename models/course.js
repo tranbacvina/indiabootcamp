@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       url: DataTypes.STRING,
       slug: { type: DataTypes.STRING, unique: true },
       description: DataTypes.TEXT,
+      description_sort: DataTypes.TEXT('long'),
       description_log: DataTypes.TEXT('long'),
       whatyouwilllearn: DataTypes.JSON,
       requirements: DataTypes.JSON,

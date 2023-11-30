@@ -20,7 +20,20 @@ const findAllTopicChild = async(parent_id) => {
         }
     })
 }
+const removeTopic = async (id) => {
+     const topic = await db.Topic.findOne({
+        where:{
+            id
+        }
+    })
+    await topic.setCourses([])
+    return await db.Topic.destroy({
+        where: {
+            id
+        }
+    })
+}
 // const findAllwithCourse = async () => {
 
 // }
-module.exports = { findAll, findOne ,findAllTopicChild}
+module.exports = { findAll, findOne ,findAllTopicChild,removeTopic}

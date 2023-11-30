@@ -8,7 +8,7 @@
     <!-- Primary Meta Tags -->
     <title>
         <% if (!course.name.toLocaleLowerCase().includes("khoá học".toLocaleLowerCase())) { %>
-          Khoá Học 
+          Khoá Học <%=course.price == 50000 ? '50k' : ''%>
         <% } %>
         <%= course.name %>
       </title>
@@ -177,7 +177,6 @@
                                         </div>
     
                                         <p class="col-xl-9 mt-20">
-                                            Nhận khoá học <%=course.name%> qua Onedrive. <br>
                                                 <%=course.description%>
                                         </p>
     

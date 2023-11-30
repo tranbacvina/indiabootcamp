@@ -250,7 +250,7 @@ const cawnGitio = async (link) => {
     let $ = cheerio.load(get_web.data);
 
     const name = $("h1").text();
-    const description = $("meta[name='description']").attr("content").trim().replace(/^\s+|\s+$/g, '');
+    const description = $(".line-clamp-2-lines").text();
     const image = $("meta[property='og:image']").attr("content")
 
     const price = 50000

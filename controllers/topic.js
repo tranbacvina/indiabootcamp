@@ -94,13 +94,13 @@ const topicSlugGetCourses = async (req, res) => {
         
     
         let course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
-        
-        if (course.length === 0) {
+        if (course.count === 0) {
+            await topic.removeTopic(topicOne.id)
             res.render('layout/404')
+            return
         } 
     
         const breadcrumb = await ulltilService.getTopicWithParents(topicOne.id)
-        console.log(breadcrumb)
         const schemaBreadcum = schema.breadcumbCourseTopic(breadcrumb)
     
         course = JSON.parse(JSON.stringify(course, null, 2))
