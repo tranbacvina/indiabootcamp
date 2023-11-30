@@ -82,12 +82,13 @@ const findAllBlogBySlugcatgories = async (req, res) => {
     const categorie = await catgoriesServices.findOne(slug)
     console.log(categorie)
     const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
-    const schemaBreadcum = schema.breadcrumbBlogCate(categorie)
     if (blogs.length === 0 | !categorie) {
 
         res.status(404).render('layout/404')
         return
     } else {
+        const schemaBreadcum = schema.breadcrumbBlogCate(categorie)
+
         const itemCount = blogs.count;
         const pageCount = Math.ceil(blogs.count / req.query.limit);
         // res.send({
