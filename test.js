@@ -246,11 +246,13 @@ const main = async() => {
 // })
 // const q = [...JSON.parse(JSON.stringify(children, null, 2)), {id: 15}]
 // console.log(q)
-const duplicates = await db.Topic.findAll({
+const duplicates = await db.Blog.findOne({
     where: {
-        slug: 'game-development-fundamentals'
+        slug: 'gioi-thieu'
     }
   });
+   duplicates.isDeleted = true
+   await duplicates.save()
   console.log(JSON.stringify(duplicates, null, 2))
     // const chil = await getTopicWithChildren(905)
     // console.log(chil)

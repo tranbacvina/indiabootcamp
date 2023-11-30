@@ -192,7 +192,9 @@ const oneBlogPublic = async (req, res) => {
     const slug = req.params.slug
     const blog = await db.Blog.findOne({
         where: {
-            slug
+            slug,
+            isDeleted: false
+            
         },
         include: {
             model: db.Category
@@ -231,4 +233,34 @@ const allBlogPublic = async (req, res) => {
 const lienhe = async (req,res) => {
     res.render('blog/lienhe')
 }
-module.exports = { lienhe,oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove,allBlogPublic }
+const gioithieu = async (req,res) => {
+    const blog = await db.Blog.findOne({
+        where: {
+            slug: 'gioi-thieu'
+            
+        },
+        
+    })
+    if (blog) {
+        res.render('blog/page', { blog: blog, })
+    }
+    else {
+        res.render('layout/404')
+    }
+}
+const chinhsachbaomat = async (req,res) => {
+    const blog = await db.Blog.findOne({
+        where: {
+            slug: 'chinh-sach-bao-mat'
+            
+        },
+        
+    })
+    if (blog) {
+        res.render('blog/page', { blog: blog, })
+    }
+    else {
+        res.render('layout/404')
+    }
+}
+module.exports = { lienhe,oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove,allBlogPublic,gioithieu,chinhsachbaomat }

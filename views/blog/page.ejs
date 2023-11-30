@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+    <title>
+        <%= blog.title %>
+    </title>
+    <meta name="title" content="<%= blog.title %>" />
+    <meta name="description" content="<%= blog.title %>" />
+    <link rel="canonical" href="<%=canonicalURL%>" />
+   
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
+    <link rel="manifest" href="/img/redketchup/site.webmanifest">
+    <meta content="INDEX,FOLLOW" name="robots" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%=canonicalURL%>" />
+    <meta property="og:title" content="<%= blog.title %>" />
+    <meta property="og:description" content="<%= blog.title %>" />
+    <meta property="og:image" content="/<%=blog.thumbnail%>" />
+    <meta property="og:locale" content="vi_VN" />
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <%- include('../layout/analytics'); %>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+
+    <main class="main-content  ">
+
+        <%- include('../layout/header'); %>
+
+            <div class="content-wrapper  js-content-wrapper">
+                <section data-anim="fade" class="breadcrumbs is-in-view">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="breadcrumbs__content">
+
+                                    <div class="breadcrumbs__item ">
+                                        <a href="/">Home</a>
+                                    </div>
+                                    <div class="breadcrumbs__item ">
+                                        <a>
+                                            <%= blog.title %>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="page-header -type-1">
+                    <div class="container">
+                        <div class="page-header__content">
+                            <div class="row justify-center text-center">
+                                <div class="col-xl-8 col-lg-9 col-md-11">
+                                    <div data-anim="slide-up delay-1" class="is-in-view">
+                                        <h1 class="page-header__title lh-14">
+                                            <%= blog.title %>
+                                        </h1>
+
+
+                                        <p class="page-header__text">
+                                            <%= blog.updatedAt.toLocaleString() %>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="layout-pt-md layout-pb-lg">
+                    <div class="container">
+                        <div class="blogSection">
+                            <div class="blogCard">
+                                <div class="row justify-center">
+                                    <div class="col-xl-8 col-lg-9 col-md-11">
+                                        <div class="blogCard__content">
+                                            <%- blog.content %>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <section class="layout-pt-lg layout-pb-lg mb-90 section-bg">
+                    <div class="section-bg__item">
+                        <img class="img-full rounded-16" src="img/home-3/cta/bg.png" alt="image">
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-center text-center">
+                            <div class="col-xl-5 col-lg-6 col-md-11">
+
+                                <div class="sectionTitle -light">
+
+                                    <h2 class="sectionTitle__title ">Đăng ký get khoá học Udemy - Unica - Gitiho ngay!
+                                    </h2>
+
+                                    <p class="sectionTitle__text ">Get khoá học giá rẻ ngay trước khi bị fix.
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-30 justify-center">
+                            <div class="col-auto">
+                                <a href="/#getCourseHere" class="button -md -outline-light-4 text-white">Get khoá học
+                                    cho
+                                    tôi</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+    </main>
+    <%- include('../layout/footer'); %>
+    <%- include('../layout/footerjs'); %>
+
+
+</body>
+
+</html>

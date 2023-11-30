@@ -5,7 +5,8 @@ const findMany = async (text, limit, skip) => {
         limit: limit,
         offset: skip,
         order: [['id', 'DESC']],
-        include: { model: db.Category }
+        include: { model: db.Category },
+        where:{isDeleted:false}
     }
     if (text) {
         query['where'] = {
@@ -34,6 +35,9 @@ const findManyByCategories = async (text, limit, skip, slug) => {
             model: db.Category, where: {
                 slug
             }
+        },
+        where: {
+            isDeleted:false
         }
     }
     if (text) {
