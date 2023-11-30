@@ -814,7 +814,7 @@
             let links = Array.from(uri.match(/[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig))
 
             modalCheckCourse.open()
-            modalCheckCourse.setContent('Đang lấy dữ liệu, vui lòng đợi...');
+            modalCheckCourse.setContent('Đang lấy dữ liệu, vui lòng đợi. Không bấm thanh toán lúc này...');
             const checkCourseRequest = await axios.post('/course/check', {
                 email, links
             })
@@ -823,7 +823,7 @@
 
             for (let course of checkCourseRequest.data) {
                 if (!course.success) {
-                    toastr.error( course.data.title,course.messenger)
+                    toastr.error( course.data.title ? course.data.title : course.data.name ,course.messenger)
                     continue
                 }
 
@@ -846,7 +846,7 @@
                         ${course.data.originprice?.toLocaleString('it-IT', {
                     style: 'currency', currency
                         : 'VND'
-                })}
+                        })}
                                                 </div>
                     <div class="text-17 lh-1 fw-500 text-dark-1 mt-10">${course.data.price.toLocaleString('it-IT', {
                     style: 'currency', currency
