@@ -15,6 +15,7 @@ Routers.get('/khoahoccantai', course.coursedownload)
 Routers.post('/sendEmailCourse', course.sendEmailCourse)
 Routers.get("/delete/:id",course.deleteCourseColtroler)
 
+Routers.get("/findapi",course.apiFindAllKeyWord)
 
 Routers.get('/:id', course.one)
 

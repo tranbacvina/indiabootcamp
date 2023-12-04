@@ -4,9 +4,26 @@ const paginate = require('express-paginate');
 const serviceCategories = require("../service/catgories")
 const db = require("../models");
 const schema = require('../service/schema')
+const mediaService = require("../service/media")
+
 const allBlogAdmin = async (req, res) => {
     const { text, limit, } = req.query
-    const blogs = await serviceBlog.findMany(text, limit, req.skip)
+    const query = {
+        limit: limit,
+        offset: req.query.skip,
+        order: [['id', 'DESC']],
+        include: { model: db.Category },
+    }
+    if (text) {
+        query['where'] = {
+            [Op.or]: [
+
+                { name: { [Op.like]: `%${text}%` } },
+                { url: text }
+            ]
+        }
+    }
+    const blogs = await db.Blog.findAndCountAll(query)
     if (blogs.length === 0) {
 
         res.render('layout/404')
@@ -55,46 +72,40 @@ const postUpdate = async (req, res) => {
         keywords,
         content,
         categoryId,
-        statusId
+        statusId, thumbnailSlug,
+        courses
     } = req.body
-
+        
+    if (categoryId == 'null') {
+        categoryId = null
+    }
     try {
-        let data = {}
+        let data = {
+            title,
+            content,
+            description: description,
+            slug,
+            keywords,
+            thumbnail: thumbnailSlug,
+            categoryId,
+            isDeleted: statusId,
+        }
 
         if (req.file) {
             const filename = req.file.filename;
-            data = {
-                title,
-                content,
-                description: description,
-                slug,
-                keywords,
-                thumbnail: filename,
-                categoryId,
-                isDeleted: statusId
-
-
-            }
-
-            await db.Media.create({
-                title: filename,
-                fileUrl: `/${filename}`,
-            })
-        }
-        else {
-            data = {
-                title,
-                content,
-                description: description,
-                slug,
-                keywords,
-                categoryId,
-                isDeleted: statusId
-
-            }
+            const fileUrl = `/uploads/${filename}`
+            const createthumbnail = await mediaService.createMedia(filename, fileUrl)
+            data.thumbnail = createthumbnail.fileUrl
         }
 
-        await db.Blog.update(data, { where: { id } })
+        const updateBlog = await db.Blog.update(data, { where: { id } })
+        
+        if (courses.length > 0) {
+            courses = JSON.parse(courses).map(item => item.id)
+            const course = await db.Blog.findOne({where: {id}})
+            await course.setCourses(courses)
+        }
+        
 
         return res.status(200).json({
             success: true,
@@ -105,7 +116,7 @@ const postUpdate = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success: false,
-            data: 'Internal Server Error'
+            message: error
         })
     }
 
@@ -131,26 +142,25 @@ const viewCreate = async (req, res) => {
 const create = async (req, res) => {
 
 
-    const { title, content, keywords, description, slug, categoryId } = req.body
+    let { title, content, keywords, description, slug, categoryId,thumbnail,statusId } = req.body
     try {
         if (req.file) {
             const filename = req.file.filename;
-            const url = `${filename}`;
-            await db.Media.create({
-                title: filename,
-                fileUrl: `/${filename}`,
-            })
+            const url = `/uploads/${filename}`;
+            thumbnail = await mediaService.createMedia(filename, url).fileUrl
         }
-        console.log(req.file)
+
+        if(categoryId == 'null') categoryId = null
 
         const newblog = await db.Blog.create({
-            title,
-            description: description,
-            content,
-            keywords,
-            thumbnail: req.file.filename,
-            categoryId
-        },
+                title,
+                description: description,
+                content,
+                keywords,
+                thumbnail: thumbnail,
+                categoryId,
+                isDeleted: statusId
+            },
             {
                 include: {
                     model: db.Category,
@@ -194,16 +204,16 @@ const oneBlogPublic = async (req, res) => {
         where: {
             slug,
             isDeleted: false
-            
+
         },
-        include: {
+        include: [{
             model: db.Category
-        }
+        }, {model: db.course, attributes: ['id','image','name','slug','originprice','price']}]
     })
     if (blog) {
         const schemaBreadcum = schema.schemaBlog(blog)
-        const schemablog =schema.blogPage(blog)
-        res.render('blog/one-blog', { blog: blog,schemablog,schemaBreadcum })
+        const schemablog = schema.blogPage(blog)
+        res.render('blog/one-blog', { blog: blog, schemablog, schemaBreadcum })
     }
     else {
         res.render('layout/404')
@@ -230,16 +240,16 @@ const allBlogPublic = async (req, res) => {
     }
 };
 
-const lienhe = async (req,res) => {
+const lienhe = async (req, res) => {
     res.render('blog/lienhe')
 }
-const gioithieu = async (req,res) => {
+const gioithieu = async (req, res) => {
     const blog = await db.Blog.findOne({
         where: {
             slug: 'gioi-thieu'
-            
+
         },
-        
+
     })
     if (blog) {
         res.render('blog/page', { blog: blog, })
@@ -248,13 +258,13 @@ const gioithieu = async (req,res) => {
         res.render('layout/404')
     }
 }
-const chinhsachbaomat = async (req,res) => {
+const chinhsachbaomat = async (req, res) => {
     const blog = await db.Blog.findOne({
         where: {
             slug: 'chinh-sach-bao-mat'
-            
+
         },
-        
+
     })
     if (blog) {
         res.render('blog/page', { blog: blog, })
@@ -263,4 +273,4 @@ const chinhsachbaomat = async (req,res) => {
         res.render('layout/404')
     }
 }
-module.exports = { lienhe,oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove,allBlogPublic,gioithieu,chinhsachbaomat }
+module.exports = { lienhe, oneBlogPublic, allBlogAdmin, viewUpdate, postUpdate, viewCreate, create, remove, allBlogPublic, gioithieu, chinhsachbaomat }

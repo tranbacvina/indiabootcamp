@@ -242,7 +242,7 @@ const createStrucDataOneCourse = (course, ratings) => {
       "sameAs": DOMAIN
     }
     ,
-    "@id": `${DOMAIN}/${course.url}`,
+    "@id": `${DOMAIN}/${course.slug}`,
     "hasCourseInstance": {
       "@type": "CourseInstance",
       "courseMode": "Online",

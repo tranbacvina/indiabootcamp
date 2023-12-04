@@ -27,6 +27,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Sửa <%=blog.title%>
     </title>
+    
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#content',
+            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+            toolbar: ' undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            images_upload_url: '/admin/media/blogpostmedia',
+            file_picker_callback: (cb, value, meta) => {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+
+                const reader = new FileReader();
+                reader.addEventListener('load', () => {
+                    /*
+                    Note: Now we need to register the blob in TinyMCEs image blob
+                    registry. In the next release this part hopefully won't be
+                    necessary, as we are looking to handle it internally.
+                    */
+                    const id = 'blobid' + (new Date()).getTime();
+                    const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                    const base64 = reader.result.split(',')[1];
+                    const blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+
+                    /* call the callback and populate the Title field with the file name */
+                    cb(blobInfo.blobUri(), { title: file.name });
+                });
+                reader.readAsDataURL(file);
+                });
+
+                input.click();
+            },
+                });
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body class="preloader-visible" data-barba="wrapper">
@@ -117,7 +159,7 @@
                                                             mục*</label>
 
                                                         <select name="" id="categoryId" class=" form-select">
-                                                            <option value="">Chọn</option>
+                                                            <option value="null">Chọn</option>
                                                             <% for (let category of categories) { %>
                                                                 <option value="<%= category.id %>" <%-
                                                                     category.id===blog.categoryId ? 'selected' : '' %> >
@@ -151,6 +193,11 @@
                                                             id="description"><%= blog.description %></textarea>
                                                     </div>
 
+                                                    <div class="col-12">
+                                                        <label for="courses" class="text-16 lh-1 fw-500 text-dark-1 mb-10">Khoá học liên kết</label>
+                                                        <select id="courses" class="js-example-basic-multiple" name="courses[]" multiple="multiple">
+                                                          </select>
+                                                    </div>
 
                                                     <div class="col-12">
 
@@ -162,10 +209,17 @@
 
                                                     </div>
                                                     <div class="col-12">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình đại diện</label>
+
+                                                        <input type="text" value="<%= blog.thumbnail %>" name="thumbnailSlug" id="thumbnailSlug">
+                                                    </div>
+                                                    <div class="col-12">
                                                         <div class="d-flex lg:flex-column">
                                                             <div class="relative shrink-0">
                                                                 <img class="w-1\/4" width="150" height="100"
-                                                                    src="/<%= blog.thumbnail %>" alt="image">
+                                                                    src="<%= blog.thumbnail %>" alt="image">
 
                                                                 <div
                                                                     class="absolute-full-center d-flex justify-end py-20 px-20">
@@ -175,6 +229,7 @@
                                                                     </a>
                                                                 </div>
                                                             </div>
+                                                            
                                                             <div class="w-1/1 ml-30 lg:ml-0 lg:mt-20">
 
                                                                 <div class="form-upload col-12">
@@ -274,8 +329,31 @@
 
     <!-- JavaScript -->
     <%- include('../../layout/footerjs'); %>
-        <script src="/js/ckeditor.js"></script>
+        <!-- <script src="/js/ckeditor.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
+            $(document).ready(function() {
+                $('.js-example-basic-multiple').select2({
+                    placeholder: 'Tìm khoá học liên kết với blog',
+                    cache: true,
+                    ajax: {
+                        url: '/admin/course/findapi',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                text: params.term, // search term
+                            }},
+                        processResults: function (data) {
+                            return {
+                                results: data.map(item => {
+                                    return {id:item.id, text: item.name }
+                                })
+                                };
+                            },
+                    }
+                });
+            });
             moment.locale('vi')
             const timeClass = document.getElementsByClassName("datesTime")
             const orderStatus = document.querySelectorAll('.orderStatus')
@@ -296,31 +374,35 @@
         </script>
 
         <script>
-            let editor;
-            ClassicEditor
-                .create(document.querySelector('.editor'), {
-                    licenseKey: '',
-                    mediaEmbed: {
-                        previewsInData: true
-                    }
-                })
-                .then(newEditor => {
-                    editor = newEditor;
-                })
-                .catch(error => {
-                    console.error('Oops, something went wrong!');
-                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
-                    console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
-                    console.error(error);
-                });
+            // let editor;
+            // ClassicEditor
+            //     .create(document.querySelector('.editor'), {
+            //         licenseKey: '',
+            //         mediaEmbed: {
+            //             previewsInData: true
+            //         }
+            //     })
+            //     .then(newEditor => {
+            //         editor = newEditor;
+            //     })
+            //     .catch(error => {
+            //         console.error('Oops, something went wrong!');
+            //         console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+            //         console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
+            //         console.error(error);
+            //     });
+
             const updateBlog = async () => {
                 const title = document.getElementById('title').value
                 const description = document.getElementById('description').value
                 const slug = document.getElementById('slug').value
-                const content = editor.getData()
+                const content = tinymce.activeEditor.getContent();
                 const categoryId = document.getElementById('categoryId').value
                 const statusId = document.getElementById('status').value
+                const thumbnailSlug = document.getElementById('thumbnailSlug').value
                 const image = document.getElementById('thumbnail').files[0];
+                const courses =$('.js-example-basic-multiple').select2('data');
+
                 const formData = new FormData();
                 formData.append("title", title);
                 formData.append("description", description);
@@ -329,6 +411,8 @@
                 formData.append("categoryId", categoryId);
                 formData.append("statusId", statusId);
                 formData.append("hinhdaidien", image);
+                formData.append("thumbnailSlug", thumbnailSlug);
+                formData.append("courses", JSON.stringify(courses));
                 try {
                     const response = await axios.patch('/admin/blogs/<%=blog.id%>',
                         formData
@@ -345,7 +429,7 @@
                     }
                 } catch (error) {
                     console.log(error);
-                    toastr.error(error.response.data);
+                    toastr.error(error.response.data.message);
                 }
 
             }

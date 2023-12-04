@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Category, { foreignKey: "categoryId" });
+      this.belongsToMany(models.course, {through: 'blogCourse'});
 
     }
   }
@@ -24,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     slug: { type: DataTypes.STRING, unique: true },
     thumbnail: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
+    courseId: DataTypes.INTEGER,
     isDeleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

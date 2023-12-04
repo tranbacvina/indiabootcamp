@@ -1,6 +1,6 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse,findManyApi } = require("../service/course")
 const serverCourse = require('../service/course')
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
@@ -281,4 +281,15 @@ const deleteCourseColtroler = async (req, res) => {
     await deleteCourse(id)
     res.redirect('/admin/course')
 }
-module.exports = { cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse, deleteCourseColtroler, addDriveToCourse, delDriveToCourse, timKiemPage }
+
+const apiFindAllKeyWord = async (req,res) => {
+    const { text } = req.query
+    if(!text) {
+        res.status(404).send('Not Found')
+        return
+    }
+    const course = await findManyApi(text)
+    res.send(course)
+
+}
+module.exports = {apiFindAllKeyWord, cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse, deleteCourseColtroler, addDriveToCourse, delDriveToCourse, timKiemPage }

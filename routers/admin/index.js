@@ -6,6 +6,7 @@ const bank = require("./bank")
 const topic = require("./topic")
 const blog = require("./blog");
 const categories = require("./categories");
+const media = require("./media")
 
 Routers.get("/", (req, res) => { res.redirect("/admin/order") })
 Routers.use("/course", course)
@@ -15,6 +16,7 @@ Routers.use("/bank", bank)
 Routers.use("/topic", topic)
 Routers.use("/blogs", blog)
 Routers.use("/categories", categories)
+Routers.use("/media", media)
 
 
 

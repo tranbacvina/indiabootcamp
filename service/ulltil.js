@@ -7,7 +7,12 @@ async function getTopicWithParents(topicID) {
     if (!topic) {
       return null; // Trả về null nếu không tìm thấy category
     }
-  
+    if (topic.parent_id == null) {
+      return{
+        category: topic,
+        parents: []
+      };
+    }
     const parents = [];
     let currentTopicId = topic.parent_id;
   

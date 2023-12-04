@@ -87,7 +87,6 @@ const findMany = async (text, limit, skip) => {
     if (text) {
         query['where'] = {
             [Op.or]: [
-
                 { name: { [Op.like]: `%${text}%` } },
                 { url: text }
             ]
@@ -308,7 +307,24 @@ const deleteCourse = async(id) => {
     })
 }
 
+const findManyApi = async (text) => {
+    const query = {
+        order: [['id', 'DESC']],
+        attributes: ['image','id','name','url','slug','price','originprice','description']
+    }
+    if (text) {
+        query['where'] = {
+            [Op.or]: [
+                { name: { [Op.like]: `%${text}%` } },
+                { url: text },
+                {slug:{ [Op.like]: `%${text}%` }}
+            ]
+        }
+    }
 
-module.exports = {
+    return await db.course.findAll(query)
+}
+
+module.exports = {findManyApi,
     createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse,addDriveToCourse,removeDriveToCourse
 };

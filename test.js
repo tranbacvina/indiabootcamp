@@ -246,15 +246,14 @@ const main = async() => {
 // })
 // const q = [...JSON.parse(JSON.stringify(children, null, 2)), {id: 15}]
 // console.log(q)
-const duplicates = await db.Blog.findOne({
-    where: {
-        slug: 'gioi-thieu'
-    }
-  });
-   duplicates.isDeleted = true
-   await duplicates.save()
+const duplicates = await db.Blog.findAll();
   console.log(JSON.stringify(duplicates, null, 2))
-    // const chil = await getTopicWithChildren(905)
+   for (let i of duplicates) {
+  i.thumbnail = `/uploads/${i.thumbnail}`
+  await i.save()
+
+   }
+  // const chil = await getTopicWithChildren(905)
     // console.log(chil)
 
 

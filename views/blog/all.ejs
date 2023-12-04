@@ -117,34 +117,30 @@
                 </section>
                 <section class="layout-pt-md layout-pb-lg">
                     <div data-anim-wrap="" class="container animated">
-                        <div class="row y-gap-30 justify-center">
+                        <div class="row y-gap-30 ">
                             <%for (let blog of blogs) {%>
-                                <div data-anim="slide-up delay-1" class="col-lg-10 col-md-11 is-in-view">
-                                    <div class="blogCard -type-3">
-                                        <div class="row y-gap-30 items-center">
-                                            <div class="col-lg-6">
-                                                <div class="blogCard__image">
-                                                    <img class="rounded-8" src="/<%=blog.thumbnail%>" alt="image">
-                                                </div>
-                                            </div>
 
-                                            <div class="col-lg-6">
-                                                <div class="blogCard__content pl-60 lg:pl-40 md:pl-0">
-                                                    <a href="/category/<%=blog.Category.slug%>"
-                                                        class="blogCard__category text-14 lh-1 text-purple-1 fw-500">
-                                                        <%=blog.Category.name%>
-                                                    </a>
-                                                    <h4 class="blogCard__title text-24 lh-15 text-dark-4 fw-500 mt-15">
-                                                        <a href="/<%=blog.slug%>">
-                                                            <%=blog.title%>
-                                                        </a>
-                                                    </h4>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="col-lg-4 col-md-6 is-in-view">
+                                    <a href="/<%=blog.slug%>" class="blogCard -type-1">
+                                      <div class="blogCard__image">
+                                        <img class="w-1/1 rounded-8" src="<%=blog.thumbnail%>" alt=" <%=blog.title%>">
+                                      </div>
+                                      <div class="blogCard__content mt-20">
+                                        <div class="blogCard__category"><%=blog.Category.name%></div>
+                                        <h4 class="blogCard__title text-20 lh-15 fw-500 mt-5">
+                                            <a href="/<%=blog.slug%>">
+                                                <%=blog.title%>
+                                            </a></h4>
+                                        <div class="blogCard__date text-14 mt-5"><%=blog.createdAt.toLocaleDateString('vn-VI', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric'
+                                        });%></div>
+                                      </div>
+                                    </a>
+                                  </div>
                                 <%}%>
                         </div>
 
