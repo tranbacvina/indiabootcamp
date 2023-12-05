@@ -777,12 +777,12 @@
             const createOrder = await axios.post('/order/createvnapi', {
                 email, items
             })
-            console.log(createOrder.data)
-            const itemsForGtag = createOrder.data.order.orderItems.map(item => {
+            toastr.success('Đang tạo đơn hàng, vui lòng đợi')
+            const itemsForGtag = createOrder.data.orderItem.map(item => {
                 return {
-                    item_id: item.course.id,
-                    item_name: item.course.name,
-                    price: item.course.price,
+                    item_id: item.id,
+                    item_name: item.name,
+                    price: item.price,
                     quantity: 1
                 }
             })

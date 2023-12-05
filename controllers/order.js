@@ -172,13 +172,13 @@ const createvnapi = async (req, res) => {
             }
         );
 
-        const client_user_agent = req.useragent.source
-        const ipClien = ip.address()
-        const fbc = req.cookies._fbc
-        const fbp = req.cookies._fbp
-        const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent, fbc, fbp)
-        neworder = await order.orderUUID(neworder.uuid)
-        res.status(200).json({ order: neworder });
+        // const client_user_agent = req.useragent.source
+        // const ipClien = ip.address()
+        // const fbc = req.cookies._fbc
+        // const fbp = req.cookies._fbp
+        // const sendApiFacebook = await facebookPixel.newEvenSendToFacebook(email, price, ipClien, client_user_agent, fbc, fbp)
+        // neworder = await order.orderUUID(neworder.uuid)
+        res.status(200).json({ order: neworder,orderItem });
     } catch (error) {
         console.error(error);
     }
