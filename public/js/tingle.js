@@ -233,7 +233,7 @@
 
   Modal.prototype.addFooterBtn = function (label, cssClass, callback) {
     var btn = document.createElement('button')
-
+    btn.setAttribute('id', 'FooterBtnID');
     // set label
     btn.innerHTML = label
 
