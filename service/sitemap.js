@@ -22,7 +22,7 @@ const courseSitemap = async () => {
             .pipe(ws); // write it to sitemap-NUMBER.xml
       
           return [
-            new URL(path, `https://fullbootcamp.com/sitemaps/`).toString(),
+            new URL(path, `https://fullbootcamp.com/`).toString(),
             sitemapStream,
             ws,
           ];
@@ -58,7 +58,7 @@ const blogSitemap = async () => {
           .pipe(ws); // write it to sitemap-NUMBER.xml
     
         return [
-          new URL(path, `https://fullbootcamp.com/sitemaps/`).toString(),
+          new URL(path, `https://fullbootcamp.com/`).toString(),
           sitemapStream,
           ws,
         ];
@@ -94,7 +94,7 @@ const topicSitemap = async () => {
           .pipe(ws); // write it to sitemap-NUMBER.xml
     
         return [
-          new URL(path, `https://fullbootcamp.com/sitemaps/`).toString(),
+          new URL(path, `https://fullbootcamp.com/`).toString(),
           sitemapStream,
           ws,
         ];
