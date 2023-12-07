@@ -1,6 +1,6 @@
 const db = require('../models')
 const axios = require('axios')
-
+const { Sequelize, Op } = require("sequelize");
 const cawn_data_test = require('../service/cawn_data_test')
 
 async function getTopicWithParents(topicID) {
@@ -91,6 +91,7 @@ const hand_coursetoTopics = async (courses) => {
 
       const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
       const expression = link.url.match(regex);
+      if(expression == null) { continue}
       switch (expression[0]) {
           case "unica.vn":
                await cawn_data_test.unica(link)
@@ -112,13 +113,18 @@ const hand_coursetoTopics = async (courses) => {
 }
 
 const fixCourseTopicImage = async () => {
-  const courses = await db.course.findAll({
-    
-  })
-  await hand_coursetoTopics(courses)
-  // courses[0].TopicId = null
-  // courses[0].setTopics([])
-  // await courses[0].save()
+ 
+    const courses = await db.course.findAll({
+      limit: 1,
+      where:{
+        url:{
+          [Op.like]: '%unica%'
+        }
+        
+      }
+    })
+    await hand_coursetoTopics(courses)
+
 
 }
 

@@ -47,7 +47,7 @@ const getlastpart = (url) => {
   let lastPart
   if (url.includes('udemy')) {
     lastPart = parts[parts.length - 2];
-
+    return lastPart
   }
   lastPart = parts[parts.length - 1];
 
@@ -73,7 +73,7 @@ const scrapingUdemy = async (link) => {
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers`
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270`
   )
 
 
@@ -90,7 +90,6 @@ const udemy = async (uri) => {
 
     const { udemydata, sections } = await cawnUdemy(patch)
     const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(urlfixshare_udemy)
-
     const [topics, created] = await db.Topic.findOrCreate(
       {
         where: { slug: topic.href },
@@ -136,7 +135,7 @@ const udemy = async (uri) => {
 
     try {
       const directory = './public/uploads/courses/udemy'
-      const image = await downloadImage(uri.image, directory)
+      const image = await downloadImage(udemydata.image_480x270, directory)
       uri.image = `/uploads/courses/udemy/${image}`
       await uri.save()
     } catch (error) {
@@ -224,6 +223,7 @@ const unica = async (uri) => {
 
     // uri.originprice = originprice
     // uri.sections = {sections: sections}
+    let setofTopic =[]
     const [ctopic, created] = await db.Topic.findOrCreate(
       {
         where: { slug: topic.href },
@@ -236,7 +236,8 @@ const unica = async (uri) => {
     )
     uri.TopicId = ctopic.id
     await uri.save()
-    await uri.addTopic(ctopic.id)
+
+    setofTopic=[...setofTopic,ctopic.id]
 
     if (parent !== null) {
       const [cparent, createdparent] = await db.Topic.findOrCreate(
@@ -250,14 +251,17 @@ const unica = async (uri) => {
         }
       )
       ctopic.parent_id = cparent.id
-      await uri.addTopic(cparent.id)
       await ctopic.save()
+
+      setofTopic = [...setofTopic,cparent.id]
+
     }
+    await uri.setTopics(setofTopic)
 
     try {
       const directory = './public/uploads/courses/unica'
-      const image = await downloadImage(uri.image, directory)
-      uri.image = `/uploads/courses/unica/${image}`
+      const images = await downloadImage(image, directory)
+      uri.image = `/uploads/courses/unica/${images}`
       await uri.save()
     } catch (error) {
       console.log(error)
@@ -340,7 +344,7 @@ const gitiho = async (uri) => {
       sections,
       originprice, topic, parent
     } = await cawnGitio(urlfixshare_udemy)
-
+    
     const [ctopic, created] = await db.Topic.findOrCreate(
       {
         where: { name: topic.text },
@@ -353,7 +357,7 @@ const gitiho = async (uri) => {
     )
     uri.TopicId = ctopic.id
     await uri.save()
-    await uri.addTopic(ctopic.id)
+    await uri.setTopics([ctopic.id])
 
     // if (parent !== null) {
     //   const [cparent, createdparent] = await db.Topic.findOrCreate(
@@ -373,8 +377,8 @@ const gitiho = async (uri) => {
 
     try {
       const directory = './public/uploads/courses/gitiho'
-      const image = await downloadImage(uri.image, directory)
-      uri.image = `/uploads/courses/gitiho/${image}`
+      const images = await downloadImage(image, directory)
+      uri.image = `/uploads/courses/gitiho/${images}`
       await uri.save()
     } catch (error) {
       console.log(error)
@@ -424,7 +428,7 @@ async function downloadImage(url, directory) {
     });
 
     // Trích xuất tên file từ URL
-    const fileName = slugify(path.basename(url));
+    const fileName = path.basename(url);
     const imagePath = path.join(directory, fileName);
     await response.data.pipe(fs.createWriteStream(imagePath));
 

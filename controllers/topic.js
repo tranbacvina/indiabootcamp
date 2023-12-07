@@ -64,7 +64,8 @@ const createTopic = async (req, res) => {
 const deleteTopic = async (req, res) => {
     const id = req.params.id
     try {
-
+        const topic =await db.Topic.findOne({where: {id}})
+        await topic.setCourses([])
         await db.Topic.destroy({ where: { id } })
 
         return res.status(200).json({
@@ -76,7 +77,7 @@ const deleteTopic = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             success: false,
-            data: 'Internal Server Error'
+            data: error
         })
     }
 }

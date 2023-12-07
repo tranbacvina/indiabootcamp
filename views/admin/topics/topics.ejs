@@ -244,7 +244,7 @@
                     toastr.success(deleteOrder.data.data);
                 } catch (error) {
                     console.log(error)
-                    toastr.error(error);
+                    toastr.error(error.response.data.data);
 
                 }
             }
