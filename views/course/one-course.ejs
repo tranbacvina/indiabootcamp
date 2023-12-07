@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>Khoá Học <%=course.price == 50000 ? '50k' : 'Miễn Phí'%> <%= course.name %></title>
+    <title>Khoá Học <%=course.price == 0 ? 'Miễn Phí':'50k'  %> <%= course.name %></title>
     <link rel="canonical" href="<%=canonicalURL%>" />
         
     <meta name="title" content="Khoá học <%=course.name%>" />

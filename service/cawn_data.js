@@ -20,18 +20,29 @@ const givenamereturndrive = async (names) => {
 const base_url = async (link) => {
   try {
     const haveShare = link.includes("/share/")
+
     if (haveShare) {
       const res = await gotScraping
         .get(link)
 
       const parse = new URL(res.url);
       var url = parse.origin + parse.pathname;
+      url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
+      url = url.replace(/\/$/, '');
       return url;
-    } else {
+    } 
+    if (link.includes("udemy.com")){
+      const parse = new URL(link);
+      var url = parse.origin + parse.pathname;
+      url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
+      url = url.replace(/\/$/, '');
+      return url;
+    }
+    
       const parse = new URL(link);
       var url = parse.origin + parse.pathname;
       return url;
-    }
+    
 
 
   } catch (error) {
@@ -39,11 +50,7 @@ const base_url = async (link) => {
   }
 
 };
-const getlastpart = (url) => {
-  const parts = url.split('/'); ; // Tìm vị trí của dấu '/' cuối cùng trong chuỗi
-  const lastPart = parts[parts.length - 2];
-return lastPart
-}
+
 const scrapingUdemy = async (link) => {
   const response = await gotScraping({
     url: link,
@@ -52,10 +59,8 @@ const scrapingUdemy = async (link) => {
   let $ = cheerio.load(response.body);
   const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
   const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
-  const lastAnchor = $(".topic-menu").find("a").last()
-  const href = getlastpart(lastAnchor.attr('href')); // Lấy giá trị của thuộc tính href
-  const text = lastAnchor.text();
-  const data = { requirements, whatyouwilllearn, topic: { text, href } }
+
+  const data = { requirements, whatyouwilllearn }
 
   return data
 }
@@ -76,9 +81,8 @@ const udemy = async (uri) => {
   console.log(uri)
   const urlfixshare_udemy = await base_url(uri)
   const patch = urlfixshare_udemy.split('/')[4];
-  const fixURL = new URL(uri).origin + '/course/' + patch
   try {
-    const course = await oneCourseLink(fixURL)
+    const course = await oneCourseLink(urlfixshare_udemy)
 
     if (course) {
       if (course.is_practice_test_course) {
@@ -87,65 +91,21 @@ const udemy = async (uri) => {
       return { success: true, data: course }
     } else {
       const { udemydata, sections } = await cawnUdemy(patch)
-      const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(fixURL)
+      const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
 
       if (udemydata.is_practice_test_course) {
         return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này" }
       }
 
-      const newCourse = await createNewCourse(udemydata.title, fixURL, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements, sections.curriculum_context.data, udemydata.price_detail.amount)
+      const newCourse = await createNewCourse(udemydata.title, urlfixshare_udemy, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements, sections.curriculum_context.data, udemydata.price_detail.amount)
 
-      
-      // const [topics, created] = await db.Topic.findOrCreate(
-      //   {
-      //     where: { slug: topic.href },
-      //     defaults: {
-      //       slug: topic.href,
-      //       name: topic.text
-      //     }
-      //   }
-      // )
-      // //add to true topic
-      //  newCourse.TopicId = topics.id
-      //  await newCourse.save()
-
-      // const [primary_subcategory, cprimary_subcategory] = await db.Topic.findOrCreate(
-      //   {
-      //     where: { slug: udemydata.primary_subcategory.title_cleaned },
-      //     defaults: {
-      //       name: udemydata.primary_subcategory.title,
-      //       slug: udemydata.primary_subcategory.title_cleaned
-
-      //     }
-      //   }
-      // )
-      // console.log('add topic to primary_subcategory', primary_subcategory.id)
-      // topics.parent_id = primary_subcategory.id
-      // await topics.save()
-
-      // const [primary_category, cprimary_category] = await db.Topic.findOrCreate(
-      //   {
-      //     where: { slug: udemydata.primary_category.title_cleaned },
-      //     defaults: {
-      //       name: udemydata.primary_category.title,
-      //       slug: udemydata.primary_category.title_cleaned
-
-      //     }
-      //   }
-      // )
-      // console.log('add primary_subcategory to primary_category', primary_category.id)
-      // primary_subcategory.parent_id = primary_category.id
-      // await primary_subcategory.save()
-
-      // console.log('add course to many topic', topics.name)
-      // await newCourse.addTopics([topics.id, primary_category.id,primary_subcategory.id])
-      
       return { success: true, data: newCourse }
     }
 
 
 
   } catch (error) {
+    console.log(error)
     return { success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" }
   }
 };
@@ -269,8 +229,7 @@ const cawnGitio = async (link) => {
     })
 
     const originprice = parseInt($('.sale-price-display-js:first').text().replace(/[,.đ]/g, ''))
-    const breadcrumb = $(".gitiho-breadcrumb").children().last().text().trim()
-    const parent = $(".gitiho-breadcrumb").children().last().prev().text().trim()
+    
 
     return {
       name,
@@ -282,7 +241,7 @@ const cawnGitio = async (link) => {
       whatyouwilllearn,
       requirements: [],
       sections: { sections },
-      originprice, breadcrumb, parent
+      originprice,
     }
   } catch (error) {
     console.log(error)
@@ -310,20 +269,9 @@ const gitiho = async (uri) => {
         description_log,
         whatyouwilllearn,
         requirements, sections,
-        originprice, breadcrumb, parent } = await cawnGitio(urlfixshare_udemy)
-
-      const [topic, created] = await db.Topic.findOrCreate(
-        {
-          where: { name: breadcrumb },
-          defaults: {
-            name: breadcrumb,
-
-          }
-        }
-      )
-
+        originprice, } = await cawnGitio(urlfixshare_udemy)
+      
       const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice)
-      await newCourse.addTopic(topic.id)
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }
       }

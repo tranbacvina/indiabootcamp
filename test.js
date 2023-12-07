@@ -5,6 +5,7 @@ const { includes, conforms } = require("lodash");
 const axios = require('axios')
 const cheerio = require("cheerio");
 const Sequelize = require('sequelize');
+const { gotScraping } = require('got-scraping');
 
 const hand_coursetoTopics = async (links) => {
         const promises = []
@@ -32,13 +33,7 @@ const hand_coursetoTopics = async (links) => {
     
         // console.log(result)
 }
-const slugify = str =>
-  str
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+
 
 const getAllCourses = async(label_id,topicId) => {
     const getCourse = await axios.get(`
@@ -93,7 +88,9 @@ async function getAll(fetTopicData, parent_id) {
     }
     return data;
   }
-  
+
+
+  const ultil = require('./service/ulltil')
   const main = async () => {
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
@@ -106,19 +103,26 @@ async function getAll(fetTopicData, parent_id) {
   //     console.error("Error:", error);
   //   }
 
-  const courses = await db.course.findAll({
-    where: {
-      description_log: {
-        [Op.like]: '%unica%'
-      }
-    }
-  })
+ 
+  // const getlastpart = (url) => {
+  //   const parts = url.split('/');; // Tìm vị trí của dấu '/' cuối cùng trong chuỗi
+  //   const lastPart = parts[parts.length - 2];
+  //   return lastPart
+  // }
 
-  for(let i of courses) {
-    const regex = /<a\s+(?:[^>]*?\s+)?href="([^"]*)"[^>]*>(.*?)<\/a>/gi;
-    i.description_log = i.description_log.replace(regex, '$2');
-    await i.save()
-  }
-  };
+  
+  // Sử dụng hàm getItemListElement với đoạn mã HTML
+  // const response = await gotScraping({
+  //   url: 'https://www.udemy.com/course/decodingdevops/?fbclid=IwAR1_XGHZg6cs7WGrS3OKQIJtVgvNbXvLd7ADHxLXL6M3HdTuDLe8inRtQCI',
+
+  // });
+  // const $ = cheerio.load(response.body);
+  // let scriptContents = JSON.parse($('script[type="application/ld+json"]').html())
+  // ;
+  // scriptContents = scriptContents[scriptContents.length -1]
+  // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
+  // console.log({ text: topic.name, href: getlastpart(topic.item) })
+  await ultil.fixCourseTopicImage()
+}
   
   main();

@@ -1,6 +1,8 @@
 const db = require('../models')
+const axios = require('axios')
 
-// Hàm lấy thông tin parent của một category cụ thể
+const cawn_data_test = require('../service/cawn_data_test')
+
 async function getTopicWithParents(topicID) {
     const topic = await db.Topic.findOne({ where: { id: topicID } });
   
@@ -81,4 +83,44 @@ function maskEmail(email) {
   console.log(maskedEmail)
   return maskedEmail;
 }
- module.exports = {getTopicWithParents,calculateStats,maskEmail}
+
+const hand_coursetoTopics = async (courses) => {
+  const promises = []
+  for (let link of courses) {
+  console.log(link.url)
+
+      const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
+      const expression = link.url.match(regex);
+      switch (expression[0]) {
+          case "unica.vn":
+               await cawn_data_test.unica(link)
+              break;
+          case "udemy.com":
+               await cawn_data_test.udemy(link)
+              break;
+          case "gitiho.com/khoa-hoc":
+               await cawn_data_test.gitiho(link)
+              break;
+          default:
+            console.log({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+
+      }
+  }
+  // const result = await Promise.all(promises)
+
+  // console.log(result)
+}
+
+const fixCourseTopicImage = async () => {
+  const courses = await db.course.findAll({
+    
+  })
+  await hand_coursetoTopics(courses)
+  // courses[0].TopicId = null
+  // courses[0].setTopics([])
+  // await courses[0].save()
+
+}
+
+
+ module.exports = {getTopicWithParents,calculateStats,maskEmail,fixCourseTopicImage}

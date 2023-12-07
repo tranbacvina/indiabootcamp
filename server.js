@@ -70,6 +70,7 @@ cron.schedule('0 1 * * *', async () => {
   await sitemmapService.blogSitemap()
   await sitemmapService.courseSitemap()
   await sitemmapService.topicSitemap()
+  
 }, {
   scheduled: true,
   timezone: "Asia/Ho_Chi_Minh"
