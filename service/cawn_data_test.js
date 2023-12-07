@@ -174,12 +174,14 @@ const cawnUnica = async (link) => {
     })
     const originprice = parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
     const breadcrumb = JSON.parse($('script[type="application/ld+json"]').html())
-    let topic
-    let parent
-    if (breadcrumb.itemListElement.length == 3 || breadcrumb.itemListElement.length == 2) {
-      topic = breadcrumb.itemListElement[breadcrumb.itemListElement.length - 1]
-      topic = { text: topic.name, href: getlastpart(topic.item) }
+
+    let topic = {
+      text: breadcrumb.itemListElement[breadcrumb.itemListElement.length - 1].name,
+      href: getlastpart(breadcrumb.itemListElement[breadcrumb.itemListElement.length - 1].item)
     }
+
+    let parent
+
     if (breadcrumb.itemListElement.length == 3) {
       parent = breadcrumb.itemListElement[1]
       parent = { text: parent.name, href: getlastpart(parent.item) }
@@ -220,7 +222,7 @@ const unica = async (uri) => {
       originprice,
       topic, parent
     } = await cawnUnica(urlfixshare_udemy)
-
+    console.log(topic, parent)
     // uri.originprice = originprice
     // uri.sections = {sections: sections}
     let setofTopic =[]
@@ -242,7 +244,7 @@ const unica = async (uri) => {
     if (parent !== null) {
       const [cparent, createdparent] = await db.Topic.findOrCreate(
         {
-          where: { slug: parent.text },
+          where: { slug: parent.href },
           defaults: {
             name: parent.text,
             slug: parent.href
@@ -319,7 +321,7 @@ const cawnGitio = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [], sections,
-      originprice, topic,parent
+      originprice, topic, parent
     }
   } catch (error) {
     console.log(error)
@@ -344,7 +346,7 @@ const gitiho = async (uri) => {
       sections,
       originprice, topic, parent
     } = await cawnGitio(urlfixshare_udemy)
-    
+
     const [ctopic, created] = await db.Topic.findOrCreate(
       {
         where: { name: topic.text },

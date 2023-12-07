@@ -114,15 +114,7 @@ const hand_coursetoTopics = async (courses) => {
 
 const fixCourseTopicImage = async () => {
  
-    const courses = await db.course.findAll({
-      limit: 1,
-      where:{
-        url:{
-          [Op.like]: '%unica%'
-        }
-        
-      }
-    })
+    const courses = await db.course.findAll()
     await hand_coursetoTopics(courses)
 
 
