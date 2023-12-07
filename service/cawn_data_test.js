@@ -180,7 +180,7 @@ const cawnUnica = async (link) => {
       href: getlastpart(breadcrumb.itemListElement[breadcrumb.itemListElement.length - 1].item)
     }
 
-    let parent
+    let parent = null
 
     if (breadcrumb.itemListElement.length == 3) {
       parent = breadcrumb.itemListElement[1]
