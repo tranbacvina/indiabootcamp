@@ -12,7 +12,9 @@ const stripe = require("./service/stripe")
 var useragent = require('express-useragent');
 const urlService = require('./service/url')
 app.use(useragent.express());
-const sitemmapService = require('./service/sitemap')
+const sitemmapService = require('./service/sitemap');
+const { fixCourseTopicImage } = require("./service/ulltil");
+
 // Middleware để xoá dấu '/' cuối cùng của mỗi URL
 app.use((req, res, next) => {
   if (req.path[req.path.length - 1] === '/' && req.path.length > 1) {
@@ -44,6 +46,7 @@ app.use(express.json({
     req.rawBody = buf;
   },
 }));
+
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -70,7 +73,7 @@ cron.schedule('0 1 * * *', async () => {
   await sitemmapService.blogSitemap()
   await sitemmapService.courseSitemap()
   await sitemmapService.topicSitemap()
-  
+  await fixCourseTopicImage()
 }, {
   scheduled: true,
   timezone: "Asia/Ho_Chi_Minh"

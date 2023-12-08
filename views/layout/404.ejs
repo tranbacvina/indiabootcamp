@@ -46,47 +46,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <%- include('../layout/analytics'); %>
 </head>
+<body>
+  <main class="main-content  ">
 
-<main class="main-content  ">
-
-    <%- include('../layout/header'); %>
+      <%- include('../layout/header'); %>
 
 
-    <div class="content-wrapper  js-content-wrapper">
+      <div class="content-wrapper  js-content-wrapper">
 
-      <section class="no-page layout-pt-lg layout-pb-lg bg-beige-1">
-        <div class="container">
-          <div class="row y-gap-50 justify-between items-center">
-            <div class="col-lg-6">
-              <div class="no-page__img">
-                <img src="/img/404/1.svg" alt="image">
-              </div>
-            </div>
-
-            <div class="col-xl-5 col-lg-6">
-              <div class="no-page__content">
-                <h1 class="no-page__main text-dark-1">
-                  40<span class="text-purple-1">4</span>
-                </h1>
-                <h2 class="text-35 lh-12 mt-5">Oops! It looks like you're lost.</h2>
-                <div class="mt-10">Trang bạn yêu cầu hiện không tồn tại. Hãy thử sử dụng  tìm kiếm</div>
-                <div class="col-auto">
-                  <form action="get" class="form-single-field -base mt-15" method="get" action="/tim-kiem">
-                    <input class="py-20 px-30 bg-light-3 rounded-200 text-dark-1" type="text" name="text" placeholder="Tìm khóa học bạn cần mua">
-                    <button class="button -purple-1 rounded-full" type="submit">
-                      <i class="icon-arrow-right text-24 text-white"></i>
-                    </button>
-                  </form>
+        <section class="no-page layout-pt-lg layout-pb-lg bg-beige-1">
+          <div class="container">
+            <div class="row y-gap-50 justify-between items-center">
+              <div class="col-lg-6">
+                <div class="no-page__img">
+                  <img src="/img/404/1.svg" alt="image">
                 </div>
-                <a href="/" class="button -md -purple-1 text-white mt-20">Trở về Trang chủ</a>
+              </div>
+
+              <div class="col-xl-5 col-lg-6">
+                <div class="no-page__content">
+                  <h1 class="no-page__main text-dark-1">
+                    40<span class="text-purple-1">4</span>
+                  </h1>
+                  <h2 class="text-35 lh-12 mt-5">Oops! It looks like you're lost.</h2>
+                  <div class="mt-10">Trang bạn yêu cầu hiện không tồn tại. Hãy thử sử dụng  tìm kiếm</div>
+                  <div class="col-auto">
+                    <form action="get" class="form-single-field -base mt-15" method="get" action="/tim-kiem">
+                      <input class="py-20 px-30 bg-light-3 rounded-200 text-dark-1" type="text" name="text" placeholder="Tìm khóa học bạn cần mua">
+                      <button class="button -purple-1 rounded-full" type="submit">
+                        <i class="icon-arrow-right text-24 text-white"></i>
+                      </button>
+                    </form>
+                  </div>
+                  <a href="/" class="button -md -purple-1 text-white mt-20">Trở về Trang chủ</a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-    </div>
-    <%- include('../layout/footer'); %>
-</main>
-
+      </div>
+      <%- include('../layout/footer'); %>
+  </main>
+</body>
 </html>

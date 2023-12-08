@@ -89,7 +89,7 @@ const topicSlugGetCourses = async (req, res) => {
         
         const topicOne = await topic.findOne(slug)
         if (!topicOne) {
-            res.render('layout/404')
+            res.redirect('/404')
             return
         }
         
@@ -97,7 +97,7 @@ const topicSlugGetCourses = async (req, res) => {
         let course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
         if (course.count === 0) {
             await topic.removeTopic(topicOne.id)
-            res.render('layout/404')
+            res.redirect('/404')
             return
         } 
     

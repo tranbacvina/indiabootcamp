@@ -421,16 +421,19 @@ const slugify = str =>
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '');
+
+
 async function downloadImage(url, directory) {
+  let uri = await base_url(url)
   try {
     const response = await axios({
       method: 'GET',
-      url: encodeURI(url),
+      url: encodeURI(uri),
       responseType: 'stream',
     });
 
     // Trích xuất tên file từ URL
-    const fileName = path.basename(url);
+    const fileName = path.basename(uri);
     const imagePath = path.join(directory, fileName);
     await response.data.pipe(fs.createWriteStream(imagePath));
 
@@ -440,5 +443,5 @@ async function downloadImage(url, directory) {
   }
 }
 module.exports = {
-  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho
+  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho,downloadImage
 };

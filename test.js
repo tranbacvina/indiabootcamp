@@ -122,7 +122,13 @@ async function getAll(fetTopicData, parent_id) {
   // scriptContents = scriptContents[scriptContents.length -1]
   // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
   // console.log({ text: topic.name, href: getlastpart(topic.item) })
-  await ultil.fixCourseTopicImage()
+  // await ultil.fixCourseTopicImage()
+  const topic = await db.Topic.findAll({
+    where: {
+      slug: 'Marketing'
+    }
+  })
+  console.log(JSON.stringify(topic, null, 2))
 }
   
   main();

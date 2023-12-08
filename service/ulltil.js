@@ -113,9 +113,37 @@ const hand_coursetoTopics = async (courses) => {
 }
 
 const fixCourseTopicImage = async () => {
+  const courses = [
+    'chatgpt-for-youtube-mastery-or-how-to-use-chatgpt-for-youtube',
+    'chatgpt-for-youtube-mastery-or-how-to-use-chatgpt-for-youtube',
+    'chatgpt-complete-chatgpt-course-for-work-2023-ethically',
+    'javascript-from-beginner-to-pro-build-real-world-js-apps',
+    'the-complete-htmx-course-zero-to-pro-with-htmx',
+    'javascript-for-beginners-learn-javascript-from-scratch',
+    'management-skills-training-for-new-and-experienced-managers',
+    'management-skills-training-for-new-and-experienced-managers',
+    'beer-expert-everything-you-need-to-know-about-beer',
+    'learn-how-to-brew-beer-at-home-in-5-easy-steps',
+    'home-brewer-pro',
+    'home-brewer-pro',
+    '70-javascript-challenges-data-structures-and-algorithms',
+    'comprehensive-home-repair-and-improvement',
+    'the-home-menders-complete-home-repair-specialist-course',
+    'the-home-menders-complete-home-repair-specialist-course',
+    'comprehensive-home-repair-and-improvement',
+    'comprehensive-home-repair-and-improvement',
+    'the-home-menders-complete-home-repair-specialist-course'
+  ];
+  for (let i of courses) {
+    const course = await db.course.findAll({
+      where:{
+        slug: i
+      }
+    })
+
+    await hand_coursetoTopics(course)
+  }
  
-    const courses = await db.course.findAll()
-    await hand_coursetoTopics(courses)
 
 
 }
