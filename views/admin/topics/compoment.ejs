@@ -1,0 +1,33 @@
+<% for(let topic of topics){ %>
+    <tr role="row">
+        <td role="cell" class="align-middle">
+            <%=topic.id%>
+        </td>
+        <td role="cell" class="align-middle">
+            <a class="text-inherit text-purple-1"
+                href="">
+                <%=topic.name%>
+            </a>
+        </td>
+
+        <td role="cell" class="align-middle">
+            <%=topic.slug%>
+        </td>
+
+        
+        <td role="cell" class="align-middle">
+            <%=topic.seotitle%>
+        </td>
+        <td role="cell" class="align-middle">
+            <%=topic.seodescription%>
+        </td>
+  
+        <td role="cell" class="align-middle"
+            data-id="<%=topic.id %>"
+            onclick="deleteTopic(this)">
+            <button type="button"
+                class="me-1 mb-2 btn btn-outline-danger btn-xs">Xoá</button>
+        </td>
+    </tr>
+    <% if (topic.children == null) {continue } else { include('compoment', { topics: topic.children }) } %>
+    <% } %>

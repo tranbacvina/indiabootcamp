@@ -113,11 +113,12 @@ const hand_coursetoTopics = async (courses) => {
 }
 
 const fixCourseTopicImage = async () => {
-
-    const courses = await db.course.findAll()
-
-    await hand_coursetoTopics(courses)
-
+  const courses = await db.course.findAll({
+    where:{
+      topicId: null
+    }
+  })
+  await hand_coursetoTopics(courses)
 }
 
 async function handlerTopic(fetTopicData, parent_id) {
