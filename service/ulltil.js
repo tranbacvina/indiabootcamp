@@ -113,22 +113,10 @@ const hand_coursetoTopics = async (courses) => {
 }
 
 const fixCourseTopicImage = async () => {
-  const courses = [
-    'marketing-analytics-stand-out-by-becoming-an-analytics-pro',
-    'brand-storytelling-workshop-in-5-simple-steps',
 
-  ];
-  for (let i of courses) {
-    const course = await db.course.findAll({
-      where: {
-        slug: i
-      }
-    })
+    const courses = await db.course.findAll()
 
-    await hand_coursetoTopics(course)
-  }
-
-
+    await hand_coursetoTopics(courses)
 
 }
 
