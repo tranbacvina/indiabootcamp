@@ -113,69 +113,31 @@
                                                         <thead>
                                                             <tr role="row">
                                                                 <th colspan="1" role="columnheader">ID</th>
-                                                                <th colspan="1" role="columnheader">Tên</th>
+                                                                <th colspan="3" role="columnheader">Tên</th>
                                                                 <th colspan="1" role="columnheader">slug</th>
-                                                                <th colspan="1" role="columnheader">Trạng thái</th>
                                                                 <th colspan="1" role="columnheader">seo title</th>
                                                                 <th colspan="1" role="columnheader">seo mo ta</th>
-                                                                <th colspan="1" role="columnheader">Parent Topic</th>
-                                                                <th colspan="1" role="columnheader"></th>
                                                                 <th colspan="1" role="columnheader"></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody role="rowgroup">
-                                                            <% for(let topic of topics){ %>
-                                                                <tr role="row">
-                                                                    <td role="cell" class="align-middle">
-                                                                        <%=topic.id%>
-                                                                    </td>
-                                                                    <td role="cell" class="align-middle">
-                                                                        <a class="text-inherit text-purple-1"
-                                                                            href="/admin/course/topic/<%=topic.slug%>">
-                                                                            <%=topic.name%>
-                                                                        </a>
-                                                                    </td>
-
-                                                                    <td role="cell" class="align-middle">
-                                                                        <%=topic.slug%>
-                                                                    </td>
-
-                                                                    <td role="cell" class="align-middle">
-                                                                        <% if (topic.isDeleted) { %>
-                                                                            Delete
-                                                                            <% } else { %>
-                                                                                Hiển thị
-                                                                                <%}%>
-                                                                    </td>
-                                                                    <td role="cell" class="align-middle">
-                                                                        <%=topic.seotitle%>
-                                                                    </td>
-                                                                    <td role="cell" class="align-middle">
-                                                                        <%=topic.seodescription%>
-                                                                    </td>
-                                                                    <td role="cell" class="align-middle">
-                                                                            <% for (let showtopic of topics) {%>
-                                                                                <%= showtopic.id ===  topic.parent_id ? showtopic.name : ''%>
-                                                                            <%}%>
-                                                                    </td>
-                                                                    <td role="cell" class="align-middle"
-                                                                        data-id="<%=topic.id %>"
-                                                                        data-slug="<%=topic.slug%>"
-                                                                        data-name="<%=topic.name%>"
-                                                                        data-seotitle="<%=topic.seotitle%>"
-                                                                        data-seodescription="<%=topic.seodescription%>"
-                                                                        onclick="">
-                                                                        <a href="/admin/topic/<%=topic.id%>" type="button"
-                                                                            class="me-1 mb-2 btn btn-outline-danger btn-xs">Sửa</a>
-                                                                    </td>
-                                                                    <td role="cell" class="align-middle"
-                                                                        data-id="<%=topic.id %>"
-                                                                        onclick="deleteTopic(this)">
-                                                                        <button type="button"
-                                                                            class="me-1 mb-2 btn btn-outline-danger btn-xs">Xoá</button>
-                                                                    </td>
-                                                                </tr>
-                                                                <% } %>
+                                                        <tbody role="rowgroup" id="tbodyTopicTable">
+                                                            <% function renderTable(data, level) { %>
+                                                                <% data.forEach(item => { %>
+                                                                    <% let row = "" %>
+                                                                    <% if (level > 0) { for (i=0; i< level; i++){row += "-"} } %>
+                                                                  <tr>
+                                                                    <td><%= item.id %></td>
+                                                                    <td colspan="3"><a href="/admin/topic/<%= item.id %>"><%= row +=  item.name %></a></td>
+                                                                    <td><%= item.slug %></td>
+                                                                    <td><%= item.seotitle %></td>
+                                                                    <td><%= item.seodescription %></td>
+                                                                  </tr>
+                                                                  <% if (item.children) { %>
+                                                                    <% renderTable(item.children, level + 1); %>
+                                                                  <% } %>
+                                                                <% }); %>
+                                                              <% } %>
+                                                              <% renderTable(topics, 0); %>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -256,7 +218,6 @@
                 const topicSlug = e.getAttribute("data-slug")
                 const seotitle = e.getAttribute("data-seotitle")
                 const seodescription = e.getAttribute("data-seodescription")
-                console.log(topicID, topicName, topicSlug)
 
                 const html = `
                             <form class="contact-form" id="updateTopicForm">
@@ -293,6 +254,8 @@
                 `
                 modal.setContent(html)
             }
+   
+          
         </script>
 </body>
 

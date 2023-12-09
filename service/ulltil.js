@@ -4,73 +4,73 @@ const { Sequelize, Op } = require("sequelize");
 const cawn_data_test = require('../service/cawn_data_test')
 
 async function getTopicWithParents(topicID) {
-    const topic = await db.Topic.findOne({ where: { id: topicID } });
-  
-    if (!topic) {
-      return null; // Trả về null nếu không tìm thấy category
-    }
-    if (topic.parent_id == null) {
-      return{
-        category: topic,
-        parents: []
-      };
-    }
-    const parents = [];
-    let currentTopicId = topic.parent_id;
-  
-    while (currentTopicId !== 0) {
-      const parentTopic = await  db.Topic.findOne({ where: { id: currentTopicId } });
-      if (!parentTopic || topic.parent_id == topic.id) {
-        
-        break; // Dừng nếu không tìm thấy parent category
-      }
-  
-      parents.push({
-        name: parentTopic.name,
-        slug: parentTopic.slug,
-      });
-  
-      if(parentTopic.parent_id == parentTopic.id){
-        break
-      }
-      currentTopicId = parentTopic.parent_id;
-    }
-  
+  const topic = await db.Topic.findOne({ where: { id: topicID } });
+
+  if (!topic) {
+    return null; // Trả về null nếu không tìm thấy category
+  }
+  if (topic.parent_id == null) {
     return {
       category: topic,
-      parents: parents.reverse(), // Đảo ngược thứ tự để có thứ tự từ gốc đến category
+      parents: []
     };
   }
+  const parents = [];
+  let currentTopicId = topic.parent_id;
 
+  while (currentTopicId !== 0) {
+    const parentTopic = await db.Topic.findOne({ where: { id: currentTopicId } });
+    if (!parentTopic || topic.parent_id == topic.id) {
+
+      break; // Dừng nếu không tìm thấy parent category
+    }
+
+    parents.push({
+      name: parentTopic.name,
+      slug: parentTopic.slug,
+    });
+
+    if (parentTopic.parent_id == parentTopic.id) {
+      break
+    }
+    currentTopicId = parentTopic.parent_id;
+  }
+
+  return {
+    category: topic,
+    parents: parents.reverse(), // Đảo ngược thứ tự để có thứ tự từ gốc đến category
+  };
+}
 
 function calculateStats(ratings) {
-    const stats = {
-      s1: { count: 0, percent: 0 },
-      s2: { count: 0, percent: 0 },
-      s3: { count: 0, percent: 0 },
-      s4: { count: 0, percent: 0 },
-      s5: { count: 0, percent: 0 },
-      avg: 0
-    };
-  
-    let totalStars = 0;
-  
-    for (const rating of ratings) {
-      stats['s' + rating.star].count++;
-      totalStars += rating.star;
+  const stats = {
+    s1: { count: 0, percent: 0 },
+    s2: { count: 0, percent: 0 },
+    s3: { count: 0, percent: 0 },
+    s4: { count: 0, percent: 0 },
+    s5: { count: 0, percent: 0 },
+    avg: 0
+  };
+
+  let totalStars = 0;
+
+  for (const rating of ratings) {
+    stats['s' + rating.star].count++;
+    totalStars += rating.star;
+  }
+
+  stats.avg = (totalStars / (ratings.length * 5)) * 5;
+
+  for (const key in stats) {
+    if (key !== 'avg') {
+      const percentage = ((stats[key].count / ratings.length) * 100).toFixed(0);
+      stats[key].percent = percentage;
     }
-  
-    stats.avg = (totalStars / (ratings.length * 5)) * 5;
-  
-    for (const key in stats) {
-      if (key !== 'avg') {
-        const percentage = ((stats[key].count / ratings.length) * 100).toFixed(0);
-        stats[key].percent = percentage ;
-      }
-    }
-  
-    return { avg: stats.avg.toFixed(1), ...stats };
+  }
+
+  return { avg: stats.avg.toFixed(1), ...stats };
 }
+
 function maskEmail(email) {
   // Tách phần tên người dùng và domain
   const [username, domain] = email.split('@');
@@ -87,25 +87,25 @@ function maskEmail(email) {
 const hand_coursetoTopics = async (courses) => {
   const promises = []
   for (let link of courses) {
-  console.log(link.url)
+    console.log(link.url)
 
-      const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
-      const expression = link.url.match(regex);
-      if(expression == null) { continue}
-      switch (expression[0]) {
-          case "unica.vn":
-               await cawn_data_test.unica(link)
-              break;
-          case "udemy.com":
-               await cawn_data_test.udemy(link)
-              break;
-          case "gitiho.com/khoa-hoc":
-               await cawn_data_test.gitiho(link)
-              break;
-          default:
-            console.log({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+    const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
+    const expression = link.url.match(regex);
+    if (expression == null) { continue }
+    switch (expression[0]) {
+      case "unica.vn":
+        await cawn_data_test.unica(link)
+        break;
+      case "udemy.com":
+        await cawn_data_test.udemy(link)
+        break;
+      case "gitiho.com/khoa-hoc":
+        await cawn_data_test.gitiho(link)
+        break;
+      default:
+        console.log({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
 
-      }
+    }
   }
   // const result = await Promise.all(promises)
 
@@ -114,39 +114,42 @@ const hand_coursetoTopics = async (courses) => {
 
 const fixCourseTopicImage = async () => {
   const courses = [
-    'chatgpt-for-youtube-mastery-or-how-to-use-chatgpt-for-youtube',
-    'chatgpt-for-youtube-mastery-or-how-to-use-chatgpt-for-youtube',
-    'chatgpt-complete-chatgpt-course-for-work-2023-ethically',
-    'javascript-from-beginner-to-pro-build-real-world-js-apps',
-    'the-complete-htmx-course-zero-to-pro-with-htmx',
-    'javascript-for-beginners-learn-javascript-from-scratch',
-    'management-skills-training-for-new-and-experienced-managers',
-    'management-skills-training-for-new-and-experienced-managers',
-    'beer-expert-everything-you-need-to-know-about-beer',
-    'learn-how-to-brew-beer-at-home-in-5-easy-steps',
-    'home-brewer-pro',
-    'home-brewer-pro',
-    '70-javascript-challenges-data-structures-and-algorithms',
-    'comprehensive-home-repair-and-improvement',
-    'the-home-menders-complete-home-repair-specialist-course',
-    'the-home-menders-complete-home-repair-specialist-course',
-    'comprehensive-home-repair-and-improvement',
-    'comprehensive-home-repair-and-improvement',
-    'the-home-menders-complete-home-repair-specialist-course'
+    'marketing-analytics-stand-out-by-becoming-an-analytics-pro',
+    'brand-storytelling-workshop-in-5-simple-steps',
+
   ];
   for (let i of courses) {
     const course = await db.course.findAll({
-      where:{
+      where: {
         slug: i
       }
     })
 
     await hand_coursetoTopics(course)
   }
- 
+
 
 
 }
 
+async function handlerTopic(fetTopicData, parent_id) {
+  let rows = fetTopicData.filter(item => item.parent_id === parent_id);
+  if (rows.length === 0) {
+    return null;
+  }
+  let data = [];
+  for (let i = 0; i < rows.length; i++) {
+    let children = await handlerTopic(fetTopicData, rows[i]["id"]);
+    data.push({
+      name: rows[i]["name"],
+      id: rows[i]["id"],
+      slug: rows[i]["slug"],
+      seotitle: rows[i]["seotitle"],
+      seodescription: rows[i]["seodescription"],
+      children: children
+    });
+  }
+  return data;
+}
 
- module.exports = {getTopicWithParents,calculateStats,maskEmail,fixCourseTopicImage}
+module.exports = { handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage }
