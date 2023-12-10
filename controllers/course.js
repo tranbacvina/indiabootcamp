@@ -1,6 +1,6 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse,findManyApi } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse, findManyApi } = require("../service/course")
 const serverCourse = require('../service/course')
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
@@ -27,10 +27,10 @@ const check = async (req, res) => {
     for (let link of links) {
         const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
         const expression = link.match(regex);
-        if(expression == null) {
+        if (expression == null) {
             promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
             continue
-        } 
+        }
 
         switch (expression[0]) {
             case "unica.vn":
@@ -106,12 +106,12 @@ const all = async (req, res) => {
 
     const topics = await topic.findAll()
 
-    
+
     if (course.length === 0) {
 
         res.render('layout/404')
     } else {
-       
+
 
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
@@ -196,7 +196,7 @@ const sendEmailCourse = async (req, res) => {
 const publicall = async (req, res) => {
     const { text, limit, } = req.query
     const course = await findMany(text, limit, req.skip)
-   
+
 
     if (course.length === 0) {
         res.render('layout/404')
@@ -207,7 +207,7 @@ const publicall = async (req, res) => {
         res.render('course/allcourse', {
             course: course.rows,
             pageCount,
-            itemCount,schemaCourses,
+            itemCount, schemaCourses,
             currentPage: req.query.page,
             pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
         });
@@ -224,28 +224,33 @@ const onePublic = async (req, res) => {
     }
     const ratings = ultrilSevice.calculateStats(course.ratings)
     const breadcrumb = await ultrilSevice.getTopicWithParents(course.TopicId)
-    
-    const breadcrumbSchemaCourseOne = schema.breadcumbCourse(breadcrumb,course)
+
+    const breadcrumbSchemaCourseOne = schema.breadcumbCourse(breadcrumb, course)
 
     // const schemaCreativeWorkSeries = schema.CreativeWorkSeries(course,ratings)
 
-    const schemaCourse= schema.createStrucDataOneCourse(course,ratings)
-    const courseLienquan = breadcrumb.parents.map(item => item.id)
-
-    const courses = await db.course.findAll({
-
-        include: [
-            {
-                model: db.Topic,
-                where: {
-                    id: {[Op.in]: courseLienquan}
-                }
-            }],
+    const schemaCourse = schema.createStrucDataOneCourse(course, ratings)
+    let query = {
+        include:
+        {
+            model: db.Topic,
+        },
         limit: 16
     }
+
+    if (breadcrumb !== null) {
+        let courseLienquan = breadcrumb.parents.map(item => item.id)
+        query['include']['where'] = {
+            id: { [Op.in]: courseLienquan }
+        }
+    }
+    console.log(query)
+    const courses = await db.course.findAll({
+        query,
+    }
     );
-    res.render("course/one-course", { course, breadcrumb, ratings, courses,breadcrumbSchemaCourseOne,schemaCourse });
-   
+    res.render("course/one-course", { course, breadcrumb, ratings, courses, breadcrumbSchemaCourseOne, schemaCourse });
+
 };
 
 const create = async (req, res) => {
@@ -283,9 +288,9 @@ const deleteCourseColtroler = async (req, res) => {
     res.redirect('/admin/course')
 }
 
-const apiFindAllKeyWord = async (req,res) => {
+const apiFindAllKeyWord = async (req, res) => {
     const { text } = req.query
-    if(!text) {
+    if (!text) {
         res.status(404).send('Not Found')
         return
     }
@@ -293,4 +298,4 @@ const apiFindAllKeyWord = async (req,res) => {
     res.send(course)
 
 }
-module.exports = {apiFindAllKeyWord, cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse, deleteCourseColtroler, addDriveToCourse, delDriveToCourse, timKiemPage }
+module.exports = { apiFindAllKeyWord, cawnNameCourseChuaGui, check, courseChuaGui, cawnCourseChuaGui, coursedownload, all, one, sendEmailCourse, publicall, onePublic, allCourseTopic, create, updateCourse, deleteCourseColtroler, addDriveToCourse, delDriveToCourse, timKiemPage }
