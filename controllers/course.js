@@ -235,19 +235,16 @@ const onePublic = async (req, res) => {
         order: [['updatedAt','DESC']]
     }
 
-    if (course.TopicId !== null) {
-        if (breadcrumb.parents !== null) {
-        const parentTopicId = breadcrumb.parents.map(item => item.id)
+    if (course.Topics.length  > 0) {
+        const parentTopicId = course.Topics.map(item => item.id)
             query.include = {
                 model: db.Topic,
                 where: {
                     id: {
-                        [Op.in]: [course.TopicId,...parentTopicId]
+                        [Op.in]: parentTopicId
                     }
                 }
             }
-        }
-        
     }
     
     const courses = await db.course.findAll(
