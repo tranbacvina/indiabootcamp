@@ -28,6 +28,8 @@ async function getTopicWithParents(topicID) {
     parents.push({
       name: parentTopic.name,
       slug: parentTopic.slug,
+      id: parentTopic.id,
+
     });
 
     if (parentTopic.parent_id == parentTopic.id) {

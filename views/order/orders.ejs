@@ -77,7 +77,7 @@
                                             <div class="fw-500 text-purple-1">ID</div>
                                         </div>
                                         <div class="col-3">
-                                            <div class="fw-500 text-purple-1">UUID</div>
+                                            <div class="fw-500 text-purple-1">Course</div>
                                         </div>
                                         <div class="col-3">
                                             <div class="fw-500 text-purple-1">Email</div>
@@ -107,7 +107,7 @@
                                                 <div class="d-flex items-center">
                                                     <div class="fw-500 text-purple-1"><a href="/order/<%= order.uuid%>">
                                                             <b>
-                                                                <%= order.uuid%>
+                                                                <%= order.orderItems[0].course.name ? order.orderItems[0].course.name : order.uuid %>
                                                             </b>
 
                                                         </a>

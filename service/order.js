@@ -34,7 +34,13 @@ const findOne = async (id) => {
 }
 
 const findMany = async (querys, limit, skip) => {
-    const query = { limit: limit, offset: skip, order: [['id', 'DESC']] }
+    const query = { limit: limit, offset: skip, order: [['id', 'DESC']], 
+    include: [{
+        model: db.orderItem,
+        include:{
+            model: db.course
+        }
+    }] }
 
     if (querys) {
         query.where = { [Op.or]: [{ email: querys }, { uuid: querys }, { id: querys }] }

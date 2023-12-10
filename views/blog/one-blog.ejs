@@ -124,93 +124,50 @@
                     </div>
                 </section>
 
-                <section class="layout-pt-md layout-pb-lg">
-                    <div class="container">
-                        <div class="blogSection">
+                <section class="layout-pt-md layout-pb-lg js-pin-container">
+                    <div data-anim-wrap="" class="container animated">
+                      <div class="row">
+                        <div class="col-lg-9">
+                          <div class="blogSection">
                             <div class="blogCard">
-                                <div class="row justify-center">
-                                    <div class="col-xl-8 col-lg-9 col-md-11">
-                                        <div class="blogCard__content">
-                                            <%- blog.content %>
-                                        </div>
-
-                                    </div>
+                              <div class="blogCard__content">
+                                <%- blog.content %>
+                               </div>
                                 </div>
                             </div>
-
+            
                         </div>
-                    </div>
-                </section>
-
-                <section class="layout-pt-md layout-pb-lg">
-                    <div data-anim-wrap class="container">
-                      <div class="row">
-                        <div class="col-auto">
             
-                          <div class="sectionTitle ">
+                        <div class="col-lg-3">
             
-                            <h2 class="sectionTitle__title ">Khoá học liên quan</h2>
+                        <div data-anim="slide-up delay-3" class="sidebar -blog is-in-view js-pin-content">
+                            <div class="sidebar__item">
+                              <h5 class="sidebar__title">Khoá học liên quan</h5>
             
+                              <div class="sidebar-content -recent y-gap-20">
+                                
+                                <% for (let i of blog.courses) { %>
+                                <div class="sidebar-recent d-flex items-center">
+                                  <div class="sidebar-recent__image mr-15">
+                                    <img src="<%=i.img%>" alt="image">
+                                  </div>
+                                  <div class="sidebar-recent__content">
+                                    <h5 class="text-15 lh-15 fw-500 text-purple-1 mb-8"><a href="/course/<%i.slug%>"><%=i.name%></a></h5>
+                                    <div class="text-13 lh-1 mt-5"><%=i.price.toLocaleString('it-IT', {style : 'currency' ,
+                                      currency : 'VND' })%></div>
+                                  </div>
+                                </div>
+                                <%}%>
+                              </div>
+                            </div>
                           </div>
             
                         </div>
                       </div>
-                      <% if (blog.courses.length > 0) { %>
-                        <div class="relative pt-60 lg:pt-50">
-                            <div class="overflow-hidden js-section-slider" data-gap="30" data-loop data-pagination data-nav-prev="js-courses-prev" data-nav-next="js-courses-next" data-slider-cols="xl-4 lg-3 md-2">
-                            <div class="swiper-wrapper">
-                                <% for (let i of blog.courses) { %>
-                                <div data-anim-child="slide-up" class="swiper-slide">
-                
-                                <a href="/course/<%=i.slug%>" class="coursesCard -type-1 ">
-                                    <div class="relative">
-                                    <div class="coursesCard__image overflow-hidden rounded-8">
-                                        <img class="w-1/1" src="<%=i.image%>" alt="<%=i.name%>">
-                                        <div class="coursesCard__image_overlay rounded-8"></div>
-                                    </div>
-                                    <div class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
-                
-                                    </div>
-                                    </div>
-                
-                                    <div class="h-100 pt-15">
-                
-                                    <h4 class="text-17 lh-15 fw-500 text-dark-1 mt-10 overflow-hidden titleCourseCard"><%=i.name%></h4>
-                
-                                    <div class="coursesCard-footer">
-                                        <div class="coursesCard-footer__author">
-                                        <img src="/img/general/avatar-1.png" alt="image">
-                                        <div>admin</div>
-                                        </div>
-                
-                                        <div class="coursesCard-footer__price">
-                                        <div><%=i.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                            currency : 'VND' })%></div>
-                                        <div><%=i.price.toLocaleString('it-IT', {style : 'currency' ,
-                                            currency : 'VND' })%></div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </a>
-                
-                                </div>
-                                <%}%>
-                            </div>
-                            </div>
-                
-                
-                            <button class="section-slider-nav -prev -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-prev">
-                            <i class="icon icon-arrow-left text-24"></i>
-                            </button>
-                
-                            <button class="section-slider-nav -next -dark-bg-dark-2 -white -absolute size-70 rounded-full shadow-5 js-courses-next">
-                            <i class="icon icon-arrow-right text-24"></i>
-                            </button>
-                
-                        </div>
-                      <%}%>
                     </div>
                   </section>
+
+        
 
                 <section class="layout-pt-lg layout-pb-lg mb-90 section-bg">
                     <div class="section-bg__item">

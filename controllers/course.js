@@ -230,6 +230,7 @@ const onePublic = async (req, res) => {
     // const schemaCreativeWorkSeries = schema.CreativeWorkSeries(course,ratings)
 
     const schemaCourse= schema.createStrucDataOneCourse(course,ratings)
+    const courseLienquan = breadcrumb.parents.map(item => item.id)
 
     const courses = await db.course.findAll({
 
@@ -237,7 +238,7 @@ const onePublic = async (req, res) => {
             {
                 model: db.Topic,
                 where: {
-                    id: course.TopicId
+                    id: {[Op.in]: courseLienquan}
                 }
             }],
         limit: 16
