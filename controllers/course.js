@@ -232,14 +232,23 @@ const onePublic = async (req, res) => {
     const schemaCourse = schema.createStrucDataOneCourse(course, ratings)
     let query = {
         limit: 16,
-        include: {
-            model: db.Topic,
-            where: {
-                id: course.TopicId
-            }
-        }
+        order: [['updatedAt','DESC']]
     }
 
+    if (course.TopicId !== null) {
+        if (breadcrumb.parents !== null) {
+        const parentTopicId = breadcrumb.parents.map(item => item.id)
+            query.include = {
+                model: db.Topic,
+                where: {
+                    id: {
+                        [Op.in]: [course.TopicId,...parentTopicId]
+                    }
+                }
+            }
+        }
+        
+    }
     
     const courses = await db.course.findAll(
         query,
