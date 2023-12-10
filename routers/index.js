@@ -68,11 +68,11 @@ Routers.get("/chinh-sach-bao-mat", blogController.chinhsachbaomat)
 
 Routers.get("/:slug", blogController.oneBlogPublic)
 
-Routers.get('/404', function (req, res) {
-  res.status(404).render('layout/404')
-});
+// Routers.get('/404', function (req, res) {
+//   res.status(404).render('layout/404')
+// });
 
 Routers.get('*', function (req, res) {
-  res.redirect('/404')
+  res.status(404).render('layout/404')
 });
 module.exports = Routers;
