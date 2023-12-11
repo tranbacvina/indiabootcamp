@@ -90,32 +90,31 @@ const topicSlugGetCourses = async (req, res) => {
         const { text, limit, } = req.query
         const { slug } = req.params
         
-        const topicOne = await topic.findOne(slug)
+        
+
+        const results = await Promise.all([topic.findOne(slug),  courseService.findManyCourseTopic(text, limit, req.skip, slug)])
+
+        const topicOne = results[0]
+
         if (!topicOne) {
             res.redirect('/404')
             return
         }
         
-    
-        let course = await courseService.findManyCourseTopic(text, limit, req.skip, slug)
-        if (course.count === 0) {
-            await topic.removeTopic(topicOne.id)
-            res.redirect('/404')
-            return
-        } 
-    
-        const breadcrumb = await ulltilService.getTopicWithParents(topicOne.id)
-        const schemaBreadcum = schema.breadcumbCourseTopic(breadcrumb)
-    
+        let course = results[1]
         course = JSON.parse(JSON.stringify(course, null, 2))
         course.rows = course.rows.map(item => {
             return { ...item, ratings: ulltilService.calculateStats(item.ratings)}
         })
-    
         const schemaCourses = schema.createStrucDataCourses(course.rows)
+        
+        
+        const childtopicBreacumn = await Promise.all([topic.findAllTopicChild(topicOne.id),ulltilService.getTopicWithParents(topicOne.id)])
+        let childTopics = childtopicBreacumn[0]
+        const breadcrumb = childtopicBreacumn[1]
+
+        const schemaBreadcum = schema.breadcumbCourseTopic(breadcrumb)
     
-    
-        let childTopics =await topic.findAllTopicChild(topicOne.id)
             
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);

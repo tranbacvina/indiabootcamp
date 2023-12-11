@@ -146,7 +146,7 @@
             
                               <div class="sidebar-content -recent y-gap-20">
                                 
-                                <% for (let i of blog.courses) { %>
+                                <% for (let i of [...blog.courses,...coursesLienquan]) { %>
                                 <div class="sidebar-recent d-flex items-center">
                                   <div class="sidebar-recent__image mr-15">
                                     <img src="<%=i.image%>" alt="image">

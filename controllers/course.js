@@ -222,14 +222,7 @@ const onePublic = async (req, res) => {
         res.status(404).render("layout/404")
         return
     }
-    const ratings = ultrilSevice.calculateStats(course.ratings)
-    const breadcrumb = await ultrilSevice.getTopicWithParents(course.TopicId)
-
-    const breadcrumbSchemaCourseOne = schema.breadcumbCourse(breadcrumb, course)
-
-    // const schemaCreativeWorkSeries = schema.CreativeWorkSeries(course,ratings)
-
-    const schemaCourse = schema.createStrucDataOneCourse(course, ratings)
+    
     let query = {
         limit: 16,
         order: [['updatedAt','DESC']]
@@ -246,11 +239,18 @@ const onePublic = async (req, res) => {
                 }
             }
     }
-    
-    const courses = await db.course.findAll(
-        query,
-    
-    );
+    const CourseLienquanBreadcrumb = await Promise.all([
+        db.course.findAll(query),ultrilSevice.getTopicWithParents(course.TopicId)
+    ])
+    const courses = CourseLienquanBreadcrumb[0]
+    const breadcrumb = CourseLienquanBreadcrumb[1] 
+
+    const breadcrumbSchemaCourseOne = schema.breadcumbCourse(breadcrumb, course)
+
+    const ratings = ultrilSevice.calculateStats(course.ratings)
+    const schemaCourse = schema.createStrucDataOneCourse(course, ratings)
+
+
     res.render("course/one-course", { course, breadcrumb, ratings, courses, breadcrumbSchemaCourseOne, schemaCourse });
 
 };

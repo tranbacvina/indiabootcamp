@@ -75,7 +75,7 @@ const postUpdate = async (req, res) => {
         statusId, thumbnailSlug,
         courses
     } = req.body
-        
+
     if (categoryId == 'null') {
         categoryId = null
     }
@@ -99,13 +99,13 @@ const postUpdate = async (req, res) => {
         }
 
         const updateBlog = await db.Blog.update(data, { where: { id } })
-        
+
         if (courses.length > 0) {
             courses = JSON.parse(courses).map(item => item.id)
-            const course = await db.Blog.findOne({where: {id}})
+            const course = await db.Blog.findOne({ where: { id } })
             await course.setCourses(courses)
         }
-        
+
 
         return res.status(200).json({
             success: true,
@@ -142,7 +142,7 @@ const viewCreate = async (req, res) => {
 const create = async (req, res) => {
 
 
-    let { title, content, keywords, description, slug, categoryId,thumbnail,statusId } = req.body
+    let { title, content, keywords, description, slug, categoryId, thumbnail, statusId } = req.body
     try {
         if (req.file) {
             const filename = req.file.filename;
@@ -150,17 +150,17 @@ const create = async (req, res) => {
             thumbnail = await mediaService.createMedia(filename, url).fileUrl
         }
 
-        if(categoryId == 'null') categoryId = null
+        if (categoryId == 'null') categoryId = null
 
         const newblog = await db.Blog.create({
-                title,
-                description: description,
-                content,
-                keywords,
-                thumbnail: thumbnail,
-                categoryId,
-                isDeleted: statusId
-            },
+            title,
+            description: description,
+            content,
+            keywords,
+            thumbnail: thumbnail,
+            categoryId,
+            isDeleted: statusId
+        },
             {
                 include: {
                     model: db.Category,
@@ -200,7 +200,7 @@ const remove = async (req, res) => {
 
 const oneBlogPublic = async (req, res) => {
     const slug = req.params.slug
-    const blog = await db.Blog.findOne({
+    const blog =  db.Blog.findOne({
         where: {
             slug,
             isDeleted: false
@@ -208,12 +208,15 @@ const oneBlogPublic = async (req, res) => {
         },
         include: [{
             model: db.Category
-        }, {model: db.course, attributes: ['id','image','name','slug','originprice','price']}]
+        }, { model: db.course, attributes: ['id', 'image', 'name', 'slug', 'originprice', 'price'] }]
     })
-    if (blog) {
-        const schemaBreadcum = schema.schemaBlog(blog)
-        const schemablog = schema.blogPage(blog)
-        res.render('blog/one-blog', { blog: blog, schemablog, schemaBreadcum })
+    const coursesLienquan =  db.course.findAll({ limit: 4,order: [['id', 'DESC']], });
+    const results = await Promise.all([blog,coursesLienquan])
+    if (results[0]) {
+        const schemaBreadcum = schema.schemaBlog(results[0])
+        const schemablog = schema.blogPage(results[0])
+        
+        res.render('blog/one-blog', { blog: results[0], schemablog, schemaBreadcum, coursesLienquan:results[1] })
     }
     else {
         res.render('layout/404')
