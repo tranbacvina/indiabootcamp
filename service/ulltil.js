@@ -9,47 +9,38 @@ async function getTopicWithParents(topicID) {
   if (!topic) {
     return null; // Trả về null nếu không tìm thấy category
   }
-
   if (topic.parent_id == null) {
     return {
       category: topic,
       parents: []
     };
   }
-
-  const getParentTopics = async (currentTopicId, accumulatedParents = []) => {
-    const parentTopic = await db.Topic.findOne({ where: { id: currentTopicId } });
-    if (!parentTopic || parentTopic.parent_id === parentTopic.id) {
-      return accumulatedParents.reverse();
-    }
-
-    accumulatedParents.push({
-      name: parentTopic.name,
-      slug: parentTopic.slug,
-      id: parentTopic.id,
-    });
-
-    return getParentTopics(parentTopic.parent_id, accumulatedParents);
-  };
-
-  const parentTopicsPromises = [];
+  const parents = [];
   let currentTopicId = topic.parent_id;
 
   while (currentTopicId !== 0) {
-    parentTopicsPromises.push(getParentTopics(currentTopicId));
     const parentTopic = await db.Topic.findOne({ where: { id: currentTopicId } });
-    if (!parentTopic || parentTopic.parent_id === parentTopic.id) {
+    if (!parentTopic || topic.parent_id == topic.id) {
+
       break; // Dừng nếu không tìm thấy parent category
+    }
+
+    parents.push({
+      name: parentTopic.name,
+      slug: parentTopic.slug,
+      id: parentTopic.id,
+
+    });
+
+    if (parentTopic.parent_id == parentTopic.id) {
+      break
     }
     currentTopicId = parentTopic.parent_id;
   }
 
-  const resolvedParentTopics = await Promise.all(parentTopicsPromises);
-  const parents = resolvedParentTopics.flat(); // Flattening the array
-
   return {
     category: topic,
-    parents: parents,
+    parents: parents.reverse(), // Đảo ngược thứ tự để có thứ tự từ gốc đến category
   };
 }
 
