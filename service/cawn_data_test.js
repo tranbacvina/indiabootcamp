@@ -89,49 +89,54 @@ const udemy = async (uri) => {
 
 
     const { udemydata, sections } = await cawnUdemy(patch)
-    const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(urlfixshare_udemy)
-    const [topics, created] = await db.Topic.findOrCreate(
-      {
-        where: { slug: topic.href },
-        defaults: {
-          slug: topic.href,
-          name: topic.text
+    try {
+      const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(urlfixshare_udemy)
+      const [topics, created] = await db.Topic.findOrCreate(
+        {
+          where: { slug: topic.href },
+          defaults: {
+            slug: topic.href,
+            name: topic.text
+          }
         }
-      }
-    )
-    console.log('add course to topic', topics.name)
-    uri.TopicId = topics.id
-    await uri.save()
+      )
+      console.log('add course to topic', topics.name)
+      uri.TopicId = topics.id
+      await uri.save()
 
-    const [primary_subcategory, cprimary_subcategory] = await db.Topic.findOrCreate(
-      {
-        where: { slug: udemydata.primary_subcategory.title_cleaned },
-        defaults: {
-          name: udemydata.primary_subcategory.title,
-          slug: udemydata.primary_subcategory.title_cleaned
+      const [primary_subcategory, cprimary_subcategory] = await db.Topic.findOrCreate(
+        {
+          where: { slug: udemydata.primary_subcategory.title_cleaned },
+          defaults: {
+            name: udemydata.primary_subcategory.title,
+            slug: udemydata.primary_subcategory.title_cleaned
 
+          }
         }
-      }
-    )
-    console.log('add topic to primary_subcategory', primary_subcategory.name)
-    topics.parent_id = primary_subcategory.id
-    await topics.save()
+      )
+      console.log('add topic to primary_subcategory', primary_subcategory.name)
+      topics.parent_id = primary_subcategory.id
+      await topics.save()
 
-    const [primary_category, cprimary_category] = await db.Topic.findOrCreate(
-      {
-        where: { slug: udemydata.primary_category.title_cleaned },
-        defaults: {
-          name: udemydata.primary_category.title,
-          slug: udemydata.primary_category.title_cleaned
+      const [primary_category, cprimary_category] = await db.Topic.findOrCreate(
+        {
+          where: { slug: udemydata.primary_category.title_cleaned },
+          defaults: {
+            name: udemydata.primary_category.title,
+            slug: udemydata.primary_category.title_cleaned
 
+          }
         }
-      }
-    )
-    console.log('add primary_subcategory to primary_category', primary_category.name)
-    primary_subcategory.parent_id = primary_category.id
-    await primary_subcategory.save()
+      )
+      console.log('add primary_subcategory to primary_category', primary_category.name)
+      primary_subcategory.parent_id = primary_category.id
+      await primary_subcategory.save()
 
-    await uri.setTopics([topics.id, primary_category.id, primary_subcategory.id])
+      await uri.setTopics([topics.id, primary_category.id, primary_subcategory.id])
+    } catch (error) {
+      console.log(error)
+    }
+
 
     try {
       const directory = './public/uploads/courses/udemy'
@@ -225,7 +230,7 @@ const unica = async (uri) => {
     console.log(topic, parent)
     // uri.originprice = originprice
     // uri.sections = {sections: sections}
-    let setofTopic =[]
+    let setofTopic = []
     const [ctopic, created] = await db.Topic.findOrCreate(
       {
         where: { slug: topic.href },
@@ -239,7 +244,7 @@ const unica = async (uri) => {
     uri.TopicId = ctopic.id
     await uri.save()
 
-    setofTopic=[...setofTopic,ctopic.id]
+    setofTopic = [...setofTopic, ctopic.id]
 
     if (parent !== null) {
       const [cparent, createdparent] = await db.Topic.findOrCreate(
@@ -255,7 +260,7 @@ const unica = async (uri) => {
       ctopic.parent_id = cparent.id
       await ctopic.save()
 
-      setofTopic = [...setofTopic,cparent.id]
+      setofTopic = [...setofTopic, cparent.id]
 
     }
     await uri.setTopics(setofTopic)
@@ -443,5 +448,5 @@ async function downloadImage(url, directory) {
   }
 }
 module.exports = {
-  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho,downloadImage
+  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho, downloadImage
 };

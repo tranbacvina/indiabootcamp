@@ -107,7 +107,7 @@
                                                 <div class="d-flex items-center">
                                                     <div class="fw-500 text-purple-1"><a href="/order/<%= order.uuid%>">
                                                             <b>
-                                                                <%= order.orderItems[0].course.name ? order.orderItems[0].course.name : order.uuid %>
+                                                                <%= order.orderItems.length > 0 ? order.orderItems[0].course.name : order.uuid %>
                                                             </b>
 
                                                         </a>
