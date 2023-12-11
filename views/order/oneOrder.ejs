@@ -255,9 +255,9 @@
                                         </div>
                                         <%for (let item of order.orderItems){ %>
                                             <div class="item p-3">
-                                                <span class=""><a href="/course/<%= item.course.slug ? item.course.slug : 'None' %>" target="_blank"
-                                                        rel="<%= item.course.name ? item.course.name : 'None'%>">
-                                                        <%= item.course.name ? item.course.name : 'None' %>
+                                                <span class=""><a href="/course/<%= item.course ? item.course.slug : 'None' %>" target="_blank"
+                                                        rel="<%= item.course ? item.course.name : 'None'%>">
+                                                        <%= item.course ? item.course.name : 'None' %>
                                                     </a></span>
 
                                                 <span class="">
