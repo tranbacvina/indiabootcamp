@@ -116,12 +116,9 @@ const hand_coursetoTopics = async (courses) => {
 
 const fixCourseTopicImage = async () => {
   const courses = await db.course.findAll({
-    include:{
-      model: db.Topic,
-      where:{
-        slug: 'php'
-      }
-    }
+   where:{
+    topicId: null
+   }
   })
   await hand_coursetoTopics(courses)
 }
