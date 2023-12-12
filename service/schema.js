@@ -205,7 +205,11 @@ const createStrucDataCourses = (courses) => {
         "url": `${process.env.DOMAIN}/course/${item.slug}`,
         "name": item.name,
         "description": item.description,
-        "provider": handleProviderStructure(item.url),
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Full Bootcamp",
+          "sameAs": "https://fullbootcamp.com/"
+        },
         "hasCourseInstance": {
           "@type": "CourseInstance",
           "courseMode": "Online",
