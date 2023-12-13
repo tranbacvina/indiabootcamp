@@ -64,7 +64,7 @@ const scrapingUdemy = async (link) => {
   },
   });
 
-  let $ = cheerio.load(response.data);
+  let $ = cheerio.load(response.body);
   const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
   const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
   let scriptContents = JSON.parse($('script[type="application/ld+json"]').html())
