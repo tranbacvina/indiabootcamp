@@ -143,4 +143,4 @@ async function handlerTopic(fetTopicData, parent_id) {
   return data;
 }
 
-module.exports = { handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage }
+module.exports = { handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }

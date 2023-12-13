@@ -55,25 +55,37 @@ const getlastpart = (url) => {
 }
 
 const scrapingUdemy = async (link) => {
-  const response = await gotScraping({
-    url: link,
-
-  });
-  let $ = cheerio.load(response.body);
+  // const response = await gotScraping({
+  //   url: link,
+  //   headers: {
+  //     'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
+  // },
+  // });
+  const uri =`${link}/?persist_locale=&locale=vi_VN`
+  console.log(uri)
+  const response = await axios.get(uri, {
+    headers: {
+      'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
+    }})
+  let $ = cheerio.load(response.data);
   const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
   const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
-
   let scriptContents = JSON.parse($('script[type="application/ld+json"]').html())
   scriptContents = scriptContents[scriptContents.length - 1]
   const topic = scriptContents.itemListElement[scriptContents.itemListElement.length - 1]
 
   const data = { requirements, whatyouwilllearn, topic: { text: topic.name, href: getlastpart(topic.item) } }
+  console.log(data)
   return data
 }
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
     `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270`
+    , {
+      headers: {
+        'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
+      }}
   )
 
 
@@ -90,7 +102,11 @@ const udemy = async (uri) => {
 
     const { udemydata, sections } = await cawnUdemy(patch)
     try {
-      const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(urlfixshare_udemy)
+      const { requirements, whatyouwilllearn,topic } = await scrapingUdemy(urlfixshare_udemy)
+
+  
+
+
       const [topics, created] = await db.Topic.findOrCreate(
         {
           where: { slug: topic.href },
@@ -100,6 +116,9 @@ const udemy = async (uri) => {
           }
         }
       )
+      topics.name = topic.text
+      await topics.save()
+
       console.log('add course to topic', topics.name)
       uri.TopicId = topics.id
       await uri.save()
@@ -114,6 +133,10 @@ const udemy = async (uri) => {
           }
         }
       )
+      primary_subcategory.name = udemydata.primary_subcategory.title
+      await primary_subcategory.save()
+
+
       console.log('add topic to primary_subcategory', primary_subcategory.name)
       topics.parent_id = primary_subcategory.id
       await topics.save()
@@ -128,7 +151,10 @@ const udemy = async (uri) => {
           }
         }
       )
+      primary_category.name = udemydata.primary_category.title
+      await primary_category.save()
       console.log('add primary_subcategory to primary_category', primary_category.name)
+      
       primary_subcategory.parent_id = primary_category.id
       await primary_subcategory.save()
 

@@ -122,7 +122,15 @@ async function getAll(fetTopicData, parent_id) {
   // scriptContents = scriptContents[scriptContents.length -1]
   // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
   // console.log({ text: topic.name, href: getlastpart(topic.item) })
-  await ultil.fixCourseTopicImage()
+  const courses = await db.course.findAll({
+    include:{
+      model: db.Topic,
+      where:{
+        slug: 'business-strategy'
+      }
+    }
+  })
+  await ultil.hand_coursetoTopics(courses)
 }
   
   main();
