@@ -11,7 +11,7 @@
     <link rel="canonical" href="<%=canonicalURL%>" />
 
     <meta name="title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
-    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : 'Full khóa học ' + topicOne.name %> <%=childTopics.length > 0 ? 'Online chỉ 50K với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Chất lượng, uy tín, Đồng giá 50k' %> "/>
+    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>"/>
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -21,7 +21,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
     <meta property="og:title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
-    <meta property="og:description" content="<%=topicOne.seodescription ? topicOne.seodescription : 'Full khóa học ' + topicOne.name + ' Online chỉ 50K với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name)%>" />
+    <meta property="og:description" content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
     <meta property="og:image" content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
