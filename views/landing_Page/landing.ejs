@@ -811,6 +811,14 @@
                     quantity: 1
                 }
             })
+            const itemsForTikTok = createOrder.data.orderItem.map(item => {
+                return {
+                    content_id: item.id,
+                    content_name: item.name,
+                    price: item.price,
+                    quantity: 1
+                }
+            })
             gtag("event", "purchase", {
                 transaction_id: createOrder.data.order.uuid,
                 value: createOrder.data.order.price,
@@ -818,6 +826,13 @@
                 items: itemsForGtag
             });
             fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.order.price });
+            ttq.track('PlaceAnOrder', {
+                content_type: 'product',
+                currency: "VND",
+                value: createOrder.data.order.price,
+                contents: itemsForTikTok,
+
+            })
             window.location.href = `/order/${createOrder.data.order.uuid}`
         } catch (error) {
             for (let e of error.response.data.error){
