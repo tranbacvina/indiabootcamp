@@ -55,18 +55,15 @@ const getlastpart = (url) => {
 }
 
 const scrapingUdemy = async (link) => {
-  // const response = await gotScraping({
-  //   url: link,
-  //   headers: {
-  //     'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
-  // },
-  // });
   const uri =`${link}/?persist_locale=&locale=vi_VN`
-  console.log(uri)
-  const response = await axios.get(uri, {
+
+  const response = await gotScraping({
+    url: uri,
     headers: {
       'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
-    }})
+  },
+  });
+
   let $ = cheerio.load(response.data);
   const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
   const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
