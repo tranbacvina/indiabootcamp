@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Sửa <%=blog.title%>
     </title>
-    
+
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
@@ -43,30 +43,30 @@
                 input.setAttribute('accept', 'image/*');
 
                 input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
+                    const file = e.target.files[0];
 
-                const reader = new FileReader();
-                reader.addEventListener('load', () => {
-                    /*
-                    Note: Now we need to register the blob in TinyMCEs image blob
-                    registry. In the next release this part hopefully won't be
-                    necessary, as we are looking to handle it internally.
-                    */
-                    const id = 'blobid' + (new Date()).getTime();
-                    const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                    const base64 = reader.result.split(',')[1];
-                    const blobInfo = blobCache.create(id, file, base64);
-                    blobCache.add(blobInfo);
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                        /*
+                        Note: Now we need to register the blob in TinyMCEs image blob
+                        registry. In the next release this part hopefully won't be
+                        necessary, as we are looking to handle it internally.
+                        */
+                        const id = 'blobid' + (new Date()).getTime();
+                        const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        const base64 = reader.result.split(',')[1];
+                        const blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
 
-                    /* call the callback and populate the Title field with the file name */
-                    cb(blobInfo.blobUri(), { title: file.name });
-                });
-                reader.readAsDataURL(file);
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    });
+                    reader.readAsDataURL(file);
                 });
 
                 input.click();
             },
-                });
+        });
     </script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
@@ -123,29 +123,56 @@
                                         </h1>
                                         <div class="mt-10">Cập nhật lần cuối <%= blog.updatedAt.toLocaleString()%>.
                                         </div>
-
+                                        <a href="/<%= blog.slug %>" class="text-purple-1" target="_blank" rel="noopener noreferrer"> Xem trên trang chủ</a>
                                     </div>
                                 </div>
 
 
                                 <div class="row y-gap-60">
-                                    <div class="col-12">
-                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
-                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
-                                            </div>
+                                    <form class="contact-form row y-gap-30" id="formE">
 
-                                            <div class="py-30 px-30">
-                                                <form class="contact-form row y-gap-30" action="/" method="POST">
+                                        <div class="col-lg-8">
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light justify-between">
+                                                    <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
+                                                    <div>
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">ID: <%=
+                                                                blog.id %></label>
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Tạo
+                                                            lúc: <%= blog.createdAt.toLocaleString()%></label>
+                                                    </div>
+                                                </div>
 
+                                                <div class="py-30 px-30">
                                                     <div class="col-12">
-
                                                         <label
                                                             class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
-
                                                         <input type="text" value="<%=blog.title%>" name="title"
                                                             id="title">
                                                     </div>
+
+                                                    <div class="col-12">
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
+                                                            chính*</label>
+                                                        <div class="editor" id="content">
+                                                            <%- blog.content %>
+                                                        </div>
+                                                    </div>
+
+                                                    
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                    <h2 class="text-17 lh-1 fw-500">Meta data</h2>
+                                                </div>
+
+                                                <div class="py-30 px-30">
                                                     <div class="col-12">
 
                                                         <label
@@ -185,35 +212,34 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-12">
-
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
                                                             ngắn*</label>
-
                                                         <textarea rows="7" value=""
                                                             id="description"><%= blog.description %></textarea>
                                                     </div>
 
                                                     <div class="col-12">
-                                                        <label for="courses" class="text-16 lh-1 fw-500 text-dark-1 mb-10">Khoá học liên kết</label>
-                                                        <select id="courses" class="js-example-basic-multiple" name="courses[]" multiple="multiple">
-                                                          </select>
+                                                        <label for="courses"
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Khoá học liên
+                                                            kết</label>
+                                                        <select id="courses" class="js-example-basic-multiple"
+                                                            name="courses[]" multiple="multiple">
+                                                           
+                                                        </select>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                    <h2 class="text-17 lh-1 fw-500">Ảnh</h2>
+                                                </div>
 
+                                                <div class="py-30 px-30">
                                                     <div class="col-12">
-
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
-                                                            chính*</label>
-                                                        <div class="editor" id="content">
-                                                            <%- blog.content %>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-12">
-
-                                                        <label
-                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình đại diện</label>
-
-                                                        <input type="text" value="<%= blog.thumbnail %>" name="thumbnailSlug" id="thumbnailSlug">
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình đại
+                                                            diện</label>
+                                                        <input type="text" value="<%= blog.thumbnail %>"
+                                                            name="thumbnailSlug" id="thumbnailSlug">
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="d-flex lg:flex-column">
@@ -229,7 +255,7 @@
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <div class="w-1/1 ml-30 lg:ml-0 lg:mt-20">
 
                                                                 <div class="form-upload col-12">
@@ -245,80 +271,28 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <p class="mt-10">Upload your course image here. It must
-                                                                    meet our course image
-                                                                    quality standards to be accepted. Important
-                                                                    guidelines: 750x440 pixels;
-                                                                    .jpg, .jpeg,. gif, or .png. no text on the image.
-                                                                </p>
                                                             </div>
                                                         </div>
 
                                                     </div>
-                                                    <div class="col-6">
-
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">ID</label>
-
-                                                        <%= blog.id %>
-                                                    </div>
-                                                    <div class="col-6">
-
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Tạo
-                                                            lúc</label>
-
-                                                        <%= blog.createdAt.toLocaleString()%>
-                                                    </div>
-
-                                                </form>
-                                                <div class="row y-gap-20 justify-between pt-15">
-
-                                                    <div class="col-auto">
-                                                        <button class="button -md -purple-1 text-white"
-                                                            id="updateButton" onclick="updateBlog()">Cập
-                                                            nhật</button>
-                                                    </div>
                                                 </div>
+                                            </div>
+                                        
+                                            <div class="row y-gap-20 justify-between mt-30">
 
+                                                <div class="w-1/1">
+                                                    <button class="button -md -purple-1 text-white" id="updateButton"
+                                                        type="submit">Cập
+                                                        nhật</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </form>
                                 </div>
 
                             </div>
 
-                            <footer class="footer -dashboard py-30">
-                                <div class="row items-center justify-between">
-                                    <div class="col-auto">
-                                        <div class="text-13 lh-1">© 2022 Educrat. All Right Reserved.</div>
-                                    </div>
 
-                                    <div class="col-auto">
-                                        <div class="d-flex items-center">
-                                            <div class="d-flex items-center flex-wrap x-gap-20">
-                                                <div>
-                                                    <a href="help-center.html" class="text-13 lh-1">Help</a>
-                                                </div>
-                                                <div>
-                                                    <a href="terms.html" class="text-13 lh-1">Privacy Policy</a>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="text-13 lh-1">Cookie Notice</a>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="text-13 lh-1">Security</a>
-                                                </div>
-                                                <div>
-                                                    <a href="terms.html" class="text-13 lh-1">Terms of Use</a>
-                                                </div>
-                                            </div>
-
-                                            <button
-                                                class="button -md -rounded bg-light-4 text-light-1 ml-30">English</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </footer>
                         </div>
                 </div>
             </div>
@@ -332,10 +306,16 @@
         <!-- <script src="/js/ckeditor.js"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-            $(document).ready(function() {
+            let dataCourses = <%- JSON.stringify(blog.courses)%>
+            dataCourses = dataCourses.map(item =>{return {id: item.id, text:item.name,selected: true}} )
+            console.log(dataCourses)
+            $(document).ready(function () {
                 $('.js-example-basic-multiple').select2({
                     placeholder: 'Tìm khoá học liên kết với blog',
                     cache: true,
+                    closeOnSelect: false,
+                    tag:true,
+                    data:dataCourses,
                     ajax: {
                         url: '/admin/course/findapi',
                         dataType: 'json',
@@ -343,14 +323,15 @@
                         data: function (params) {
                             return {
                                 text: params.term, // search term
-                            }},
+                            }
+                        },
                         processResults: function (data) {
                             return {
                                 results: data.map(item => {
-                                    return {id:item.id, text: item.name }
+                                    return { id: item.id, text: item.name }
                                 })
-                                };
-                            },
+                            };
+                        },
                     }
                 });
             });
@@ -391,8 +372,10 @@
             //         console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
             //         console.error(error);
             //     });
+            const formE = document.getElementById("formE")
+            formE.addEventListener("submit", async (e) => {
+                 e.preventDefault()
 
-            const updateBlog = async () => {
                 const title = document.getElementById('title').value
                 const description = document.getElementById('description').value
                 const slug = document.getElementById('slug').value
@@ -401,7 +384,7 @@
                 const statusId = document.getElementById('status').value
                 const thumbnailSlug = document.getElementById('thumbnailSlug').value
                 const image = document.getElementById('thumbnail').files[0];
-                const courses =$('.js-example-basic-multiple').select2('data');
+                const courses = $('.js-example-basic-multiple').select2('data');
 
                 const formData = new FormData();
                 formData.append("title", title);
@@ -432,7 +415,7 @@
                     toastr.error(error.response.data.message);
                 }
 
-            }
+            })
         </script>
 </body>
 

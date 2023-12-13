@@ -107,16 +107,17 @@
                                             <%= blog.Category.name %>
                                         </div>
 
-
                                         <h1 class="page-header__title lh-14">
                                             <%= blog.title %>
                                         </h1>
-
 
                                         <p class="page-header__text">
                                             <%= blog.updatedAt.toLocaleString() %>
                                         </p>
 
+                                        <% if (locals.user) { %>
+                                            <a href="/admin/blogs/<%=blog.id%>" rel="noopener noreferrer">Sửa bài này</a>
+                                        <%}%>
                                     </div>
                                 </div>
                             </div>

@@ -66,7 +66,7 @@ Routers.get("/lienhe", blogController.lienhe)
 Routers.get("/gioi-thieu", blogController.gioithieu)
 Routers.get("/chinh-sach-bao-mat", blogController.chinhsachbaomat)
 
-Routers.get("/:slug", blogController.oneBlogPublic)
+Routers.get("/:slug",middleware.checkUser, blogController.oneBlogPublic)
 
 // Routers.get('/404', function (req, res) {
 //   res.status(404).render('layout/404')

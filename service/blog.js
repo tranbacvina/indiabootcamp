@@ -23,7 +23,7 @@ const findMany = async (text, limit, skip) => {
 
 
 const findOne = async (id) => {
-    return await db.Blog.findOne({ where: { id } })
+    return await db.Blog.findOne({ where: { id }, include: { model: db.course} })
 }
 
 const findManyByCategories = async (text, limit, skip, slug) => {

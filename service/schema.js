@@ -162,37 +162,7 @@ const CreativeWorkSeries = (course, ratings) => {
   return schema
 }
 
-const handleProviderStructure = (url) => {
 
-  if (url.includes("unica")) {
-    return {
-      "@type": "Organization",
-      "name": "Unica",
-      "sameAs": "https://unica.vn/"
-    }
-  }
-  if (url.includes("udemy")) {
-    return {
-      "@type": "Organization",
-      "name": "Udemy",
-      "sameAs": "https://www.udemy.com/"
-    }
-  }
-  if (url.includes("cyberlearn")) {
-    return {
-      "@type": "Organization",
-      "name": "Cyberlearn",
-      "sameAs": "https://cyberlearn.vn/"
-    }
-  }
-  if (url.includes("gitiho")) {
-    return {
-      "@type": "Organization",
-      "name": "gitiho",
-      "sameAs": "https://gitiho.com/"
-    }
-  }
-}
 
 const createStrucDataCourses = (courses) => {
   const itemListElement = courses.map((item, index) => {

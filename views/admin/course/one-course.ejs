@@ -92,15 +92,16 @@
 
 
                                 <div class="row y-gap-60">
-                                    <div class="col-12">
+                                    <form class="contact-form row y-gap-30"
+                                                    action="/admin/course/update/<%=course.id%>" method="POST">
+                                    <div class="col-lg-8">
                                         <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
                                             <div class="d-flex items-center py-20 px-30 border-bottom-light">
                                                 <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
                                             </div>
 
                                             <div class="py-30 px-30">
-                                                <form class="contact-form row y-gap-30"
-                                                    action="/admin/course/update/<%=course.id%>" method="POST">
+                                                
 
                                                     <div class="col-12">
 
@@ -117,14 +118,7 @@
 
                                                         <input type="text" value="<%=course.url%>" name="url" id="URI">
                                                     </div>
-                                                    <div class="col-12">
-
-                                                        <label
-                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
-
-                                                        <input type="text" value="<%=course.slug%>" name="slug"
-                                                            id="slug">
-                                                    </div>
+                                                  
                                                     <div class="col-12">
 
                                                         <label
@@ -158,29 +152,7 @@
                                                             name="sharelinkfree" id="sharelinkfree">
                                                     </div>
                                                     
-                                                    <div class="col-12">
-
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Danh
-                                                            mục*</label>
-
-                                                        
-                                                            <% for (let topic of topics) { %>
-                                                               
-                                                                <div class="d-flex items-center">
-                                                                    <div class="form-checkbox">
-                                                                      <input type="checkbox" name="topicId" value="<%= topic.id %>"
-                                                                      <% if (course.Topics.some(selected => selected.id === topic.id)) { %>
-                                                                        checked
-                                                                    <% } %>
-                                                                      >
-                                                                      <div class="form-checkbox__mark">
-                                                                        <div class="form-checkbox__icon icon-check"></div>
-                                                                      </div>
-                                                                    </div>
-                                                                    <div class="text-14 lh-12 text-dark-1 ml-15"><%= topic.name %></div>
-                                                                  </div>
-                                                                <% } %>
-                                                    </div>
+                                                   
 
                                                     <div class="col-12">
                                                         <label
@@ -201,7 +173,7 @@
                                                     <div class="col-12">
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
                                                             ngắn*</label>
-                                                        <textarea class="" id="description" name="description"><%- course.description %></textarea>
+                                                        <textarea class="" id="description_sort" name="description_sort"><%- course.description_sort ? course.description_sort : course.description %></textarea>
                                                     </div>
 
                                                     <div class="col-12">
@@ -266,12 +238,82 @@
                                                                 nhật</button>
                                                         </div>
                                                     </div>
-                                                </form>
 
 
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4">
+                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 ">
+                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                <h2 class="text-17 lh-1 fw-500">Seo Metadata</h2>
+                                            </div>
+                                            <div class="py-30 px-30">
+                                                <div class="col-12">
+                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
+
+                                                    <input type="text" value="<%=course.title%>" name="title"
+                                                        id="title">
+
+                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
+    
+                                                    <input type="text" value="<%=course.slug%>" name="slug" id="slug">
+
+                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Description*</label>
+    
+                                                    <input type="text" value="<%=course.description%>" name="description" id="description">
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30" style="max-height: 500px; overflow:auto;">
+                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                <h2 class="text-17 lh-1 fw-500">Danh mục chính</h2>
+                                            </div>
+                                            <div class="py-30 px-30">
+                                                <div class="col-12">
+
+                                                    <% for (let topic of topics) { %>
+                                                        <% if (topic.id == course.TopicId){ %>
+                                                        <input type="text" name="TopicId" value="<%= topic.name %>">
+                                                        <%}%>
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30" style="max-height: 500px; overflow:auto;">
+                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                <h2 class="text-17 lh-1 fw-500">Danh mục liên kết</h2>
+                                            </div>
+                                            <div class="py-30 px-30">
+                                                <div class="col-12">
+
+                                                    <% for (let topic of topics) { %>
+                                                   
+                                                        <div class="d-flex items-center" >
+                                                            <div class="form-checkbox">
+                                                              <input type="checkbox" name="topicId" value="<%= topic.id %>"
+                                                              <% if (course.Topics.some(selected => selected.id === topic.id)) { %>
+                                                                checked
+                                                            <% } %>
+                                                              >
+                                                              <div class="form-checkbox__mark">
+                                                                <div class="form-checkbox__icon icon-check"></div>
+                                                              </div>
+                                                            </div>
+                                                            <div class="text-14 lh-12 text-dark-1 ml-15"><%= topic.name %></div>
+                                                          </div>
+                                                          <%}%>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                </form>
+
                                     <div class="col-12">
                                         <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
                                             <div class="d-flex items-center justify-between space py-20 px-30 border-bottom-light">

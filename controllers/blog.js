@@ -141,39 +141,51 @@ const viewCreate = async (req, res) => {
 
 const create = async (req, res) => {
 
-
-    let { title, content, keywords, description, slug, categoryId, thumbnail, statusId } = req.body
+    console.log(req.body)
+    let {
+        title,
+        description,
+        slug,
+        content,
+        categoryId,
+        statusId,
+        courses,
+        thumbnailSlug
+    } = req.body
     try {
+        let thumbnail = thumbnailSlug
+        if (categoryId == 'null') categoryId = null
+
         if (req.file) {
             const filename = req.file.filename;
             const url = `/uploads/${filename}`;
             thumbnail = await mediaService.createMedia(filename, url).fileUrl
         }
 
-        if (categoryId == 'null') categoryId = null
-
         const newblog = await db.Blog.create({
             title,
-            description: description,
+            description: description, slug,
             content,
-            keywords,
-            thumbnail: thumbnail,
+            thumbnail,
             categoryId,
-            isDeleted: statusId
+            isDeleted: statusId,
+            courses
         },
             {
-                include: {
+                include: [{
                     model: db.Category,
 
-                }
+                },
+                { model: db.course }]
             })
-        return res.redirect(`/admin/blogs/${newblog.id}`)
+        return res.status(201).send({ success: true, message: `Tạo Blog ${title} thành công`, data: newblog })
 
     } catch (error) {
         console.log(error);
         return res.status(500).json({
             success: false,
-            data: 'Internal Server Error'
+            data: error,
+            message: error
         })
     }
 }
@@ -200,7 +212,7 @@ const remove = async (req, res) => {
 
 const oneBlogPublic = async (req, res) => {
     const slug = req.params.slug
-    const blog =  db.Blog.findOne({
+    const blog = db.Blog.findOne({
         where: {
             slug,
             isDeleted: false
@@ -210,13 +222,13 @@ const oneBlogPublic = async (req, res) => {
             model: db.Category
         }, { model: db.course, attributes: ['id', 'image', 'name', 'slug', 'originprice', 'price'] }]
     })
-    const coursesLienquan =  db.course.findAll({ limit: 4,order: [['id', 'DESC']], });
-    const results = await Promise.all([blog,coursesLienquan])
+    const coursesLienquan = db.course.findAll({ limit: 4, order: [['id', 'DESC']], });
+    const results = await Promise.all([blog, coursesLienquan])
     if (results[0]) {
         const schemaBreadcum = schema.schemaBlog(results[0])
         const schemablog = schema.blogPage(results[0])
-        
-        res.render('blog/one-blog', { blog: results[0], schemablog, schemaBreadcum, coursesLienquan:results[1] })
+
+        res.render('blog/one-blog', { blog: results[0], schemablog, schemaBreadcum, coursesLienquan: results[1] })
     }
     else {
         res.render('layout/404')

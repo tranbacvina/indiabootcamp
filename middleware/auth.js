@@ -40,6 +40,7 @@ const checkUser = (req, res, next) => {
                 //     res.redirect('/admin/login')
                 // }
                 res.locals.user = decodeToken.user
+                console.log(decodeToken)
                 next()
             }
         })
@@ -49,4 +50,31 @@ const checkUser = (req, res, next) => {
     }
 }
 
-module.exports = { needLogin, checkUser }
+const checkiSMasterAdmin = (req, res, next) => {
+    const token = req.cookies.jwt
+    if (!token) {
+        res.redirect('/admin/blogs')
+        return
+    }
+   
+    jwt.verify(token, process.env.jwt, async (err, decodeToken) => {
+        if (err) {
+            res.redirect('/admin/blogs')
+            return
+
+        } 
+      
+        const {user} = decodeToken
+        if (user == 'alobabyday') {
+            next()
+        }
+        else {
+            res.redirect('/admin/blogs')
+        return
+
+        }
+    })
+    
+}
+
+module.exports = { needLogin, checkUser,checkiSMasterAdmin }

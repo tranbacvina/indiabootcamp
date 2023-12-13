@@ -4,7 +4,6 @@ const axios = require("axios");
 
 const { Op } = require("sequelize");
 const sharedrive = require("../service/sharedrive");
-const { includes } = require('lodash');
 
 const oneCourseLink = async (link) => {
     const course = await db.course.findOne({

@@ -6,12 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title><%=topicOne.seotitle ? topicOne.seotitle : "Khoá học " + topicOne.name %> - <%= locals.formattedDate %></title>
+    <title><%=topicOne.seotitle ? topicOne.seotitle : "Khoá học Online " + topicOne.name %> 50K - <%= locals.formattedDate %></title>
 
     <link rel="canonical" href="<%=canonicalURL%>" />
 
-    <meta name="title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học ' + topicOne.name %> - <%= locals.formattedDate %>" />
-    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : 'Các khoá học về ' + topicOne.name + '-' + locals.formattedDate  %>  " />
+    <meta name="title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : 'Full khóa học ' + topicOne.name %> <%=childTopics.length > 0 ? 'Online chỉ 50K với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Chất lượng, uy tín, Đồng giá 50k' %> "/>
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -20,9 +20,9 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="<%=topicOne.seotitle%>" />
-    <meta property="og:description" content="<%=topicOne.seodescription%>" />
-    <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
+    <meta property="og:title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+    <meta property="og:description" content="<%=topicOne.seodescription ? topicOne.seodescription : 'Full khóa học ' + topicOne.name + ' Online chỉ 50K với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name)%>" />
+    <meta property="og:image" content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -135,7 +135,7 @@
                 </section>
 
                 <div class="container pt-20">
-                    <p class="text-20 lh-1 text-dark-1 fw-500">Tất cả khóa học <%=topicOne.name%></p>
+                    <h1 class="text-20 lh-1 text-dark-1 fw-500"><%=itemCount%> Khoá học <%=topicOne.name%></h1>
                     <div class="relative pt-20">
                         <div class="swiper mySwiper overflow-hidden">
                             <div class="swiper-wrapper list-tag">
@@ -173,9 +173,9 @@
                                 <div class="col-auto">
                                     <div data-anim="slide-up delay-1" class="is-in-view">
 
-                                        <h1 class="page-header__title">
+                                        <h2 class="page-header__title">
                                             <%=topicOne.seotitle ? topicOne.seotitle : topicOne.name%>
-                                        </h1>
+                                        </h2>
 
                                     </div>
 

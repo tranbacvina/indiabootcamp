@@ -6,11 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>Khoá Học <%=course.price == 0 ? 'Miễn Phí':'50k'  %> <%= course.name %></title>
+    <title>Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %></title>
     <link rel="canonical" href="<%=canonicalURL%>" />
         
-    <meta name="title" content="Khoá học <%=course.name%>" />
-    <meta name="description" content="<%=course.description%>" />
+    <meta name="title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %>" />
+    <meta name="description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -19,8 +19,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="<%=course.name%>" />
-    <meta property="og:description" content="<%=course.description%>" />
+    <meta property="og:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %>" />
+    <meta property="og:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
     <meta property="og:image" content="<%=course.image%>" />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
@@ -304,9 +304,9 @@
                                 <div class="col-lg-8">
                                     <div class="page-nav-menu -line js-sticktop">
                                     <div class="d-flex x-gap-30">
-                                        <div><a href="#overview" class="pb-12 page-nav-menu__link is-active">Tổng quan</a></div>
-                                        <div><a href="#course-content" class="pb-12 page-nav-menu__link">Nội dung khoá học</a></div>
-                                        <div><a href="#reviews" class="pb-12 page-nav-menu__link">Đánh giá</a></div>
+                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#overview" class="pb-12 page-nav-menu__link is-active">Tổng quan</a></h2>
+                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#course-content" class="pb-12 page-nav-menu__link">Nội dung khoá học</a></h2>
+                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#reviews" class="pb-12 page-nav-menu__link">Đánh giá</a></h2>
                                     </div>
                                     </div>
                     
@@ -380,7 +380,7 @@
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up icon"><polyline points="18 15 12 9 6 15"></polyline></svg>
                                                         </div>
-                                                        <span class="text-17 fw-500 text-dark-1"><%=i.title%></span>
+                                                        <h3 class="text-17 fw-500 text-dark-1"><%=i.title%></h3>
                                                     </div>
                             
                                                     <div><%=i.items.length%> lectures </div>
@@ -640,7 +640,7 @@
             
                                 <div class="h-100 pt-15">
             
-                                  <h4 class="text-17 lh-15 fw-500 text-dark-1 mt-10 overflow-hidden titleCourseCard"><%=i.name%></h4>
+                                  <h3 class="text-17 lh-15 fw-500 text-dark-1 mt-10 overflow-hidden titleCourseCard"><%=i.name%></h3>
             
                                   <div class="coursesCard-footer">
                                     <div class="coursesCard-footer__author">
