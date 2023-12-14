@@ -54,7 +54,7 @@ const getlastpart = (url) => {
 }
 
 const scrapingUdemy = async (link) => {
-
+  const uri =`${link}/?persist_locale=&locale=en_US`
   const response = await gotScraping({
     url: link,
  
