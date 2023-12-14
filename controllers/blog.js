@@ -64,6 +64,7 @@ const viewUpdate = async (req, res) => {
 }
 
 const postUpdate = async (req, res) => {
+    console.log(req.body)
     const id = req.params.id
     let {
         title,
@@ -75,7 +76,6 @@ const postUpdate = async (req, res) => {
         statusId, thumbnailSlug,
         courses
     } = req.body
-
     if (categoryId == 'null') {
         categoryId = null
     }
