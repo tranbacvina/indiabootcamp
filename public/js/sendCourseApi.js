@@ -16,6 +16,7 @@ modalSendCourse.addFooterBtn('Gửi mail', 'button -md -purple-1 text-white ting
         const OneDriveParentReferenceId = input.getAttribute("OneDriveParentReferenceId")
         drives.push({ id_Drive, email, idorderItems, drivename, isOneDrive, OneDriveParentReferenceId })
     }
+    console.log(drives)
     const sendApiCourse = await axios.post('/admin/course/sendEmailCourse', {
         drives
     })

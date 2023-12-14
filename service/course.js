@@ -1,6 +1,7 @@
 const paginate = require('express-paginate');
 const db = require("../models");
 const axios = require("axios");
+const ulltil = require("./ulltil")
 
 const { Op } = require("sequelize");
 const sharedrive = require("../service/sharedrive");
@@ -23,14 +24,14 @@ const oneCourseID = async (id) => {
 }
 const oneCourseSlug = async (slug) => {
     return await db.course.findOne({
-    nest: true , 
+        nest: true,
         where: {
             slug
         },
-        include: [{ model: db.Topic},{model: db.rating}],
+        include: [{ model: db.Topic }, { model: db.rating }],
     });
 }
-const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements,sections,originprice) => {
+const createNewCourse = async (name, url, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice) => {
     const course = await db.course.create(
         {
             name,
@@ -39,8 +40,8 @@ const createNewCourse = async (name, url, description, image, price, is_practice
             image,
             price,
             is_practice_test_course,
-            description_log, whatyouwilllearn, requirements,sections,originprice
-            
+            description_log, whatyouwilllearn, requirements, sections, originprice
+
         },
         {
             include: {
@@ -81,7 +82,7 @@ const findMany = async (text, limit, skip) => {
         offset: skip,
         order: [['id', 'DESC']],
         include: { model: db.Topic },
-        attributes: ['image','id','name','url','slug','price','originprice','description']
+        attributes: ['image', 'id', 'name', 'url', 'slug', 'price', 'originprice', 'description']
     }
     if (text) {
         query['where'] = {
@@ -96,13 +97,13 @@ const findMany = async (text, limit, skip) => {
 }
 
 const findManyCourseTopic = async (text, limit, skip, topic) => {
-    const query = { 
+    const query = {
         limit: limit,
-         offset: skip, 
-         order: [['updatedAt', 'DESC']],
-        attributes:['name','slug','image','updatedAt','description','price','originprice','url'],
-        include:[{model:db.rating}]
-        }
+        offset: skip,
+        order: [['updatedAt', 'DESC']],
+        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
+        include: [{ model: db.rating }]
+    }
     if (text) {
         query['where'] = {
             [Op.or]: [
@@ -113,7 +114,7 @@ const findManyCourseTopic = async (text, limit, skip, topic) => {
         }
     }
     if (topic) {
-        query['include'] = [...query['include'],{
+        query['include'] = [...query['include'], {
             model: db.Topic,
             where: {
                 slug: topic
@@ -148,12 +149,12 @@ const promiseCourse = async (drive) => {
             orderItem.isOneDrive = true
             await orderItem.save()
             await db.course.update({
-                sharelinkfree:shareOneDrive.value[0].link.webUrl
-            },{
-                where:{
+                sharelinkfree: shareOneDrive.value[0].link.webUrl
+            }, {
+                where: {
                     id: orderItem.course.id
                 },
-                
+
             })
 
             const [driveCourse, created] = await db.driveCourse.findOrCreate({
@@ -204,12 +205,12 @@ const promiseCourse = async (drive) => {
             orderItem.driveDaGui = id
             await orderItem.save()
             await db.course.update({
-                sharelinkfree:`https://drive.google.com/drive/folders/${id}?usp=drive_link`
-            },{
-                where:{
+                sharelinkfree: `https://drive.google.com/drive/folders/${id}?usp=drive_link`
+            }, {
+                where: {
                     id: orderItem.course.id
                 },
-                
+
             })
             const [driveCourse, created] = await db.driveCourse.findOrCreate({
                 where: {
@@ -266,57 +267,68 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
     return newCourse
 }
 
-const update = async (id, name, url, slug, price, priceus, priceindia, topicId, whatyouwilllearn, requirements, description, description_log, image,sharelinkfree) => {
+const update = async (id, name, url, slug, price, priceus, priceindia, TopicId, whatyouwilllearn, requirements, description, description_log, image, sharelinkfree) => {
+    console.log('update',TopicId)
     const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
     const converJsonwhatrequirements = JSON.parse(requirements)
-    const course = await db.course.findOne({where:{id}})
+    const course = await db.course.findOne({ where: { id } })
     const updateCourse = await db.course.update({
-        id, name, url, slug, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image,sharelinkfree
+        id, name, url, slug, TopicId, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image, sharelinkfree
     }, {
         where: {
             id
         }, include: { model: db.Topic }
 
     })
-    await course.setTopics(topicId)
+    await db.course_topic.destroy({where: {
+        course_id: id
+    }})
+
+    let parentTopic = await ulltil.getTopicWithParents(TopicId)
+    console.log(parentTopic)
+    parentTopic = [...parentTopic.parents.map(item => item.id),TopicId]
+    console.log(parentTopic)
+
+    await course.setTopics(parentTopic)
+
     return updateCourse
 }
 
-const addDriveToCourse = async(id,DriveName,DriveID,isOnedrive,OneDriveParentReferenceId) => {
-    const course = await db.course.findOne({where: {id}})
-    await course.createDriveCourse({name:DriveName,idDrive:DriveID,isOneDrive:isOnedrive,OneDriveParentReferenceId:OneDriveParentReferenceId})
+const addDriveToCourse = async (id, DriveName, DriveID, isOnedrive, OneDriveParentReferenceId) => {
+    const course = await db.course.findOne({ where: { id } })
+    await course.createDriveCourse({ name: DriveName, idDrive: DriveID, isOneDrive: isOnedrive, OneDriveParentReferenceId: OneDriveParentReferenceId })
     return course
 }
-const removeDriveToCourse = async(id, iddrive) => {
+const removeDriveToCourse = async (id, iddrive) => {
     const course = await db.driveCourse.destroy({
-        where:{
+        where: {
             id: iddrive
         }
     })
     return course
 }
 
-const deleteCourse = async(id) => {
-    const course = await db.course.findOne({where: {id}})
-    await course.setTopics([])
-    await course.setDriveCourses([])
-    await course.setOrderItems([])
-    await db.course.destroy({
-        where:{id}
-    })
+const deleteCourse = async (id) => {
+    const courses = await db.course.findOne({ where: { id } })
+    await courses.setDriveCourses([])
+    await courses.setOrderItems([])
+    await courses.setRatings([])
+    await courses.setBlogs([])
+    await courses.setTopics([])
+    await courses.destroy()
 }
 
 const findManyApi = async (text) => {
     const query = {
         order: [['id', 'DESC']],
-        attributes: ['image','id','name','url','slug','price','originprice','description']
+        attributes: ['image', 'id', 'name', 'url', 'slug', 'price', 'originprice', 'description']
     }
     if (text) {
         query['where'] = {
             [Op.or]: [
                 { name: { [Op.like]: `%${text}%` } },
                 { url: text },
-                {slug:{ [Op.like]: `%${text}%` }}
+                { slug: { [Op.like]: `%${text}%` } }
             ]
         }
     }
@@ -324,6 +336,7 @@ const findManyApi = async (text) => {
     return await db.course.findAll(query)
 }
 
-module.exports = {findManyApi,
-    createCourse, oneCourseLink, createNewCourse, oneCourseID,deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse,addDriveToCourse,removeDriveToCourse
+module.exports = {
+    findManyApi,
+    createCourse, oneCourseLink, createNewCourse, oneCourseID, deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse, addDriveToCourse, removeDriveToCourse
 };

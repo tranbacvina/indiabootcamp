@@ -10,6 +10,7 @@ const allTopicShow = async (req, res) => {
     const fetTopicData = await topic.findAll()
     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));
     const topics = await ulltilService.handlerTopic(rows, 0);
+   
     // res.send(topics)
     res.render('admin/topics/topics', { topics })
 }
@@ -20,22 +21,21 @@ const createTopicView = async (req, res) => {
 const editTopicView = async (req, res) => {
     const {id} = req.params
     const topics = await db.Topic.findAll()
-
     const topic = await db.Topic.findOne({where:{id}})
-    res.render('admin/topics/edit',{topic,topics})
+
+    const rows = JSON.parse(JSON.stringify(topics, null, 2));
+    const handlerTopic = await ulltilService.handlerTopic(rows, 0);
+
+    const dropDownHandTopic = await ulltilService.dropDownHandTopic(handlerTopic,0,topic.parent_id)
+
+    res.render('admin/topics/edit',{topic,topics,dropDownHandTopic})
 }
 const updateTopic = async (req, res) => {
     const topicID = req.params.id
-    const { topicName, topicSlug, seotitle, seodescription,parent_id } = req.body
+    
     try {
-        await db.Topic.update({
-            name: topicName,
-            slug: topicSlug, seotitle, seodescription,parent_id
-        }, {
-            where: {
-                id: topicID
-            }
-        })
+        const update = await topic.update(req.body,topicID)
+        
         res.redirect(`/admin/topic/${topicID}`)
     } catch (error) {
         console.log(error)
@@ -102,6 +102,13 @@ const topicSlugGetCourses = async (req, res) => {
         }
         
         let course = results[1]
+
+        if(course.count == 0) {
+            await topic.removeTopic(topicOne.id)
+            res.redirect('/404')
+            return
+        }
+
         course = JSON.parse(JSON.stringify(course, null, 2))
         course.rows = course.rows.map(item => {
             return { ...item, ratings: ulltilService.calculateStats(item.ratings)}

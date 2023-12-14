@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <title>Sửa Topic <%=topic.name%>
     </title>
@@ -81,7 +82,8 @@
                                 <div class="row pb-50 mb-10">
                                     <div class="col-auto">
 
-                                        <h1 class="text-30 lh-12 fw-700"><%=topic.name%>
+                                        <h1 class="text-30 lh-12 fw-700">
+                                            <%=topic.name%>
                                         </h1>
                                         <div class="mt-10">
                                         </div>
@@ -94,7 +96,9 @@
                                             <div
                                                 class="d-flex items-center justify-between py-20 px-30 border-bottom-light">
 
-                                                <div class="lh-11 fw-500 text-dark-1"><%=topic.name%></div>
+                                                <div class="lh-11 fw-500 text-dark-1">
+                                                    <%=topic.name%>
+                                                </div>
 
                                                 <input type="text" name="dates" class="dates" value="" />
 
@@ -102,49 +106,53 @@
 
                                             <div class="py-40 px-40">
                                                 <div class="row y-gap-20">
-                                                    <form class="contact-form row y-gap-30" action="/admin/topic/<%=topic.id%>"
-                                                        method="POST">
+                                                    <form id="form" class="contact-form row y-gap-30"
+                                                        action="/admin/topic/<%=topic.id%>" method="POST">
 
                                                         <div class="col-12">
 
                                                             <label
                                                                 class="text-16 lh-1 fw-500 text-dark-1 mb-10">Name*</label>
 
-                                                            <input type="text" name="name" id="Name" value="<%=topic.name%>">
+                                                            <input type="text" name="name" id="name"
+                                                                value="<%=topic.name%>">
                                                         </div>
                                                         <div class="col-12">
 
                                                             <label
                                                                 class="text-16 lh-1 fw-500 text-dark-1 mb-10">Slug*</label>
 
-                                                            <input type="text" name="slug" id="slug" value="<%=topic.slug%>">
+                                                            <input type="text" name="slug" id="slug"
+                                                                value="<%=topic.slug%>">
                                                         </div>
                                                         <div class="col-12">
 
                                                             <label
                                                                 class="text-16 lh-1 fw-500 text-dark-1 mb-10">seotitle*</label>
 
-                                                            <input type="text" name="seotitle" id="seotitle" value="<%=topic.seotitle%>">
+                                                            <input type="text" name="seotitle" id="seotitle"
+                                                                value="<%=topic.seotitle%>">
                                                         </div>
                                                         <div class="col-12">
 
                                                             <label
                                                                 class="text-16 lh-1 fw-500 text-dark-1 mb-10">seodescription*</label>
 
-                                                            <input type="text" name="seodescription"
-                                                                id="seodescription"  value="<%=topic.seodescription%>">
+                                                            <input type="text" name="seodescription" id="seodescription"
+                                                                value="<%=topic.seodescription%>">
                                                         </div>
                                                         <div class="col-12">
 
-                                                            <label
-                                                                class="text-16 lh-1 fw-500 text-dark-1 mb-10">Parent Topic*</label>
+                                                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Parent
+                                                                Topic*</label>
+                                                                <select name="parent_id">
+                                                                    <%for (let i of dropDownHandTopic) {%>
+                                                                    
+                                                                    <option value="<%=i.id%>" <%= i.id == topic.parent_id ? 'selected' : '' %> > <%=i.text%> </option>
 
-                                                            <select name="parent_id">
-                                                                <option value="0">null</option>
-                                                                <% for (let i of topics) { %>
-                                                                    <option value="<%=i.id%>" <%= i.id == topic.parent_id ? selected="selected" : '' %> ><%=i.name%> </option>
                                                                     <%}%>
-                                                            </select>
+                                                                  </select>
+
                                                         </div>
 
                                                         <div class="row y-gap-20 justify-between pt-15">
@@ -175,42 +183,9 @@
 
     <!-- JavaScript -->
     <%- include('../../layout/footerjs'); %>
-        <script type="text/javascript"
-            src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <script>
-            $('input[name="dates"]').daterangepicker(
-                {
-                    opens: "left",
-                    alwaysShowCalendars: true,
-                    ranges: {
-                        Today: [moment(), moment()],
-                        Yesterday: [
-                            moment().subtract(1, "days"),
-                            moment().subtract(1, "days"),
-                        ],
-                        "Last 7 Days": [moment().subtract(6, "days"), moment()],
-                        "Last 30 Days": [moment().subtract(29, "days"), moment()],
-                        "This Month": [moment().startOf("month"), moment().endOf("month")],
-                        "Last Month": [
-                            moment().subtract(1, "month").startOf("month"),
-                            moment().subtract(1, "month").endOf("month"),
-                        ],
-                    },
-                },
-                function (start, end, label) {
-                    console.log("A new date selection was made: " + start + " to " + end);
-                    window.location = `${window.location.pathname}?begin=${start.format(
-                        "X"
-                    )}&end=${end.format("X")}`;
-                }
-            );
-            // var datesTime = document.getElementsByClassName('datesTime')
-            // for (let dateC of datesTime) {
+        
 
-            //     dateC.innerText = moment(dateC.innerText.substr(0, 10), 'X').format('DD/MM/YYYY hh:mm:ss a')
-            // }
-
-        </script>
+    
 </body>
 
 </html>

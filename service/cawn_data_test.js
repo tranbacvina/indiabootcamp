@@ -1,6 +1,5 @@
 const axios = require("axios");
 const db = require("../models")
-const { oneCourseLink, } = require("../service/course")
 const { gotScraping } = require('got-scraping');
 const path = require('path');
 const fs = require('fs');
@@ -55,13 +54,10 @@ const getlastpart = (url) => {
 }
 
 const scrapingUdemy = async (link) => {
-  const uri =`${link}/?persist_locale=&locale=vi_VN`
 
   const response = await gotScraping({
-    url: uri,
-    headers: {
-      'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
-  },
+    url: link,
+ 
   });
 
   let $ = cheerio.load(response.body);

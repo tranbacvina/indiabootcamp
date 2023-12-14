@@ -136,6 +136,7 @@
 
                 <div class="container pt-20">
                     <h1 class="text-20 lh-1 text-dark-1 fw-500"><%=itemCount%> Khoá học <%=topicOne.name%></h1>
+                    <%if (locals.user) {%> <a class="text-purple-1" href="/admin/topic/<%=topicOne.id%>" rel="noopener noreferrer"> Sửa topic </a> <%}%>
                     <div class="relative pt-20">
                         <div class="swiper mySwiper overflow-hidden">
                             <div class="swiper-wrapper list-tag">

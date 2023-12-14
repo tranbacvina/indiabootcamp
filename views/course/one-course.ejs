@@ -165,12 +165,15 @@
                                             <h1 class="text-30 lh-14 pr-60 lg:pr-0">
                                                 <%=course.name%>
                                             </h1>
-                                            <%=locals.user%>
                                             <%if (locals.user){%>
                                                 <a class="text-green-1" href="/admin/course/<%=course.id%>">Sửa khoá học này</a>
-                                                <%}%>
+                                            <%}%>
                                         </div>
-    
+                                        <p class="col-xl-9 mt-20">
+                                            <%if (breadcrumb){%>
+                                            Loại khoá học: <% if (breadcrumb.parents.length > 0 ) {%><a class="text-purple-1" href="/topic/<%= breadcrumb.parents[breadcrumb.parents.length -1].slug%>"><%= breadcrumb.parents[breadcrumb.parents.length -1].name%></a> <%}%>
+                                            <%}%>
+                                        </p>
                                         <p class="col-xl-9 mt-20">
                                                 <%=course.description%>
                                         </p>

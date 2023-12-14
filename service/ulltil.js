@@ -143,4 +143,30 @@ async function handlerTopic(fetTopicData, parent_id) {
   return data;
 }
 
-module.exports = { handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }
+const dropDownHandTopic = (data, level = 0, parentTopic) => {
+  let datas = [];
+  data.forEach(item => {
+    let row = '';
+    if (level > 0) {
+      for (let i = 0; i < level; i++) {
+        row += '- ';
+      }
+    }
+
+    const res = {
+      id: item.id,
+      text: row + item.name,
+    };
+    if (item.id == parentTopic) {
+      res['selected'] = true;
+    }
+    datas.push(res);
+
+    if (item.children) {
+      const children = dropDownHandTopic(item.children, level + 1, parentTopic);
+      datas = datas.concat(children);
+    }
+  });
+  return datas;
+};
+module.exports = {dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }

@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Sửa <%=course.name%>
     </title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body class="preloader-visible" data-barba="wrapper">
@@ -85,23 +86,24 @@
                                         <div class="mt-10">Cập nhật lần cuối <%= course.updatedAt.toLocaleString()%>.
                                         </div>
                                         <div class="mt-10">
-                                            <a href="/course/<%=course.slug%>" class="text-purple-4 " target="_blank">Xem trên trang chủ</a>
+                                            <a href="/course/<%=course.slug%>" class="text-purple-4 "
+                                                target="_blank">Xem trên trang chủ</a>
                                         </div>
                                     </div>
                                 </div>
 
 
                                 <div class="row y-gap-60">
-                                    <form class="contact-form row y-gap-30"
-                                                    action="/admin/course/update/<%=course.id%>" method="POST">
-                                    <div class="col-lg-8">
-                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
-                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
-                                            </div>
+                                    <form class="contact-form row y-gap-30" action="/admin/course/update/<%=course.id%>"
+                                        method="POST" id="form">
+                                        <div class="col-lg-8">
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                    <h2 class="text-17 lh-1 fw-500">Thông tin cơ bản</h2>
+                                                </div>
 
-                                            <div class="py-30 px-30">
-                                                
+                                                <div class="py-30 px-30">
+
 
                                                     <div class="col-12">
 
@@ -118,7 +120,7 @@
 
                                                         <input type="text" value="<%=course.url%>" name="url" id="URI">
                                                     </div>
-                                                  
+
                                                     <div class="col-12">
 
                                                         <label
@@ -151,8 +153,8 @@
                                                         <input type="text" value="<%=course.sharelinkfree%>"
                                                             name="sharelinkfree" id="sharelinkfree">
                                                     </div>
-                                                    
-                                                   
+
+
 
                                                     <div class="col-12">
                                                         <label
@@ -173,7 +175,8 @@
                                                     <div class="col-12">
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Mô tả
                                                             ngắn*</label>
-                                                        <textarea class="" id="description_sort" name="description_sort"><%- course.description_sort ? course.description_sort : course.description %></textarea>
+                                                        <textarea class="" id="description_sort"
+                                                            name="description_sort"><%- course.description_sort ? course.description_sort : course.description %></textarea>
                                                     </div>
 
                                                     <div class="col-12">
@@ -230,188 +233,170 @@
 
                                                         <%= course.createdAt.toLocaleString()%>
                                                     </div>
-                                                    <div class="row y-gap-20 justify-between pt-15">
 
-                                                        <div class="col-auto">
-                                                            <button class="button -md -purple-1 text-white"
-                                                                id="updateButton" type="submit">Cập
-                                                                nhật</button>
-                                                        </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 ">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                    <h2 class="text-17 lh-1 fw-500">Seo Metadata</h2>
+                                                </div>
+                                                <div class="py-30 px-30">
+                                                    <div class="col-12">
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
+
+                                                        <input type="text" value="<%=course.title%>" name="title"
+                                                            id="title">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
+
+                                                        <input type="text" value="<%=course.slug%>" name="slug"
+                                                            id="slug">
+
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Description*</label>
+
+                                                        <input type="text" value="<%=course.description%>"
+                                                            name="description" id="description">
                                                     </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 ">
-                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Seo Metadata</h2>
-                                            </div>
-                                            <div class="py-30 px-30">
-                                                <div class="col-12">
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title*</label>
-
-                                                    <input type="text" value="<%=course.title%>" name="title"
-                                                        id="title">
-
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">slug*</label>
-    
-                                                    <input type="text" value="<%=course.slug%>" name="slug" id="slug">
-
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Description*</label>
-    
-                                                    <input type="text" value="<%=course.description%>" name="description" id="description">
                                                 </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30" style="max-height: 500px; overflow:auto;">
-                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Danh mục chính</h2>
-                                            </div>
-                                            <div class="py-30 px-30">
-                                                <div class="col-12">
 
-                                                    <% for (let topic of topics) { %>
-                                                        <% if (topic.id == course.TopicId){ %>
-                                                        <input type="text" name="TopicId" value="<%= topic.name %>">
-                                                        <%}%>
-                                                    <%}%>
+                                            </div>
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30"
+                                                style="max-height: 500px; overflow:auto;">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                    <h2 class="text-17 lh-1 fw-500">Danh mục chính</h2>
                                                 </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30" style="max-height: 500px; overflow:auto;">
-                                            <div class="d-flex items-center py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Danh mục liên kết</h2>
-                                            </div>
-                                            <div class="py-30 px-30">
-                                                <div class="col-12">
+                                                <div class="py-30 px-30">
+                                                    <div class="col-12">
+                                                            <select name="TopicId">
+                                                                <%for (let i of dropDownHandTopic) {%>
 
-                                                    <% for (let topic of topics) { %>
-                                                   
-                                                        <div class="d-flex items-center" >
-                                                            <div class="form-checkbox">
-                                                              <input type="checkbox" name="topicId" value="<%= topic.id %>"
-                                                              <% if (course.Topics.some(selected => selected.id === topic.id)) { %>
-                                                                checked
-                                                            <% } %>
-                                                              >
-                                                              <div class="form-checkbox__mark">
-                                                                <div class="form-checkbox__icon icon-check"></div>
-                                                              </div>
-                                                            </div>
-                                                            <div class="text-14 lh-12 text-dark-1 ml-15"><%= topic.name %></div>
-                                                          </div>
-                                                          <%}%>
+                                                                    <option value="<%=i.id%>" <%=i.selected ? 'selected'
+                                                                        : '' %> > <%=i.text%>
+                                                                    </option>
+
+                                                                    <%}%>
+                                                            </select>
+                                                    </div>
                                                 </div>
+
                                             </div>
-                                            
+
+                                            <div class="col-auto mt-30">
+                                                <button class="button w-1/1 -md -purple-1 text-white" id="updateButton"
+                                                    type="submit">Cập
+                                                    nhật</button>
+                                            </div>
                                         </div>
-                                       
-                                        
-                                    </div>
+
+                                </div>
                                 </form>
 
-                                    <div class="col-12">
-                                        <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
-                                            <div class="d-flex items-center justify-between space py-20 px-30 border-bottom-light">
-                                                <h2 class="text-17 lh-1 fw-500">Drive</h2> 
-                                                <a onclick="addDrive()" class="icon icon-edit mr-5">Thêm Drive</a>
-                                            </div>
+                                <div class="col-12">
+                                    <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                        <div
+                                            class="d-flex items-center justify-between space py-20 px-30 border-bottom-light">
+                                            <h2 class="text-17 lh-1 fw-500">Drive</h2>
+                                            <a onclick="addDrive()" class="icon icon-edit mr-5">Thêm Drive</a>
+                                        </div>
 
-                                            <div class="py-30 px-30">
-                                                <div class="row">
+                                        <div class="py-30 px-30">
+                                            <div class="row">
 
 
-                                                    <div class="col-12">
-                                                        <div class="accordion -block-2 text-left js-accordion">
-                                                            <% for (let drivecourse of course.driveCourses){ %>
-                                                                <div class="accordion__item -dark-bg-dark-1 mt-10">
-                                                                    <div
-                                                                        class="accordion__button py-20 px-30 bg-light-4">
-                                                                        <div class="d-flex items-center">
-                                                                            <div class="icon icon-drag mr-10"></div>
-                                                                            <span
-                                                                                class="text-16 lh-14 fw-500 text-dark-1">
-                                                                                <%= drivecourse.id %> <%= drivecourse.name %>
-                                                                            </span>
-                                                                        </div>
-
-                                                                        <div class="d-flex x-gap-10 items-center">
-                                                                            
-                                                                            <div class="accordion__icon mr-0">
-                                                                                <div
-                                                                                    class="d-flex items-center justify-center icon icon-chevron-down">
-                                                                                </div>
-                                                                                <div
-                                                                                    class="d-flex items-center justify-center icon icon-chevron-up">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                <div class="col-12">
+                                                    <div class="accordion -block-2 text-left js-accordion">
+                                                        <% for (let drivecourse of course.driveCourses){ %>
+                                                            <div class="accordion__item -dark-bg-dark-1 mt-10">
+                                                                <div class="accordion__button py-20 px-30 bg-light-4">
+                                                                    <div class="d-flex items-center">
+                                                                        <div class="icon icon-drag mr-10"></div>
+                                                                        <span class="text-16 lh-14 fw-500 text-dark-1">
+                                                                            <%= drivecourse.id %>
+                                                                                <%= drivecourse.name %>
+                                                                        </span>
                                                                     </div>
 
-                                                                    <div class="accordion__content">
-                                                                        <div
-                                                                            class="accordion__content__inner px-30 py-30">
+                                                                    <div class="d-flex x-gap-10 items-center">
+
+                                                                        <div class="accordion__icon mr-0">
                                                                             <div
-                                                                                class="d-flex x-gap-10 y-gap-10 flex-wrap">
-                                                                                <div>
-                                                                                    <a
-                                                                                        class="button -sm py-15 -purple-3 text-purple-1 fw-500">
-                                                                                        <%= drivecourse.idDrive %>
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div>
-
-                                                                                    <a
-                                                                                        class="button -sm py-15 -purple-3 text-purple-1 fw-500">
-                                                                                        Onedrive:<%=
-                                                                                            drivecourse.isOneDrive %>
-                                                                                    </a>
-
-                                                                                </div>
-                                                                                <div
-                                                                                    class="button -sm py-15 -purple-3 text-purple-1 fw-500">
-
-                                                                                    <%= drivecourse.OneDriveParentReferenceId
-                                                                                        %>
-
-                                                                                </div>
-                                                                                <a href="/admin/course/<%=course.id%>/drives/del/<%= drivecourse.id %>" class="icon icon-bin">Xoá</a>
-
-                                                                                
-                                                                                
+                                                                                class="d-flex items-center justify-center icon icon-chevron-down">
+                                                                            </div>
+                                                                            <div
+                                                                                class="d-flex items-center justify-center icon icon-chevron-up">
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <%}%>
+                                                                <div class="accordion__content">
+                                                                    <div class="accordion__content__inner px-30 py-30">
+                                                                        <div class="d-flex x-gap-10 y-gap-10 flex-wrap">
+                                                                            <div>
+                                                                                <a
+                                                                                    class="button -sm py-15 -purple-3 text-purple-1 fw-500">
+                                                                                    <%= drivecourse.idDrive %>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div>
 
-                                                        </div>
+                                                                                <a
+                                                                                    class="button -sm py-15 -purple-3 text-purple-1 fw-500">
+                                                                                    Onedrive:<%= drivecourse.isOneDrive
+                                                                                        %>
+                                                                                </a>
+
+                                                                            </div>
+                                                                            <div
+                                                                                class="button -sm py-15 -purple-3 text-purple-1 fw-500">
+
+                                                                                <%= drivecourse.OneDriveParentReferenceId
+                                                                                    %>
+
+                                                                            </div>
+                                                                            <a href="/admin/course/<%=course.id%>/drives/del/<%= drivecourse.id %>"
+                                                                                class="icon icon-bin">Xoá</a>
+
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <%}%>
+
                                                     </div>
                                                 </div>
-
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
-                       
                         </div>
+
+
                 </div>
             </div>
-        </main>
+    </div>
+    </main>
 
     </div>
     <!-- barba container end -->
 
     <!-- JavaScript -->
     <%- include('../../layout/footerjs'); %>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <script src="/js/ckeditor.js"></script>
         <script>
             moment.locale('vi')
@@ -440,16 +425,16 @@
                     console.warn('Build id: 1lt32d2j8rmx-gq1q9if87fsi');
                     console.error(error);
                 });
-                var modal = new tingle.modal({
+            var modal = new tingle.modal({
                 footer: true,
                 stickyFooter: false,
                 closeMethods: ['overlay', 'button', 'escape'],
                 closeLabel: "Close",
                 cssClass: ['custom-class-1', 'custom-class-2'],
             });
-                const addDrive = async (e) => {
+            const addDrive = async (e) => {
                 modal.open()
-                
+
                 const html = `
                             <form class="contact-form" id="updateTopicForm" method="POST" action="/admin/course/<%=course.id%>/drives">
                                  <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">DriveName</label>
@@ -486,6 +471,7 @@
                 modal.setContent(html)
             }
         </script>
+
 </body>
 
 </html>

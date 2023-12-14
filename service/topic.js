@@ -33,7 +33,19 @@ const removeTopic = async (id) => {
         }
     })
 }
+const update = async(data,id) => {
+    const { name, slug, seotitle, seodescription,parent_id } = data
+    const update = await db.Topic.update({
+        name: name,
+        slug: slug, seotitle, seodescription,parent_id
+    }, {
+        where: {
+            id
+        }
+    })
+    return update
+}
 // const findAllwithCourse = async () => {
 
 // }
-module.exports = { findAll, findOne ,findAllTopicChild,removeTopic}
+module.exports = {update, findAll, findOne ,findAllTopicChild,removeTopic}

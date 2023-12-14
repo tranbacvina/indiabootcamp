@@ -122,15 +122,45 @@ async function getAll(fetTopicData, parent_id) {
   // scriptContents = scriptContents[scriptContents.length -1]
   // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
   // console.log({ text: topic.name, href: getlastpart(topic.item) })
-  const courses = await db.course.findAll({
-    include:{
-      model: db.Topic,
-      where:{
-        slug: 'business-strategy'
+
+    const courses = await db.course.findAll({
+      where: {
+       url: {
+        [Op.like]: "%gitiho%"
+       }
       }
-    }
-  })
-  await ultil.hand_coursetoTopics(courses)
+     })
+     for (let course of courses) {
+      let noidung = course.description_log
+      let mota = course.description
+      // Regex pattern để tìm chuỗi cần thay thế (không phân biệt chữ hoa chữ thường)
+      let pattern = /\bgitiho\.com|gitiho\b/gi;
+
+      // Thực hiện thay thế chuỗi
+      let result = noidung.replace(pattern, match => {
+        if (match.toLowerCase().includes('.com')) {
+          return 'Fullbootcamp.com';
+        } else {
+          return 'Fullbootcamp';
+        }
+      });
+      let result2 = mota.replace(pattern, match => {
+        if (match.toLowerCase().includes('.com')) {
+          return 'Fullbootcamp.com';
+        } else {
+          return 'Fullbootcamp';
+        }
+      });
+
+      console.log(result);
+      console.log(result2);
+      course.description_log = result
+      course.description = result2
+      await course.save()
+     }
+
+  // await ultil.hand_coursetoTopics(courses)
+  // await db.course_topic.destroy({where: { course_id :3103}})
 }
   
   main();
