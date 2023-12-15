@@ -6,12 +6,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title><%=topicOne.seotitle ? topicOne.seotitle : "Khoá học Online " + topicOne.name %> 50K - <%= locals.formattedDate %></title>
+    <title>
+        <%=topicOne.seotitle ? topicOne.seotitle : "Khoá học Online " + topicOne.name %> 50K - <%= locals.formattedDate
+                %>
+    </title>
 
     <link rel="canonical" href="<%=canonicalURL%>" />
 
-    <meta name="title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
-    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>"/>
+    <meta name="title"
+        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+    <meta name="description"
+        content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -20,9 +25,12 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
-    <meta property="og:description" content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
-    <meta property="og:image" content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
+    <meta property="og:title"
+        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+    <meta property="og:description"
+        content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
+    <meta property="og:image"
+        content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -135,35 +143,41 @@
                 </section>
 
                 <div class="container pt-20">
-                    <h1 class="text-20 lh-1 text-dark-1 fw-500"><%=itemCount%> Khoá học <%=topicOne.name%></h1>
-                    <%if (locals.user) {%> <a class="text-purple-1" href="/admin/topic/<%=topicOne.id%>" rel="noopener noreferrer"> Sửa topic </a> <%}%>
-                    <div class="relative pt-20">
-                        <div class="swiper mySwiper overflow-hidden">
-                            <div class="swiper-wrapper list-tag">
-                                <% for (let i of childTopics) {%>
-                                    <div class="swiper-slide item-tag swiper-item-tag">
-                                        <a type="button" href="/topic/<%= i.slug %>">
-                                            <div style="background-color: white; padding: 5px 15px !important;"
-                                                class="title-tag text-center ">
-                                                <%= i.name %>
-                                            </div>
-                                        </a>
+                    <h1 class="text-20 lh-1 text-dark-1 fw-500">
+                        <%=itemCount%> Khoá học <%=topicOne.name%>
+                    </h1>
+                    <%if (locals.user) {%> <a class="text-purple-1" href="/admin/topic/<%=topicOne.id%>"
+                            rel="noopener noreferrer"> Sửa topic </a>
+                        <%}%>
+
+                            <%if(childTopics.length> 0) {%>
+                                <div class="relative pt-20">
+                                    <div class="swiper mySwiper overflow-hidden">
+                                        <div class="swiper-wrapper list-tag">
+                                            <% for (let i of childTopics) {%>
+                                                <div class="swiper-slide item-tag swiper-item-tag">
+                                                    <a type="button" href="/topic/<%= i.slug %>">
+                                                        <div style="background-color: white; padding: 5px 15px !important;"
+                                                            class="title-tag text-center ">
+                                                            <%= i.name %>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <%}%>
+                                        </div>
+                                        <div class="col-auto sm:d-none tag-btn-prev tag-btn">
+                                            <button class="d-flex items-center text-24 arrow-left-hover js-prev">
+                                                <i class="icon icon-arrow-left"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-auto sm:d-none tag-btn-next tag-btn">
+                                            <button class="d-flex items-center text-24 arrow-right-hover js-next">
+                                                <i class="icon icon-arrow-right"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <%}%>
-                            </div>
-                            <div class="col-auto sm:d-none tag-btn-prev tag-btn">
-                                <button class="d-flex items-center text-24 arrow-left-hover js-prev">
-                                    <i class="icon icon-arrow-left"></i>
-                                </button>
-                            </div>
-                            <div class="col-auto sm:d-none tag-btn-next tag-btn">
-                                <button class="d-flex items-center text-24 arrow-right-hover js-next">
-                                    <i class="icon icon-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
+                                </div>
+                                <%}%>
                 </div>
 
 
@@ -198,62 +212,62 @@
 
                         <div class="row y-gap-60">
                             <% for (let item of course) { %>
+                                <div class="col-xl-3 col-lg-5 col-md-6">
+                                    <a href="/course/<%=item.slug%>" class="coursesCard -type-1 ">
+                                        <div class="courseCardBody">
+                                            <div class="relative">
+                                                <div class="coursesCard__image overflow-hidden rounded-8">
+                                                    <img class="w-1/1" src="<%= item.image %>" alt="image">
+                                                    <div class="coursesCard__image_overlay rounded-8"></div>
+                                                </div>
+                                                <div
+                                                    class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
 
-                                <div class="col-12 border-bottom-light">
-                                    <a href="/course/<%=item.slug%>"
-                                        class="coursesCard -type-1 row y-gap-20 flex-row items-center">
-                                        <div class="col-xl-3 col-lg-4">
-                                            <div class="coursesCard__image rounded-8 relative">
-                                                <img class="w-1/1 rounded-8" src="<%= item.image %>" alt="image">
-                                                <div class="coursesCard__image_overlay rounded-8"></div>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col">
-                                            <%if (item.ratings.avg > 0) { %>
-                                                <div class="d-flex items-center">
-                                                    <div class="text-14 lh-1 text-yellow-1 mr-10"><%= item.ratings.avg ? item.ratings.avg : ''%></div>
+                                            <h3 class="text-17 lh-15 fw-500 text-dark-1">
+                                                <%= item.name %>
+                                            </h3>
+
+                                            <%if (item.ratings.avg> 0) { %>
+                                                <div class="d-flex items-center rattings">
+                                                    <div class="text-14 lh-1 text-yellow-1 mr-10">
+                                                        <%= item.ratings.avg ? item.ratings.avg : '' %>
+                                                    </div>
                                                     <div class="d-flex x-gap-5 items-center">
-                                                            <% for (let star = 1;star <= Math.floor(item.ratings.avg); star ++ ) {%>
-                                                                <div class="icon-star text-11 text-yellow-1"></div>
+                                                        <% for (let star=1;star <=Math.floor(item.ratings.avg); star ++
+                                                            ) {%>
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
                                                             <%}%>
                                                     </div>
                                                 </div>
-                                            <%}%>
+                                                <%}%>
+                                                    <p class="courseCardDescription">
+                                                        <%= item.description %>
+                                                    </p>
+                                                    <div class="coursesCard-footer">
 
-                                            <div class="col-xl-10 text-20 lh-15 fw-700 text-dark-1 mt-10">
-                                                <h3>
-                                                    <%= item.name %>
-                                                </h3>
-                                            </div>
-                                            <div class="mt-8">
-                                                <%= item.description %>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-auto md:d-none">
-                                            <div class="line -vertical -h-120 bg-light-5 ml-60 lg:ml-20 md:ml-0"></div>
-                                        </div>
-
-                                        <div class="col-md-auto">
-                                            <div class="text-right md:text-left">
-                                                <div class="text-15 lh-1 fw-500 line-through">
-                                                    <%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                                        currency : 'VND' }); %>
-                                                </div>
-                                                <div class="text-24 lh-1 fw-500 text-dark-1 mt-10">
-                                                    <%if (item.price==0) {%>
-                                                        Miễn Phí
-                                                        <%} else {%>
-                                                            <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                                currency : 'VND' }); %>
-                                                                <%}%>
-                                                </div>
-                                            </div>
+                                                        <div class="coursesCard-footer__price">
+                                                            <div>
+                                                                <%= item.originprice?.toLocaleString('it-IT', {style
+                                                                    : 'currency' , currency : 'VND' }); %>
+                                                            </div>
+                                                            <div>
+                                                                <%if (item.price==0) {%>
+                                                                    Miễn Phí
+                                                                    <%} else {%>
+                                                                        <%= item.price.toLocaleString('it-IT', {style
+                                                                            : 'currency' , currency : 'VND' }); %>
+                                                                            <%}%>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
                                         </div>
                                     </a>
                                 </div>
+
                                 <% } %>
 
                         </div>

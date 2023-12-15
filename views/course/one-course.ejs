@@ -631,33 +631,29 @@
                             <div data-anim-child="slide-up" class="swiper-slide">
             
                               <a href="/course/<%=i.slug%>" class="coursesCard -type-1 ">
-                                <div class="relative">
-                                  <div class="coursesCard__image overflow-hidden rounded-8">
-                                    <img class="w-1/1" src="<%=i.image%>" alt="<%=i.name%>">
-                                    <div class="coursesCard__image_overlay rounded-8"></div>
-                                  </div>
-                                  <div class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
-            
-                                  </div>
-                                </div>
-            
-                                <div class="h-100 pt-15">
-            
-                                  <h3 class="text-17 lh-15 fw-500 text-dark-1 mt-10 overflow-hidden titleCourseCard"><%=i.name%></h3>
-            
-                                  <div class="coursesCard-footer">
-                                    <div class="coursesCard-footer__author">
-                                      <img src="/img/general/avatar-1.png" alt="image">
-                                      <div>admin</div>
+                                <div class="courseCardBody">
+                                    <div class="relative">
+                                    <div class="coursesCard__image overflow-hidden rounded-8">
+                                        <img class="w-1/1" src="<%=i.image%>" alt="<%=i.name%>">
+                                        <div class="coursesCard__image_overlay rounded-8"></div>
                                     </div>
-            
-                                    <div class="coursesCard-footer__price">
-                                      <div><%=i.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                        currency : 'VND' })%></div>
-                                      <div><%=i.price.toLocaleString('it-IT', {style : 'currency' ,
-                                        currency : 'VND' })%></div>
+                                    <div class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
+                
                                     </div>
-                                  </div>
+                                    </div>
+                
+                                    
+                
+                                    <h3 class="text-17 lh-15 fw-500 text-dark-1 mt-10 overflow-hidden titleCourseCard"><%=i.name%></h3>
+                
+                                    <div class="coursesCard-footer">
+                                        <div class="coursesCard-footer__price">
+                                        <div><%=i.originprice?.toLocaleString('it-IT', {style : 'currency' ,
+                                            currency : 'VND' })%></div>
+                                        <div><%=i.price.toLocaleString('it-IT', {style : 'currency' ,
+                                            currency : 'VND' })%></div>
+                                        </div>
+                                    </div>
                                 </div>
                               </a>
             
