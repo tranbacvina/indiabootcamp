@@ -200,4 +200,15 @@ function pagination(c, m,url) {
 
   return rangeWithDots;
 }
-module.exports = {pagination,dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }
+
+function xoaDauSlashCuoiCung(chuoi) {
+  // Kiểm tra xem chuỗi có ký tự '/' không và ký tự '/' có ở cuối cùng không
+  if (chuoi.lastIndexOf('/') === chuoi.length - 1) {
+      // Sử dụng slice để lấy chuỗi mới không có ký tự '/' cuối cùng
+      let chuoiSauKhiXoa = chuoi.slice(0, -1);
+      return chuoiSauKhiXoa;
+  } else {
+      return chuoi; // Trả về chuỗi ban đầu nếu không có '/' ở cuối cùng
+  }
+}
+module.exports = {xoaDauSlashCuoiCung,pagination,dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }

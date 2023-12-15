@@ -76,7 +76,9 @@ const findManyCourse_ChuaGui = async (id) => {
         query,
     )
 }
-const findMany = async (text, limit, skip) => {
+const findMany = async (text, page) => {
+    const limit = 36
+    const skip = (limit * page) - limit
     const query = {
         limit: limit,
         offset: skip,

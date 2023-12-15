@@ -103,32 +103,26 @@ const coursedownload = async (req, res) => {
 const all = async (req, res) => {
     const { text, } = req.query
     const page = req.query.page || 1
-
-    const results = await Promise.all([findManyCourseTopicV2(text, page, req.skip),topic.findAll()])
+    const results = await Promise.all([findMany(text, page ),topic.findAll()])
 
     const course = results[0] 
     const topics = results[1] 
 
-    const schemaCourses = schema.createStrucDataCourses(course.rows)
-
     if (course.length === 0) {
         res.render('layout/404')
     } else {
-        const pages = []
-        for (let i = 1; i<pageCount; i ++) {
-            pages.push({
-                number: i,
-                url: `${req.baseUrl}${req.path}?page=${i}`
-            })
-        }
         const itemCount = course.count;
-        const pageCount = Math.ceil(course.count / req.query.limit);
+        const pageCount = Math.ceil(itemCount / 36);
+        const url= `${req.baseUrl}${req.path}?page=`
+        
+        const pages = ultrilSevice.pagination(req.query.page, pageCount, url); 
+       
         res.render('admin/course/course', {
             course: course.rows,
             topics,
             pageCount,
             itemCount,
-            schemaCourses,
+         
             currentPage: req.query.page,
             pages: pages,
         });
@@ -218,8 +212,8 @@ const publicall = async (req, res) => {
         const schemaCourses = schema.createStrucDataCourses(course.rows)
         const itemCount = course.count;
         const pageCount = Math.ceil(itemCount / 36);
-        const url= `${req.baseUrl}${req.path}?page=`
-        
+        let url= `${req.baseUrl}${req.path}`
+        url = ultrilSevice.xoaDauSlashCuoiCung(url) + "?page="
         const pages = ultrilSevice.pagination(req.query.page, pageCount, url); 
 
         res.render("course/allcourse",{
