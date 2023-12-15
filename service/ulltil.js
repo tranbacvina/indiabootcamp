@@ -169,4 +169,35 @@ const dropDownHandTopic = (data, level = 0, parentTopic) => {
   });
   return datas;
 };
-module.exports = {dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }
+
+function pagination(c, m,url) {
+  var current = c,
+      last = m,
+      delta = 2,
+      left = current - delta,
+      right = current + delta + 1,
+      range = [],
+      rangeWithDots = [],
+      l;
+
+  for (let i = 1; i <= last; i++) {
+      if (i == 1 || i == last || i >= left && i < right) {
+          range.push(i);
+      }
+  }
+
+  for (let i of range) {
+      if (l) {
+          if (i - l === 2) {
+              rangeWithDots.push({ number: l + 1, url: `${url}${l + 1}` });
+          } else if (i - l !== 1) {
+              rangeWithDots.push({ number: '...', url: '' });
+          }
+      }
+      rangeWithDots.push({ number: i, url: `${url}${i}` });
+      l = i;
+  }
+
+  return rangeWithDots;
+}
+module.exports = {pagination,dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }

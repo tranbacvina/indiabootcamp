@@ -1,6 +1,6 @@
 const cawn_data = require("../service/cawn_data")
 var { validationResult } = require('express-validator');
-const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse, findManyApi } = require("../service/course")
+const { findManyCourse_ChuaGui, findMany, createStrucDataCourses, createStrucDataOneCourse, oneCourseID, promiseCourse, oneCourseSlug, findManyCourseTopic, createCourse, update, deleteCourse, findManyApi,findManyCourseTopicV2 } = require("../service/course")
 const serverCourse = require('../service/course')
 const { getDriveUdemy, givenamereturndrive, } = require("../service/cawn_data")
 const paginate = require('express-paginate');
@@ -101,18 +101,26 @@ const coursedownload = async (req, res) => {
 }
 
 const all = async (req, res) => {
-    const { text, limit, } = req.query
-    const course = await findMany(text, limit, req.skip)
+    const { text, } = req.query
+    const page = req.query.page || 1
 
-    const topics = await topic.findAll()
+    const results = await Promise.all([findManyCourseTopicV2(text, page, req.skip),topic.findAll()])
 
+    const course = results[0] 
+    const topics = results[1] 
+
+    const schemaCourses = schema.createStrucDataCourses(course.rows)
 
     if (course.length === 0) {
-
         res.render('layout/404')
     } else {
-
-
+        const pages = []
+        for (let i = 1; i<pageCount; i ++) {
+            pages.push({
+                number: i,
+                url: `${req.baseUrl}${req.path}?page=${i}`
+            })
+        }
         const itemCount = course.count;
         const pageCount = Math.ceil(course.count / req.query.limit);
         res.render('admin/course/course', {
@@ -120,8 +128,9 @@ const all = async (req, res) => {
             topics,
             pageCount,
             itemCount,
+            schemaCourses,
             currentPage: req.query.page,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+            pages: pages,
         });
 
     }
@@ -197,22 +206,28 @@ const sendEmailCourse = async (req, res) => {
 }
 
 const publicall = async (req, res) => {
-    const { text, limit, } = req.query
-    const course = await findMany(text, limit, req.skip)
+    const { text, } = req.query
+    const page = req.query.page || 1
+
+    const course = await findManyCourseTopicV2(text, page, )
 
 
-    if (course.length === 0) {
+    if (course.count === 0) {
         res.render('layout/404')
     } else {
         const schemaCourses = schema.createStrucDataCourses(course.rows)
         const itemCount = course.count;
-        const pageCount = Math.ceil(course.count / req.query.limit);
-        res.render('course/allcourse', {
+        const pageCount = Math.ceil(itemCount / 36);
+        const url= `${req.baseUrl}${req.path}?page=`
+        
+        const pages = ultrilSevice.pagination(req.query.page, pageCount, url); 
+
+        res.render("course/allcourse",{
             course: course.rows,
             pageCount,
             itemCount, schemaCourses,
             currentPage: req.query.page,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+            pages: pages,
         });
 
     }

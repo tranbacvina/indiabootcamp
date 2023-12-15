@@ -87,12 +87,13 @@ const deleteTopic = async (req, res) => {
 
 const topicSlugGetCourses = async (req, res) => {
     try {
-        const { text, limit, } = req.query
+        const { text,} = req.query
+        const page = req.query.page || 1
         const { slug } = req.params
         
-        
+        console.log(req.baseUrl)
 
-        const results = await Promise.all([topic.findOne(slug),  courseService.findManyCourseTopic(text, limit, req.skip, slug)])
+        const results = await Promise.all([topic.findOne(slug),  courseService.findManyCourseTopicV2(text, page, slug)])
 
         const topicOne = results[0]
 
@@ -103,11 +104,11 @@ const topicSlugGetCourses = async (req, res) => {
         
         let course = results[1]
 
-        if(course.count == 0) {
-            await topic.removeTopic(topicOne.id)
-            res.redirect('/404')
-            return
-        }
+        // if(course.count == 0) {
+        //     await topic.removeTopic(topicOne.id)
+        //     res.redirect('/404')
+        //     return
+        // }
 
         course = JSON.parse(JSON.stringify(course, null, 2))
         course.rows = course.rows.map(item => {
@@ -124,8 +125,10 @@ const topicSlugGetCourses = async (req, res) => {
     
             
         const itemCount = course.count;
-        const pageCount = Math.ceil(course.count / req.query.limit);
-        res.render('course/course', {
+        const pageCount = Math.ceil(itemCount / 36);
+        const url= `${req.baseUrl}${req.path}?page=`
+        const pages = ulltilService.pagination(req.query.page, pageCount, url); 
+        res.render("course/course", {
             course: course.rows,
             topicOne,
             childTopics,
@@ -134,12 +137,42 @@ const topicSlugGetCourses = async (req, res) => {
             currentPage: req.query.page,
             breadcrumb,
             schemaBreadcum,schemaCourses,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+            pages: pages,
         });
     } catch (error) {
+        console.log(error)
         res.status(500).render('layout/505')
     }
 
-
 }
-module.exports = { createTopic, allTopicShow, deleteTopic, updateTopic, createTopicView, topicSlugGetCourses,editTopicView }
+
+const topicSlugGetCoursesV2 = async (req, res) => {
+    const { slug } = req.params
+    const page = req.query.page || 1
+    const limit = 10
+    const skip = (limit * page) - limit
+    console.log(req.baseUrl,req.path)
+    const courses = await db.course.findAndCountAll({
+        limit,
+        offset: skip,
+        include:{
+            model: db.Topic,
+            where: {
+                slug
+            }
+        },
+        order:[['updatedAt', 'DESC']],
+        attributes: ['id','name','slug','description','image','price','originprice','updatedAt']
+    })
+    const itemCount = courses.count;
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+    const pages = []
+    for (let i = 1; i<pageCount; i ++) {
+        pages.push({
+            number: i,
+            url: `${req.baseUrl}${req.path}?page=${i}`
+        })
+    }
+    res.send(courses.rows)
+}
+module.exports = {topicSlugGetCoursesV2, createTopic, allTopicShow, deleteTopic, updateTopic, createTopicView, topicSlugGetCourses,editTopicView }

@@ -125,6 +125,37 @@ const findManyCourseTopic = async (text, limit, skip, topic) => {
     return await db.course.findAndCountAll(query)
 }
 
+const findManyCourseTopicV2 = async (text, page, topic) => {
+    const limit = 36
+    const skip = (limit * page) - limit
+    const query = {
+        limit: limit,
+        offset: skip,
+        order: [['updatedAt', 'DESC']],
+        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
+        include: [{ model: db.rating }]
+    }
+    if (text) {
+        query['where'] = {
+            [Op.or]: [
+
+                { name: { [Op.like]: `%${text}%` } },
+                { url: text }
+            ]
+        }
+    }
+    if (topic) {
+        query['include'] = [...query['include'], {
+            model: db.Topic,
+            where: {
+                slug: topic
+            }
+        }]
+
+    }
+    return await db.course.findAndCountAll(query)
+}
+
 const promiseCourse = async (drive) => {
     const email = drive.email
     const id = drive.id_Drive
@@ -337,6 +368,6 @@ const findManyApi = async (text) => {
 }
 
 module.exports = {
-    findManyApi,
+    findManyApi,findManyCourseTopicV2,
     createCourse, oneCourseLink, createNewCourse, oneCourseID, deleteCourse, findManyCourse_ChuaGui, findMany, oneCourseSlug, findManyCourseTopic, update, promiseCourse, addDriveToCourse, removeDriveToCourse
 };

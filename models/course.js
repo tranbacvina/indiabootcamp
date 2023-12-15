@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const SequelizeSlugify = require('sequelize-slugify')
-
+const { makePaginate } = require('sequelize-cursor-pagination');
 module.exports = (sequelize, DataTypes) => {
   class course extends Model {
     /**
@@ -54,5 +54,6 @@ module.exports = (sequelize, DataTypes) => {
   SequelizeSlugify.slugifyModel(course, {
     source: ['name']
   });
+  course.paginate = makePaginate(course);
   return course;
 };
