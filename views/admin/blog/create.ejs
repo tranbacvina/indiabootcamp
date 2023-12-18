@@ -369,7 +369,7 @@
                     const { success, data,message } = response.data;
                     if (success) {
                         toastr.success(message);
-                        location.reload();
+                        window.location.replace(`/admin/blogs/${data.id}`);
                     } 
                 } catch (error) {
                     console.log(error);
