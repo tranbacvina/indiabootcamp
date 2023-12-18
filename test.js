@@ -122,34 +122,19 @@ async function getAll(fetTopicData, parent_id) {
   // scriptContents = scriptContents[scriptContents.length -1]
   // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
   // console.log({ text: topic.name, href: getlastpart(topic.item) })
-    const fixString = ( text ) => {
-          // Regex pattern để tìm chuỗi cần thay thế (không phân biệt chữ hoa chữ thường)
-      let pattern = /\bunica\.com|unica\b/gi;
 
-      // Thực hiện thay thế chuỗi
-      let result = text.replace(pattern, match => {
-        if (match.toLowerCase().includes('.com')) {
-          return 'Fullbootcamp.com';
-        } else {
-          return 'Fullbootcamp';
-        }
-      });
-      return result
-    }
     const courses = await db.course.findAll({
       where: {
-       url: {
-        [Op.like]: "%unica%"
-       }
+       price: 0
       }
     })
   
 
-
-    for ( let i of courses) {
-      i.description_log = fixString(i.description_log)
-      await i.save()
-    }
+    const drive = await cawn_data.givenamereturndrive(courses[0].name)
+    console.log(drive)
+    // for ( let i of courses) {
+ 
+    // }
   // await ultil.hand_coursetoTopics(courses)
   // await db.course_topic.destroy({where: { course_id :3103}})
 }

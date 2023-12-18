@@ -150,8 +150,10 @@ const create = async (req, res) => {
         categoryId,
         statusId,
         courses,
-        thumbnailSlug
+        thumbnailSlug,
+        hinhdaidien
     } = req.body
+
     try {
         let thumbnail = thumbnailSlug
         if (categoryId == 'null') categoryId = null
@@ -159,17 +161,17 @@ const create = async (req, res) => {
         if (req.file) {
             const filename = req.file.filename;
             const url = `/uploads/${filename}`;
-            thumbnail = await mediaService.createMedia(filename, url).fileUrl
+            createthumbnail = await mediaService.createMedia(filename, url)
+            data.thumbnail = createthumbnail.fileUrl
         }
 
         const newblog = await db.Blog.create({
             title,
-            description: description, slug,
+            description, slug,
             content,
             thumbnail,
             categoryId,
             isDeleted: statusId,
-            courses
         },
             {
                 include: [{
@@ -178,6 +180,7 @@ const create = async (req, res) => {
                 },
                 { model: db.course }]
             })
+            await newblog.setCourses(courses)
         return res.status(201).send({ success: true, message: `Tạo Blog ${title} thành công`, data: newblog })
 
     } catch (error) {

@@ -172,7 +172,7 @@
                                                     <h2 class="text-17 lh-1 fw-500">Meta data</h2>
                                                 </div>
 
-                                                <div class="py-30 px-30">
+                                                <div class="py-30 px-30 row gy-4">
                                                     <div class="col-12">
 
                                                         <label
@@ -404,9 +404,7 @@
                     console.log(response);
                     if (success) {
                         toastr.success(data);
-                        // setTimeout(() => {
-                        //     window.location.href = '/admin/blogs/<%=blog.id%>/update';
-                        // }, 1000);
+                        location.reload();
                     } else {
                         toastr.error(data);
                     }

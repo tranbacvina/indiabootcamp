@@ -140,6 +140,7 @@ async function handlerTopic(fetTopicData, parent_id) {
       children: children
     });
   }
+  data.sort((a, b) => a.name.localeCompare(b.name));
   return data;
 }
 

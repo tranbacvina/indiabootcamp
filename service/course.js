@@ -103,7 +103,7 @@ const findManyCourseTopic = async (text, limit, skip, topic) => {
         limit: limit,
         offset: skip,
         order: [['updatedAt', 'DESC']],
-        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
+        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url',"id"],
         include: [{ model: db.rating }]
     }
     if (text) {
@@ -329,6 +329,8 @@ const update = async (id, name, url, slug, price, priceus, priceindia, TopicId, 
 
 const addDriveToCourse = async (id, DriveName, DriveID, isOnedrive, OneDriveParentReferenceId) => {
     const course = await db.course.findOne({ where: { id } })
+    course.sharelinkfree = ! isOnedrive ? `https://drive.google.com/drive/folders/${DriveID}?usp=sharing` : ''
+    await course.save()
     await course.createDriveCourse({ name: DriveName, idDrive: DriveID, isOneDrive: isOnedrive, OneDriveParentReferenceId: OneDriveParentReferenceId })
     return course
 }

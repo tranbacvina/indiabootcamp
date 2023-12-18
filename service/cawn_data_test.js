@@ -12,7 +12,7 @@ const getDriveUdemy = async (links) => {
   return unica.data
 }
 const givenamereturndrive = async (names) => {
-  const unica = await axios.post(`${process.env.API_CHECK_COURSE}/givenamereturndrive`,
+  const unica = await axios.post(`https://sv2.fullbootcamp.com/givenamereturndrive`,
     { names: names }
   )
   return unica.data

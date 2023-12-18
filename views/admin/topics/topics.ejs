@@ -127,8 +127,8 @@
                                                                     <% if (level > 0) { for (i=0; i< level; i++){row += "-"} } %>
                                                                   <tr>
                                                                     <td><%= item.id %></td>
-                                                                    <td colspan="3"><a href="/admin/topic/<%= item.id %>"><%= row +=  item.name %></a></td>
-                                                                    <td><%= item.slug %></td>
+                                                                    <td colspan="3"><a href="/admin/topic/<%= item.id %>"><%= row +=  item.name %></a> </td>
+                                                                    <td><a href="/admin/course/topic/<%= item.slug %>"> <%= item.slug %></a></td>
                                                                     <td><%= item.seotitle %></td>
                                                                     <td><%= item.seodescription %></td>
                                                                   </tr>

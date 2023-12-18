@@ -36,6 +36,7 @@ const check = async (req, res) => {
             case "unica.vn":
                 promises.push(cawn_data.unica(link))
                 break;
+            
             case "udemy.com":
                 promises.push(cawn_data.udemy(link))
                 break;
@@ -285,8 +286,9 @@ const updateCourse = async (req, res) => {
 
 const addDriveToCourse = async (req, res) => {
     const { id } = req.params
-    const {
+    let {
         DriveName, DriveID, isOnedrive, OneDriveParentReferenceId } = req.body
+    isOnedrive = isOnedrive == "True" ? true : false
     await serverCourse.addDriveToCourse(id, DriveName, DriveID, isOnedrive, OneDriveParentReferenceId)
     res.redirect(`/admin/course/${id}`)
 }

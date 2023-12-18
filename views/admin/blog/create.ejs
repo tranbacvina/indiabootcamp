@@ -198,7 +198,7 @@
                                                     <h2 class="text-17 lh-1 fw-500">Meta data</h2>
                                                 </div>
 
-                                                <div class="py-30 px-30">
+                                                <div class="py-30 px-30 row gy-4">
                                                     <div class="col-12">
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title tag*</label>
                                                         <textarea rows="3" name="titletag" value=""
@@ -232,7 +232,7 @@
 
                                                     <div class="col-12">
                                                         <label for="courses" class="text-16 lh-1 fw-500 text-dark-1 mb-10">Khoá học liên kết</label>
-                                                        <select id="courses" class="js-example-basic-multiple" name="courses[]" multiple="multiple">
+                                                        <select id="courses" class="js-example-basic-multiple" name="courses" multiple="multiple">
                                                           </select>
                                                     </div>
 
@@ -359,6 +359,9 @@
             formE.append("courses",JSON.stringify(courses))
             formE.append("content", content);
             formE.append("thumbnail", thumbnail);
+            console.log(formE)
+            console.log(content)
+
             try {
                     const response = await axios.post('/admin/blogs',
                     formE
@@ -366,7 +369,7 @@
                     const { success, data,message } = response.data;
                     if (success) {
                         toastr.success(message);
-                        
+                        location.reload();
                     } 
                 } catch (error) {
                     console.log(error);

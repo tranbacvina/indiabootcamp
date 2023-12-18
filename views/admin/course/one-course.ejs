@@ -94,8 +94,8 @@
 
 
                                 <div class="row y-gap-60">
-                                    <form class="contact-form row y-gap-30" action="/admin/course/update/<%=course.id%>"
-                                        method="POST" id="form">
+                                    <form class="contact-form row y-gap-30" id="formupdate" action="/admin/course/update/<%=course.id%>"
+                                        method="POST" >
                                         <div class="col-lg-8">
                                             <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
                                                 <div class="d-flex items-center py-20 px-30 border-bottom-light">
@@ -223,8 +223,8 @@
                                                     <div class="col-6">
 
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">ID</label>
-
-                                                        <%= course.id %>
+                                                        <input type="text" value="<%= course.id %>" id="courseID" class="d-none">
+                                                       
                                                     </div>
                                                     <div class="col-6">
 
@@ -272,36 +272,47 @@
                                                 <div class="d-flex items-center py-20 px-30 border-bottom-light">
                                                     <h2 class="text-17 lh-1 fw-500">Danh mục chính</h2>
                                                 </div>
-                                                <div class="py-30 px-30">
+                                                <!-- <div class="py-30 px-30">
                                                     <div class="col-12">
-                                                            <select name="TopicId">
-                                                                <%for (let i of dropDownHandTopic) {%>
+                                                        <select name="TopicId">
+                                                            <%for (let i of dropDownHandTopic) {%>
 
-                                                                    <option value="<%=i.id%>" <%=i.selected ? 'selected'
-                                                                        : '' %> > <%=i.text%>
-                                                                    </option>
+                                                                <option value="<%=i.id%>" <%=i.selected ? 'selected'
+                                                                    : '' %> > <%=i.text%>
+                                                                </option>
 
-                                                                    <%}%>
-                                                            </select>
+                                                                <%}%>
+                                                        </select>
                                                     </div>
                                                     <div class="col-12">
                                                         <% for (let i of course.Topics) {%>
-                                                            <p><%= i.name %></p>
-                                                        <%}%>
+                                                            <p>
+                                                                <%= i.name %>
+                                                            </p>
+                                                            <%}%>
                                                     </div>
+                                                </div> -->
+
+                                                <div class="py-30 px-30">
+                                                    <select class="js-select2" name="TopicId">
+                                                       
+                                                      </select>
                                                 </div>
 
                                             </div>
-
+                                            <div class="col-auto mt-30">
+                                                <button class="button w-1/1 -md -green-1 text-white" id="checkCourse"
+                                                    type="button">Check Course</button>
+                                            </div>
                                             <div class="col-auto mt-30">
                                                 <button class="button w-1/1 -md -purple-1 text-white" id="updateButton"
                                                     type="submit">Cập
                                                     nhật</button>
                                             </div>
                                         </div>
-
+                                    </form>
+                                    
                                 </div>
-                                </form>
 
                                 <div class="col-12">
                                     <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
@@ -404,14 +415,19 @@
 
         <script src="/js/ckeditor.js"></script>
         <script>
-            moment.locale('vi')
-            const timeClass = document.getElementsByClassName("datesTime")
-            const orderStatus = document.querySelectorAll('.orderStatus')
-            for (let itemTime of timeClass) {
-                itemTime.textContent = moment(itemTime.textContent).fromNow()
+            $(".js-select2").select2({
+                data: <%- JSON.stringify(dropDownHandTopic)%>
+            })
 
+            // const formupdate = document.getElementById('formupdate')
+            // formupdate.addEventListener("submit", (e) => {
+            //     e.preventDefault()
+               
 
-            }
+            //     for(var pair of formupdate.entries()) {
+            //     console.log(pair[0]+ ', '+ pair[1]); 
+            //     }
+            // })
 
         </script>
 
@@ -475,6 +491,105 @@
                 `
                 modal.setContent(html)
             }
+
+            const checkcourse = document.getElementById("checkCourse")
+            checkcourse.addEventListener("click", async (e) => {
+                modal.open()
+                modal.setContent('Đang lấy dữ liệu');
+                const links = document.getElementById("URI")
+
+                const drives = await axios.post(`https://sv2.fullbootcamp.com/`, {
+                    links: [links]
+                })
+                console.log(drives.data)
+                let codeHtml = ``
+                for (let item of drives.data) {
+
+                    const renderGoogleOneDrive = renderGoogleOneDriveFC(item)
+                    const html = `
+                        <div class="py-20">
+                            <div class="text-20 lh-1 text-purple-1 fw-500 mb-15">${item.dbitem.name}</div>
+                            <div class="text-18 mb-30">${item.dbitem.url}</div>
+                            <div id="renderDriveItems">
+                                ${renderGoogleOneDrive}
+                            </div>
+                            <div class="col-auto mt-10">
+                                <button class="button -md -purple-1 text-white" onClick="addToCourse()" type="submit">Thêm Drive</button>
+                            </div>
+                        </div>
+                    `
+                    codeHtml += html
+                }
+                modal.setContent(codeHtml);
+
+            })
+            const renderGoogleOneDriveFC = item => {
+                var renderDriveItems = ``
+                for (let OneDrive of item.dbitem.OneDrive) {
+                    const html = `
+                        <div class="d-flex items-center py-15">
+                            <div class="form-checkbox">
+                                  <input type="checkbox" onedriveparentreferenceid="${OneDrive.resource.parentReference.driveId}" drivename="${OneDrive.resource.name}" id="${OneDrive.resource.id}" value="${OneDrive.resource.id}" isonedrive="True" class="form-check-input checkfileduocchon">
+                            <div class="form-checkbox__mark">
+                                <div class="form-checkbox__icon icon-check"></div>
+                            </div>
+                            </div>
+                                <div class="d-flex flex-column">
+                                        <label for="${OneDrive.resource.id}" class="text-16 lh-12 text-white ml-15  p-15 bg-orange-4">${OneDrive.resource.name} </label>
+                                    <a target="_blank"  href="${OneDrive.resource.webUrl}">
+                                    
+                                        <div class="text-14 lh-12 text-dark-1 ml-15 py-5">${OneDrive.resource.id} </div></a>
+                                        <div class="text-14 lh-12 text-dark-1 ml-15  py-5">${moment(OneDrive.resource.createdDateTime).format("DD-MM-YYYY")}  - <span class="text-purple-4"> Onedrive - ${OneDrive.resource.createdBy.user.displayName}</span></div>
+                                </div>
+                        </div>
+                    `
+                    renderDriveItems += html
+                }
+                for (let DriveFolder of item.dbitem.driveCourses) {
+                    const html = `
+                            <div class="d-flex items-center">
+                                <div class="form-checkbox">
+                                    <input type="checkbox" onedriveparentreferenceid="" drivename="${DriveFolder.name}" id="${DriveFolder.id}"
+                                        value="${DriveFolder.id}" isonedrive="False" 
+                                        class="form-check-input checkfileduocchon">
+                                    <div class="form-checkbox__mark">
+                                        <div class="form-checkbox__icon icon-check"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column">
+                                        <label class="text-16 lh-12 ml-15 p-15 bg-orange-4 text-white" for="${DriveFolder.id}">${DriveFolder.name} </label>
+                                    <a href="https://drive.google.com/drive/folders/${DriveFolder.id}?usp=sharing">
+                                        <div class="text-14 lh-12 text-dark-1 ml-15 py-5">${DriveFolder.id}</div>
+                                        <div class="text-14 lh-12 text-dark-1 ml-15 py-5">${moment(DriveFolder.createdTime).format("DD-MM-YYYY")} -
+                                            <span class="text-blue-3"> GoogleDrive -
+                                                ${DriveFolder.owners[0].displayName} </span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                    `
+                    renderDriveItems += html
+                }
+                return renderDriveItems
+            }
+
+            const addToCourse = async() => {
+                const inputs = document.querySelectorAll(".checkfileduocchon:checked");
+                let drives
+                for (let input of inputs) {
+                    const DriveID = input.value;
+                    const DriveName = input.getAttribute("drivename")
+                    const isOnedrive = input.getAttribute("isOneDrive");
+                    const OneDriveParentReferenceId = input.getAttribute("OneDriveParentReferenceId")
+
+                    drives = { DriveID, DriveName, isOnedrive, OneDriveParentReferenceId }
+                }
+                const courseId = document.getElementById("courseID")
+                const addDrive = await axios.post(`/admin/course/${courseId}/drives`, drives)
+                console.log(addDrive.data)
+            }
+
+           
         </script>
 
 </body>
