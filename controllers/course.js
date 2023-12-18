@@ -307,10 +307,7 @@ const deleteCourseColtroler = async (req, res) => {
 
 const apiFindAllKeyWord = async (req, res) => {
     const { text } = req.query
-    if (!text) {
-        res.status(404).send('Not Found')
-        return
-    }
+    
     const course = await findManyApi(text)
     res.send(course)
 

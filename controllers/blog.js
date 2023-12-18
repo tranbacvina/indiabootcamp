@@ -178,7 +178,10 @@ const create = async (req, res) => {
                 },
                 { model: db.course }]
             })
+
+        if (courses.length > 0) {
             await newblog.setCourses(courses)
+        }
         return res.status(201).send({ success: true, message: `Tạo Blog ${title} thành công`, data: newblog })
 
     } catch (error) {

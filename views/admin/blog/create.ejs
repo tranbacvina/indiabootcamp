@@ -185,7 +185,7 @@
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội
                                                             dung
                                                             chính*</label>
-                                                        <textarea name="content" id="content" rows="35"> </textarea>
+                                                        <textarea id="content" rows="35">Nội dung</textarea>
 
                                                     </div>
 
@@ -200,13 +200,15 @@
 
                                                 <div class="py-30 px-30 row gy-4">
                                                     <div class="col-12">
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title tag*</label>
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Title
+                                                            tag*</label>
                                                         <textarea rows="3" name="titletag" value=""
                                                             id="titletag"></textarea>
                                                     </div>
 
                                                     <div class="col-12">
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Description tag*</label>
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Description
+                                                            tag*</label>
                                                         <textarea rows="3" name="description" value="description"
                                                             id="description"></textarea>
                                                     </div>
@@ -231,9 +233,12 @@
                                                     </div>
 
                                                     <div class="col-12">
-                                                        <label for="courses" class="text-16 lh-1 fw-500 text-dark-1 mb-10">Khoá học liên kết</label>
-                                                        <select id="courses" class="js-example-basic-multiple" name="courses" multiple="multiple">
-                                                          </select>
+                                                        <label for="courses"
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">Khoá học liên
+                                                            kết</label>
+                                                        <select id="courses" class="js-example-basic-multiple"
+                                                            name="courses" multiple="multiple">
+                                                        </select>
                                                     </div>
 
                                                     <div class="col-12">
@@ -286,7 +291,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                              
+
                                                             </div>
                                                         </div>
 
@@ -297,13 +302,12 @@
                                             <div class="row y-gap-20 justify-between mt-30">
 
                                                 <div class="w-1/1">
-                                                    <button type="submit"
-                                                        class="button w-1/1 -md -purple-1 text-white"
+                                                    <button type="submit" class="button w-1/1 -md -purple-1 text-white"
                                                         id="updateButton">Tạo Blog</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </form>
 
                                 </div>
@@ -322,61 +326,65 @@
 
     <!-- JavaScript -->
     <%- include('../../layout/footerjs'); %>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.js-example-basic-multiple').select2({
-                placeholder: 'Tìm khoá học liên kết với blog',
-                cache: true,
-                tag:true,
-                ajax: {
-                    url: '/admin/course/findapi',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            text: params.term, // search term
-                        }},
-                    processResults: function (data) {
-                        return {
-                            results: data.map(item => {
-                                return {id:item.id, text: item.name }
-                            })
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-multiple').select2({
+                    placeholder: 'Tìm khoá học liên kết với blog',
+                    cache: true,
+                    tag: true,
+                    closeOnSelect: false,
+                    ajax: {
+                        url: '/admin/course/findapi',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                text: params.term, // search term
+                            }
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: data.map(item => {
+                                    return { id: item.id, text: item.name }
+                                })
                             };
                         },
-                }
+                    }
+                });
             });
-        });
-        const formE = document.getElementById("form")
+            const formE = document.getElementById("form")
 
-        formE.addEventListener("submit", async (e) => {
-            e.preventDefault()
+            formE.addEventListener("submit", async (e) => {
+                e.preventDefault()
 
-            const courses =$('.js-example-basic-multiple').select2('data');
-            const content = tinymce.activeEditor.getContent();
-            const thumbnail = document.getElementById('thumbnail').files[0];
+                const courses = $('.js-example-basic-multiple').select2('data');
+                const content = tinymce.get("content").getContent();
+                const thumbnail = document.getElementById('thumbnail').files[0];
 
-            formE.append("courses",JSON.stringify(courses))
-            formE.append("content", content);
-            formE.append("thumbnail", thumbnail);
-            console.log(formE)
-            console.log(content)
+                let newFormData = new FormData(formE)
 
-            try {
+                newFormData.append("courses", JSON.stringify(courses))
+                newFormData.append("content", content);
+                newFormData.append("thumbnail", thumbnail);
+
+                console.log(newFormData)
+
+                try {
                     const response = await axios.post('/admin/blogs',
-                    formE
+                        newFormData
                     );
-                    const { success, data,message } = response.data;
+                    const { success, data, message } = response.data;
                     if (success) {
                         toastr.success(message);
                         window.location.replace(`/admin/blogs/${data.id}`);
-                    } 
+                    }
                 } catch (error) {
                     console.log(error);
                     toastr.error(error.response.data.message);
                 }
-        })
-    </script>
+            })
+        </script>
 </body>
 
 </html>
