@@ -150,19 +150,17 @@ const create = async (req, res) => {
         categoryId,
         statusId,
         courses,
-        thumbnailSlug,
-        hinhdaidien
     } = req.body
 
     try {
-        let thumbnail = thumbnailSlug
+        let thumbnail
         if (categoryId == 'null') categoryId = null
 
         if (req.file) {
             const filename = req.file.filename;
             const url = `/uploads/${filename}`;
             createthumbnail = await mediaService.createMedia(filename, url)
-            data.thumbnail = createthumbnail.fileUrl
+            thumbnail = createthumbnail.fileUrl
         }
 
         const newblog = await db.Blog.create({
@@ -188,7 +186,7 @@ const create = async (req, res) => {
         return res.status(500).json({
             success: false,
             data: error,
-            message: error
+            message: 'Tạo blog không thành công'
         })
     }
 }
