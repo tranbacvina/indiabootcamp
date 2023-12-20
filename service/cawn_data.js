@@ -5,7 +5,7 @@ const db = require("../models")
 const cheerio = require("cheerio");
 
 const getDriveUdemy = async (links) => {
-  const unica = await axios.post(`${process.env.API_CHECK_COURSE}/checkcourseudemy`,
+  const unica = await axios.post(`${process.env.API_CHECK_COURSE}`,
     { links: links }
   )
   return unica.data

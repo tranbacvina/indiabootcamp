@@ -2,6 +2,7 @@ const db = require('../models')
 const axios = require('axios')
 const { Sequelize, Op } = require("sequelize");
 const cawn_data_test = require('../service/cawn_data_test')
+const moment = require("moment-timezone");
 
 async function getTopicWithParents(topicID) {
   const topic = await db.Topic.findOne({ where: { id: topicID } });
@@ -116,9 +117,9 @@ const hand_coursetoTopics = async (courses) => {
 
 const fixCourseTopicImage = async () => {
   const courses = await db.course.findAll({
-   where:{
-    topicId: null
-   }
+    where: {
+      topicId: null
+    }
   })
   await hand_coursetoTopics(courses)
 }
@@ -171,32 +172,32 @@ const dropDownHandTopic = (data, level = 0, parentTopic) => {
   return datas;
 };
 
-function pagination(c, m,url) {
+function pagination(c, m, url) {
   var current = c,
-      last = m,
-      delta = 2,
-      left = current - delta,
-      right = current + delta + 1,
-      range = [],
-      rangeWithDots = [],
-      l;
+    last = m,
+    delta = 2,
+    left = current - delta,
+    right = current + delta + 1,
+    range = [],
+    rangeWithDots = [],
+    l;
 
   for (let i = 1; i <= last; i++) {
-      if (i == 1 || i == last || i >= left && i < right) {
-          range.push(i);
-      }
+    if (i == 1 || i == last || i >= left && i < right) {
+      range.push(i);
+    }
   }
 
   for (let i of range) {
-      if (l) {
-          if (i - l === 2) {
-              rangeWithDots.push({ number: l + 1, url: `${url}${l + 1}` });
-          } else if (i - l !== 1) {
-              rangeWithDots.push({ number: '...', url: '' });
-          }
+    if (l) {
+      if (i - l === 2) {
+        rangeWithDots.push({ number: l + 1, url: `${url}${l + 1}` });
+      } else if (i - l !== 1) {
+        rangeWithDots.push({ number: '...', url: '' });
       }
-      rangeWithDots.push({ number: i, url: `${url}${i}` });
-      l = i;
+    }
+    rangeWithDots.push({ number: i, url: `${url}${i}` });
+    l = i;
   }
 
   return rangeWithDots;
@@ -205,11 +206,32 @@ function pagination(c, m,url) {
 function xoaDauSlashCuoiCung(chuoi) {
   // Kiểm tra xem chuỗi có ký tự '/' không và ký tự '/' có ở cuối cùng không
   if (chuoi.lastIndexOf('/') === chuoi.length - 1) {
-      // Sử dụng slice để lấy chuỗi mới không có ký tự '/' cuối cùng
-      let chuoiSauKhiXoa = chuoi.slice(0, -1);
-      return chuoiSauKhiXoa;
+    // Sử dụng slice để lấy chuỗi mới không có ký tự '/' cuối cùng
+    let chuoiSauKhiXoa = chuoi.slice(0, -1);
+    return chuoiSauKhiXoa;
   } else {
-      return chuoi; // Trả về chuỗi ban đầu nếu không có '/' ở cuối cùng
+    return chuoi; // Trả về chuỗi ban đầu nếu không có '/' ở cuối cùng
   }
 }
-module.exports = {xoaDauSlashCuoiCung,pagination,dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage,hand_coursetoTopics }
+
+const updateBlogPost = async () => {
+  const now = moment().format("YYYY-MM-DD hh:mm:ss")
+
+  const blogs = await db.Blog.findAll({
+    where: {
+      isDeleted: true,
+      scheduleDate: {
+        [Op.not]: null
+      }
+    }
+  })
+
+  for (let i of blogs) {
+    if (moment(now).isSameOrAfter(i.scheduleDate)) {
+      i.isDeleted = false
+      await i.save()
+      console.log('đã đăng blog: ', i.title)
+    }
+  }
+}
+module.exports = { xoaDauSlashCuoiCung, pagination, dropDownHandTopic, handlerTopic, getTopicWithParents, calculateStats, maskEmail, fixCourseTopicImage, hand_coursetoTopics,updateBlogPost }

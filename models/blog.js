@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     thumbnail: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
     courseId: DataTypes.INTEGER,
+    scheduleDate:DataTypes.DATE,
     isDeleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false

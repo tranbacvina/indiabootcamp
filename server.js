@@ -13,7 +13,7 @@ var useragent = require('express-useragent');
 const urlService = require('./service/url')
 app.use(useragent.express());
 const sitemmapService = require('./service/sitemap');
-const { fixCourseTopicImage } = require("./service/ulltil");
+const { fixCourseTopicImage,updateBlogPost } = require("./service/ulltil");
 
 // Middleware để xoá dấu '/' cuối cùng của mỗi URL
 app.use((req, res, next) => {
@@ -73,6 +73,7 @@ cron.schedule('0 1 * * *', async () => {
   await sitemmapService.blogSitemap()
   await sitemmapService.courseSitemap()
   await sitemmapService.topicSitemap()
+  await updateBlogPost()
   await fixCourseTopicImage()
 }, {
   scheduled: true,

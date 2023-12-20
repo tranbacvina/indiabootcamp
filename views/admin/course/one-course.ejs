@@ -496,7 +496,7 @@
             checkcourse.addEventListener("click", async (e) => {
                 modal.open()
                 modal.setContent('Đang lấy dữ liệu');
-                const links = document.getElementById("URI")
+                const links = document.getElementById("URI").value
 
                 const drives = await axios.post(`https://sv2.fullbootcamp.com/`, {
                     links: [links]

@@ -5,6 +5,7 @@ const serviceCategories = require("../service/catgories")
 const db = require("../models");
 const schema = require('../service/schema')
 const mediaService = require("../service/media")
+const moment = require("moment-timezone");
 
 const allBlogAdmin = async (req, res) => {
     const { text, limit, } = req.query
@@ -44,7 +45,7 @@ const allBlogAdmin = async (req, res) => {
 const viewUpdate = async (req, res) => {
     const id = req.params.id
     try {
-        const blog = await serviceBlog.findOne(id)
+        let blog = await serviceBlog.findOne(id)
         const categories = await serviceCategories.findAll()
         if (!blog) {
             return res.render('layout/404')
@@ -74,11 +75,13 @@ const postUpdate = async (req, res) => {
         content,
         categoryId,
         statusId, thumbnailSlug,
-        courses
+        courses,
+        scheduleDate
     } = req.body
     if (categoryId == 'null') {
         categoryId = null
     }
+    if( statusId == "true") { statusId = true} else { statusId = false}
     try {
         let data = {
             title,
@@ -88,6 +91,7 @@ const postUpdate = async (req, res) => {
             keywords,
             thumbnail: thumbnailSlug,
             categoryId,
+            scheduleDate: scheduleDate || null,
             isDeleted: statusId,
         }
 
@@ -99,13 +103,13 @@ const postUpdate = async (req, res) => {
         }
 
         const updateBlog = await db.Blog.update(data, { where: { id } })
-
-        if (courses.length > 0) {
-            courses = JSON.parse(courses).map(item => item.id)
-            const course = await db.Blog.findOne({ where: { id } })
-            await course.setCourses(courses)
+        if(courses) {
+            if (courses.length > 0) {
+                const course = await db.Blog.findOne({ where: { id } })
+                await course.setCourses([])
+                await course.setCourses(courses)
+            }
         }
-
 
         return res.status(200).json({
             success: true,
@@ -150,12 +154,13 @@ const create = async (req, res) => {
         categoryId,
         statusId,
         courses,
+        scheduleDate
     } = req.body
 
     try {
         let thumbnail
         if (categoryId == 'null') categoryId = null
-
+        if( statusId == "true") { statusId = true} else { statusId = false}
         if (req.file) {
             const filename = req.file.filename;
             const url = `/uploads/${filename}`;
@@ -170,6 +175,7 @@ const create = async (req, res) => {
             thumbnail,
             categoryId,
             isDeleted: statusId,
+            scheduleDate: scheduleDate || null
         },
             {
                 include: [{
@@ -178,10 +184,12 @@ const create = async (req, res) => {
                 },
                 { model: db.course }]
             })
-
-        if (courses.length > 0) {
-            await newblog.setCourses(courses)
+        if (courses) {
+            if (courses.length > 0) {
+                await newblog.setCourses(courses)
+            }
         }
+
         return res.status(201).send({ success: true, message: `Tạo Blog ${title} thành công`, data: newblog })
 
     } catch (error) {
@@ -197,12 +205,13 @@ const remove = async (req, res) => {
     const id = req.params.id
 
     try {
-
+        const blog = await db.Blog.findOne({where: {id}})
+        await blog.setCourses([])
         await db.Blog.destroy({ where: { id } })
 
         return res.status(200).json({
             success: true,
-            data: 'Blog removed'
+            data: `Blog removed`
         })
 
     } catch (error) {

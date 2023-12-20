@@ -25,10 +25,13 @@
     <link rel="stylesheet" href="/css/vendors.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
     <title>Tạo mới bài viết
     </title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.tiny.cloud/1/68vd58tun4ar8pulk5vz9fyus61rgonlk5mkfkzij6cck7lz/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/68vd58tun4ar8pulk5vz9fyus61rgonlk5mkfkzij6cck7lz/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
     <script>
         const example_image_upload_handler = (blobInfo, progress) => new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -73,11 +76,16 @@
 
         tinymce.init({
             selector: '#content',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: ' undo redo | blocks fontfamily fontsize forecolor backcolor | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            plugins: 'anchor autosave insertdatetime autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: ' undo redo restoredraft insertdatetime | blocks fontfamily fontsize forecolor backcolor | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
             automatic_uploads: true,
+            insertdatetime_element: true,
             file_picker_types: 'image',
             images_upload_url: '/admin/media/blogpostmedia',
+            autosave_ask_before_unload: true,
+            autosave_interval: '5s',
+            autosave_restore_when_empty: true,
+            autosave_retention: '59m',
             file_picker_callback: (cb, value, meta) => {
                 const input = document.createElement('input');
                 input.setAttribute('type', 'file');
@@ -219,18 +227,7 @@
                                                         <input type="text" value="" name="slug" id="slug">
                                                     </div>
 
-                                                    <div class="col-12">
 
-                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hiển
-                                                            thị</label>
-
-                                                        <select name="statusId" id="statusId" class=" form-select">
-                                                            <option value="1">Hiện
-                                                            </option>
-                                                            <option value="0">Ẩn
-                                                            </option>
-                                                        </select>
-                                                    </div>
 
                                                     <div class="col-12">
                                                         <label for="courses"
@@ -259,39 +256,62 @@
                                             </div>
                                             <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30">
                                                 <div class="d-flex items-center py-20 px-30 border-bottom-light">
+                                                    <h2 class="text-17 lh-1 fw-500">Trạng thái</h2>
+                                                </div>
+
+                                                <div class="py-30 px-30">
+                                                    <div class="col-12">
+                                                        <div class="row gy-4">
+                                                            <div class="col-12">
+
+                                                                <label
+                                                                    class="text-16 lh-1 fw-700 text-dark-1 mb-10">Trang thái bài viết:<span class="text-purple-1"></span> </label>
+                                                                <div id="infoSchedule"></div>
+
+                                                                <div class="form-switch d-flex items-center mt-20">
+                                                                    <div class="switch">
+                                                                        <input type="checkbox" name="statusId" id="statusId"
+                                                                            onclick="handleCheckBox()"
+                                                                            value="false">
+                                                                        <span class="switch__slider"></span>
+                                                                    </div>
+                                                                    <div class="text-13 lh-1 text-dark-1 ml-10"
+                                                                        id="statusResult">
+                                                                        Lên lịch đăng bài
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <input type="text" value="" id="scheduleDateData" class="d-none">
+                                                            <div class="col-12 d-none" id="formScheduleDate">
+
+                                                                <label
+                                                                    class="text-16 lh-1 fw-500 text-dark-1 mb-10">Lịch
+                                                                    đăng bài</label>
+
+                                                                <div class="form-switchmt-20">
+                                                                    <input type="text" id="schedule" name="scheduleDate">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="rounded-16 bg-white -dark-bg-dark-1 shadow-4 mt-30">
+                                                <div class="d-flex items-center py-20 px-30 border-bottom-light">
                                                     <h2 class="text-17 lh-1 fw-500">Ảnh</h2>
                                                 </div>
 
                                                 <div class="py-30 px-30">
                                                     <div class="col-12">
                                                         <div class="d-flex flex-column">
-                                                            <div class="relative shrink-0">
-                                                                <img class="w-1\/4" width="150" height="100" src=""
-                                                                    alt="image">
-
-                                                                <div
-                                                                    class="absolute-full-center d-flex justify-end py-20 px-20">
-                                                                    <a href="#"
-                                                                        class="d-flex justify-center items-center bg-white size-40 rounded-8 shadow-1">
-                                                                        <i class="icon-bin text-16"></i>
-                                                                    </a>
+                                                            <div class="form-upload col-12">
+                                                                <label
+                                                                    class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình
+                                                                    đại diện*</label>
+                                                                <div class="form-upload__wrap">
+                                                                    <input type="file" class="button w-1/1 -dark-3 text-white" id="thumbnail" name="hinhdaidien" placeholder="Cover-1.png">
                                                                 </div>
-                                                            </div>
-                                                            <div class="ml-30 lg:ml-0 lg:mt-20">
-
-                                                                <div class="form-upload col-12">
-                                                                    <label
-                                                                        class="text-16 lh-1 fw-500 text-dark-1 mb-10">Hình
-                                                                        đại diện*</label>
-                                                                    <div class="form-upload__wrap">
-                                                                        <input type="file" name="hinhdaidien"
-                                                                            class="button -dark-3 text-white"
-                                                                            id="thumbnail" placeholder="Cover-1.png">
-
-                                                                    </div>
-                                                                </div>
-
-
                                                             </div>
                                                         </div>
 
@@ -323,11 +343,35 @@
 
     </div>
     <!-- barba container end -->
-
     <!-- JavaScript -->
-    <%- include('../../layout/footerjs'); %>
+        <%- include('../../layout/footerjs'); %>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        
         <script>
+            $(function () {
+                $('#schedule').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoApply:true,
+                    minDate: moment(),
+                    timePicker:true,
+                    locale:{
+                        format: "YYYY-MM-DD hh:mm:ss",
+                        cancelLabel: 'Clear'
+                    }
+                });
+            });
+            $('#schedule').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('YYYY-MM-DD hh:mm:ss'))
+                const scheduleDate = $('#schedule').val()
+                const now = moment().format("YYYY-MM-DD hh:mm:ss")
+                const momentFormnow = moment(now).to(scheduleDate);
+                $('#infoSchedule').text(`Bài viết sẽ được đăng ${momentFormnow}`);
+            });
+        </script>
+        <script>
+
             $(document).ready(function () {
                 $('.js-example-basic-multiple').select2({
                     placeholder: 'Tìm khoá học liên kết với blog',
@@ -353,23 +397,46 @@
                     }
                 });
             });
+            const handleCheckBox = () => {
+                var checkBox = document.getElementById("statusId");
+                // Get the output text
+                var text = document.getElementById("statusResult");
+                const formScheduleDate = document.getElementById("formScheduleDate")
+                const valueSchedule = document.getElementById("schedule")
+                // If the checkbox is checked, display the output text
+                if (checkBox.value == "true") {
+                    checkBox.value = false
+                    text.innerText = "Lên lịch đăng bài";
+                    valueSchedule.value = moment().format("YYYY-MM-DD hh:mm:ss")
+                    formScheduleDate.classList.toggle("d-none")
+                    checkBox.toggleAttribute("checked");
+
+                } else {
+                    text.innerText = "Tắt lịch đăng bài - Hiển thị ngay";
+                    checkBox.value = true
+                    valueSchedule.value = null
+                    formScheduleDate.classList.toggle("d-none")
+                    checkBox.toggleAttribute("checked");
+
+                }
+            }
             const formE = document.getElementById("form")
 
             formE.addEventListener("submit", async (e) => {
                 e.preventDefault()
 
-                const courses = $('.js-example-basic-multiple').select2('data');
+                // const courses = $('.js-example-basic-multiple').select2('data');
                 const content = tinymce.get("content").getContent();
-                const thumbnail = document.getElementById('thumbnail').files[0];
 
                 let newFormData = new FormData(formE)
 
-                newFormData.append("courses", JSON.stringify(courses))
+                // newFormData.append("courses", JSON.stringify(courses))
                 newFormData.append("content", content);
-                newFormData.append("thumbnail", thumbnail);
 
                 console.log(newFormData)
-
+                for(var pair of newFormData.entries()) {
+                    console.log(pair[0]+ ', '+ pair[1]); 
+                    }
                 try {
                     const response = await axios.post('/admin/blogs',
                         newFormData

@@ -24,6 +24,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/css/vendors.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <title>Quản lý blog</title>
 </head>
@@ -139,10 +140,14 @@
                                                                     </td>
                                                                     <td role="cell" class="align-middle">
                                                                         <% if (blog.isDeleted) { %>
-                                                                            Delete
+                                                                            <% if (blog.scheduleDate !== null) { %>
+                                                                                Đã lên lịch, sẽ đăng lúc: <span class="scheduleDate"> <%=blog.scheduleDate%> </span>
                                                                             <% } else { %>
+                                                                                Đã xoá
+                                                                            
+                                                                            <% } } else { %>
                                                                                 Hiển thị
-                                                                                <%}%>
+                                                                            <%}%>
                                                                     </td>
 
                                                                     <td role="cell" class="align-middle"
@@ -203,10 +208,12 @@
     <%- include('../../layout/footerjs'); %>
         <script>
             moment.locale('vi')
-            const timeClass = document.getElementsByClassName("datesTime")
+            const timeClass = document.getElementsByClassName("scheduleDate")
             const orderStatus = document.querySelectorAll('.orderStatus')
             for (let itemTime of timeClass) {
-                itemTime.textContent = moment(itemTime.textContent).fromNow()
+                const fromnow = moment(itemTime.textContent).fromNow()
+                const formatDate = moment(itemTime.textContent).format('L HH:mm:ss')
+                itemTime.textContent = `${fromnow} (${formatDate})`
 
 
             }

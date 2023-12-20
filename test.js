@@ -123,15 +123,8 @@ async function getAll(fetTopicData, parent_id) {
   // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
   // console.log({ text: topic.name, href: getlastpart(topic.item) })
 
-    const courses = await db.course.findAll({
-      where: {
-       price: 0
-      }
-    })
-  
-
-    const drive = await cawn_data.givenamereturndrive(courses[0].name)
-    console.log(drive)
+  const myURL = new URL('https://www.udemy.com/course/helm-masterclass-50-practical-demos-for-kubernetes-devops/');
+  console.log(myURL.pathname);
     // for ( let i of courses) {
  
     // }
