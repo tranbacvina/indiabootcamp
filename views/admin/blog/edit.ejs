@@ -69,6 +69,7 @@
                 input.click();
             },
         });
+
     </script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -160,9 +161,8 @@
                                                     <div class="col-12">
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
                                                             chính*</label>
-                                                        <div class="editor" id="content" name="content">
-                                                            <%- blog.content %>
-                                                        </div>
+
+                                                        <textarea id="content" rows="35"><%- blog.content %></textarea>
                                                     </div>
 
 
@@ -347,6 +347,8 @@
             let dataCourses = <%- JSON.stringify(blog.courses) %>
                 dataCourses = dataCourses.map(item => { return { id: item.id, text: item.name, selected: true } })
             $(document).ready(function () {
+                tinymce.get("content").setContent("<p>Hello world!</p>");
+
                 $('.js-example-basic-multiple').select2({
                     placeholder: 'Tìm khoá học liên kết với blog',
                     cache: true,
@@ -379,6 +381,7 @@
                     autoApply:true,
                     minDate: moment(),
                     timePicker:true,
+                    autoUpdateInput: false,
                     locale:{
                         format: "YYYY-MM-DD hh:mm:ss",
                         cancelLabel: 'Clear'
@@ -394,6 +397,10 @@
             });
             let scheduleDate = $('#scheduleDateData').val()
             scheduleDate = moment(scheduleDate).format("YYYY-MM-DD hh:mm:ss")
+            
+            const schedule = document.getElementById("schedule")
+            schedule.value = scheduleDate
+
             const now = moment().format("YYYY-MM-DD hh:mm:ss")
             const momentFormnow = moment(now).to(scheduleDate);
 
@@ -479,7 +486,7 @@
                 // const title = document.getElementById('title').value
                 // const description = document.getElementById('description').value
                 // const slug = document.getElementById('slug').value
-                // const content = tinymce.activeEditor.getContent();
+                const content = tinymce.get("content").getContent();
                 // const categoryId = document.getElementById('categoryId').value
                 // const statusId = document.getElementById('statusId').value
                 // const thumbnailSlug = document.getElementById('thumbnailSlug').value
@@ -491,7 +498,7 @@
                 // formData.append("title", title);
                 // formData.append("description", description);
                 // formData.append("slug", slug);
-                // formData.append("content", content);
+                formData.append("content", content);
                 // formData.append("categoryId", categoryId);
                 // formData.append("statusId", statusId);
                 // formData.append("hinhdaidien", image);
