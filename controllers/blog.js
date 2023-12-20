@@ -72,7 +72,7 @@ const postUpdate = async (req, res) => {
         description,
         slug,
         keywords,
-        content2,
+        content,
         categoryId,
         statusId, thumbnailSlug,
         courses,
@@ -85,7 +85,7 @@ const postUpdate = async (req, res) => {
     try {
         let data = {
             title,
-            content: content2,
+            content,
             description: description,
             slug,
             keywords,

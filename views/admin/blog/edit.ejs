@@ -33,7 +33,7 @@
         
     <script>
         tinymce.init({
-            selector: '#content',
+            selector: 'textarea#default',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
             toolbar: ' undo redo | blocks fontfamily fontsize forecolor backcolor | bold italic underline strikethrough | link image media table mergetags | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
             automatic_uploads: true,
@@ -162,7 +162,8 @@
                                                         <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung
                                                             chính*</label>
 
-                                                        <textarea id="content" rows="35"><%- blog.content %></textarea>
+                                                          
+                                                            <textarea  id="default"><%- blog.content %></textarea>
                                                     </div>
 
 
@@ -344,10 +345,10 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
         <script>
+
             let dataCourses = <%- JSON.stringify(blog.courses) %>
                 dataCourses = dataCourses.map(item => { return { id: item.id, text: item.name, selected: true } })
             $(document).ready(function () {
-                tinymce.get("content").setContent("<p>Hello world!</p>");
 
                 $('.js-example-basic-multiple').select2({
                     placeholder: 'Tìm khoá học liên kết với blog',
@@ -486,7 +487,7 @@
                 // const title = document.getElementById('title').value
                 // const description = document.getElementById('description').value
                 // const slug = document.getElementById('slug').value
-                const content = tinymce.get("content").getContent();
+                const content = tinymce.activeEditor.getContent();
                 // const categoryId = document.getElementById('categoryId').value
                 // const statusId = document.getElementById('statusId').value
                 // const thumbnailSlug = document.getElementById('thumbnailSlug').value
