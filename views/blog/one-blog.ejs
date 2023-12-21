@@ -6,11 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>
-        <%= blog.title %>
-    </title>
-    <meta name="title" content="<%= blog.title %>" />
-    <meta name="description" content="<%= blog.title %>" />
+    <title><%= blog.seotitle !== null ?  blog.seotitle : blog.title%></title>
+    <meta name="title" content="<%= blog.seotitle !== null ?  blog.seotitle : blog.title %>" />
+    <meta name="description" content="<%= blog.description %>" />
     <link rel="canonical" href="<%=canonicalURL%>" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
@@ -22,7 +20,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
     <meta property="og:title" content="<%= blog.title %>" />
-    <meta property="og:description" content="<%= blog.title %>" />
+    <meta property="og:description" content="<%= blog.description %>" />
     <meta property="og:image" content="/<%=blog.thumbnail%>" />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
