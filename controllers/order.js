@@ -147,14 +147,26 @@ const createvnapi = async (req, res) => {
             orderItem.push(Course);
         }
 
+        const totalCourses = orderItem.length;
+
         const price = orderItem.reduce((acc, obj) => acc + obj.price, 0)
         const priceindia = orderItem.reduce((acc, obj) => acc + obj.priceindia || 9900, 0)
         const priceus = orderItem.reduce((acc, obj) => acc + obj.priceus || 300, 0)
 
+        let discount = 0;
+
+        if (totalCourses >= 10) {
+            discount = 0.15; // Chiết khấu 15% nếu mua từ 10 khoá trở lên
+        } else if (totalCourses >= 5) {
+            discount = 0.1; // Chiết khấu 10% nếu mua từ 5 khoá trở lên
+        } 
+
+        const discountedPrice = price - price * discount;
+
         let neworder = await db.order.create(
             {
                 email,
-                price,
+                price: discountedPrice,
                 priceck: 0,
                 priceindia,
                 priceus,
