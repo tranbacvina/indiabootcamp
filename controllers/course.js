@@ -133,16 +133,21 @@ const all = async (req, res) => {
 
 const timKiemPage = async (req, res) => {
     const { text, limit, } = req.query
-    const course = await findMany(text, limit, req.skip)
+    const page = req.query.page || 1
+    
+    const course = await findMany(text, page)
 
     const itemCount = course.count;
+    const url= `${req.baseUrl}${req.path}?page=`
     const pageCount = Math.ceil(course.count / req.query.limit);
+    const pages = ultrilSevice.pagination(page, pageCount, url); 
     res.render('course/timkiem', {
         course: course.rows,
         pageCount,
         itemCount,
-        currentPage: req.query.page, text,
-        pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+        currentPage: page,
+        text,
+        pages: pages,
     });
 
 
