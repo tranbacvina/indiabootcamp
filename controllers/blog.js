@@ -76,7 +76,7 @@ const postUpdate = async (req, res) => {
         categoryId,
         statusId, thumbnailSlug,
         courses,
-        scheduleDate
+        scheduleDate,seotitle
     } = req.body
     if (categoryId == 'null') {
         categoryId = null
@@ -93,6 +93,7 @@ const postUpdate = async (req, res) => {
             categoryId,
             scheduleDate: scheduleDate || null,
             isDeleted: statusId,
+            seotitle
         }
 
         if (req.file) {
@@ -154,7 +155,8 @@ const create = async (req, res) => {
         categoryId,
         statusId,
         courses,
-        scheduleDate
+        scheduleDate,
+        seotitle
     } = req.body
 
     try {
@@ -174,7 +176,7 @@ const create = async (req, res) => {
             content,
             thumbnail,
             categoryId,
-            isDeleted: statusId,
+            isDeleted: statusId,seotitle,
             scheduleDate: scheduleDate || null
         },
             {

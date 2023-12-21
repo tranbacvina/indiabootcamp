@@ -38,9 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Blog',
   });
-  SequelizeSlugify.slugifyModel(Blog, {
-    source: ['title']
-  });
+
 
   return Blog;
 };

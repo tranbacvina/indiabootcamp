@@ -186,12 +186,13 @@
                                     <div class="breadcrumbs__item ">
                                         <a href="/">Home</a>
                                     </div>
-
+                                    <%if (blog.Category) {%>
                                     <div class="breadcrumbs__item ">
                                         <a href="/category/<%= blog.Category.slug %>">
                                             <%= blog.Category.name %>
                                         </a>
                                     </div>
+                                    <%}%>
                                     <div class="breadcrumbs__item ">
                                         <a>
                                             <%= blog.title %>
@@ -210,9 +211,11 @@
                             <div class="row justify-center text-center">
                                 <div class="col-xl-8 col-lg-9 col-md-11">
                                     <div data-anim="slide-up delay-1" class="is-in-view">
-                                        <div class="text-14 text-purple-1 uppercase fw-500 mb-8">
-                                            <%= blog.Category.name %>
-                                        </div>
+                                        <%if (blog.Category) {%>
+                                            <div class="text-14 text-purple-1 uppercase fw-500 mb-8">
+                                                <%= blog.Category.name %>
+                                            </div>
+                                        <%}%>
 
                                         <h1 class="page-header__title lh-14">
                                             <%= blog.title %>

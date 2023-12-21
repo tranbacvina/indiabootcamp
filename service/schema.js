@@ -93,18 +93,39 @@ const breadcrumbBlogCate = (Cate) => {
 }
 
 const schemaBlog = (blog) => {
-  const raw = breadcrumbBlogCate(blog.Category)
-  const schema = raw.map(item => {
-    const newItemListElement = {
-      "@type": "ListItem",
-      "position": item.itemListElement.slice(-1)[0].position + 1,
-      "name": `${blog.title}`,
-      "item": `${DOMAIN}/${blog.slug}`
-    };
-    item.itemListElement.push(newItemListElement);
-    return item;
-  })
-  return schema
+ 
+  if(blog.Category == null) {
+    let schema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": `Blog`,
+        "item": `${DOMAIN}/blog`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": `${blog.title}`,
+        "item": `${DOMAIN}/${blog.slug}`
+      }]
+    }
+    return schema
+  }
+  let raw = breadcrumbBlogCate(blog.Category)
+    const schema = raw.map(item => {
+      const newItemListElement = {
+        "@type": "ListItem",
+        "position": item.itemListElement.slice(-1)[0].position + 1,
+        "name": `${blog.title}`,
+        "item": `${DOMAIN}/${blog.slug}`
+      };
+      item.itemListElement.push(newItemListElement);
+      return item;
+    })
+    return schema
+ 
 }
 
 const home = () => {
