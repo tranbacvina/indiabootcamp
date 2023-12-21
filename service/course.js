@@ -9,7 +9,9 @@ const sharedrive = require("../service/sharedrive");
 const oneCourseLink = async (link) => {
     const course = await db.course.findOne({
         where: {
-            url: link,
+            url: {
+                [Op.like]: `%${link}%`
+            }
         },
     });
     return course
@@ -90,7 +92,7 @@ const findMany = async (text, page) => {
         query['where'] = {
             [Op.or]: [
                 { name: { [Op.like]: `%${text}%` } },
-                { url: text }
+                { url: { [Op.like]: `%${text}%` } }
             ]
         }
     }

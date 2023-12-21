@@ -104,11 +104,11 @@ const topicSlugGetCourses = async (req, res) => {
         
         let course = results[1]
 
-        // if(course.count == 0) {
-        //     await topic.removeTopic(topicOne.id)
-        //     res.redirect('/404')
-        //     return
-        // }
+        if(course.count == 0) {
+            await topic.removeTopic(topicOne.id)
+            res.redirect('/404')
+            return
+        }
 
         course = JSON.parse(JSON.stringify(course, null, 2))
         course.rows = course.rows.map(item => {
