@@ -39,6 +39,9 @@
             automatic_uploads: true,
             file_picker_types: 'image',
             images_upload_url: '/admin/media/blogpostmedia',
+            link_rel_list: [
+                { title: 'nofollow', value: 'nofollow' },
+            ],
             file_picker_callback: (cb, value, meta) => {
                 const input = document.createElement('input');
                 input.setAttribute('type', 'file');

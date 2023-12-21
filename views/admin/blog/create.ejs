@@ -86,6 +86,9 @@
             autosave_interval: '5s',
             autosave_restore_when_empty: true,
             autosave_retention: '59m',
+            link_rel_list: [
+                { title: 'nofollow', value: 'nofollow' },
+            ],
             file_picker_callback: (cb, value, meta) => {
                 const input = document.createElement('input');
                 input.setAttribute('type', 'file');
