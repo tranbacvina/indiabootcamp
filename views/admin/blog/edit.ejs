@@ -35,7 +35,7 @@
         tinymce.init({
             selector: 'textarea#default',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: 'blocks fontfamily fontsize forecolor backcolor | link image media table mergetags | bold italic underline strikethrough | undo redo restoredraft insertdatetime | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            toolbar: 'blocks fontfamily fontsize forecolor backcolor blockquote link image media table mergetags bold italic underline strikethrough undo redo restoredraft insertdatetime align lineheight checklist numlist bullist indent outdent emoticons charmap removeformat',
             automatic_uploads: true,
             file_picker_types: 'image',
             images_upload_url: '/admin/media/blogpostmedia',
@@ -183,13 +183,14 @@
                                                 <div class="d-flex items-center py-20 px-30 border-bottom-light">
                                                     <h2 class="text-17 lh-1 fw-500">Meta data</h2>
                                                 </div>
-                                                <div class="col-12">
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Seo Title
-                                                        tag*</label>
-                                                    <textarea rows="3" name="seotitle" value=""
-                                                        id="seotitle"></textarea>
-                                                </div>
+                                                
                                                 <div class="py-30 px-30 row gy-4">
+                                                    <div class="col-12">
+                                                        <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Seo Title
+                                                            tag*</label>
+                                                        <textarea rows="3" name="seotitle" value=""
+                                                            id="seotitle"></textarea>
+                                                    </div>
                                                     <div class="col-12">
 
                                                         <label
