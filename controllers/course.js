@@ -86,7 +86,7 @@ const cawnNameCourseChuaGui = async (req, res) => {
         const orderItemChuaGui = await findManyCourse_ChuaGui(id)
         const names = orderItemChuaGui.map(item => item.course.name.replace(/[<>:"\/\\|?*#&.']+/g, ''))
         const cawn_data = await givenamereturndrive(names)
-        const result = orderItemChuaGui.map((item, index) => { return { orderData: item, cawnData: cawn_data[index] } })
+        const result = orderItemChuaGui.map((item, index) => { return { orderData: item, cawnData: {dbitem: cawn_data[index]}  } })
         res.send(result)
     } catch (error) {
         console.log(error)
