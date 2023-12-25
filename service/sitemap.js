@@ -69,7 +69,9 @@ const blogSitemap = async () => {
     sms
       .pipe(createWriteStream(resolve('./sitemaps/blog.xml')));
     
-  const courses = await db.Blog.findAll()
+  const courses = await db.Blog.findAll({where: {
+    isDeleted: false
+  }})
 
     const arrayOfSitemapItems = courses.map( item => {
       return { url: `/${item.slug}`, changefreq: 'daily' }
