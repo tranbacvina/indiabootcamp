@@ -7,13 +7,18 @@ const { Op } = require("sequelize");
 const sharedrive = require("../service/sharedrive");
 
 const oneCourseLink = async (link) => {
-    const course = await db.course.findOne({
+    let query = {
         where: {
             url: {
                 [Op.like]: `%${link}%`
             }
         },
-    });
+        attributes: ["id","name","image","price","priceus","priceindia","is_practice_test_course","url","slug","originprice"]
+    }
+    if(link.includes('udemy')) {
+        query.where.url= link
+    }
+    const course = await db.course.findOne(query);
     return course
 }
 const oneCourseID = async (id) => {
