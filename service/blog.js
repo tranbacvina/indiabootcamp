@@ -1,23 +1,56 @@
 const db = require("../models");
 
-const findMany = async (text, limit, skip) => {
+const findMany = async (text, page, isAdmin, slugCate) => {
+    // const query = {
+    //     limit: limit,
+    //     offset: skip,
+    //     order: [['id', 'DESC']],
+    //     include: { model: db.Category },
+    //     where:{isDeleted:false}
+    // }
+    // if (text) {
+    //     query['where'] = {
+    //         [Op.or]: [
+
+    //             { name: { [Op.like]: `%${text}%` } },
+    //             { url: text }
+    //         ]
+    //     }
+    // }
+
+    // return await db.Blog.findAndCountAll(query)
+    const limit = 36
+    const skip = (limit * page) - limit
     const query = {
         limit: limit,
         offset: skip,
-        order: [['id', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         include: { model: db.Category },
-        where:{isDeleted:false}
+        where: {
+            isDeleted: false
+        }
+       
     }
     if (text) {
         query['where'] = {
             [Op.or]: [
 
                 { name: { [Op.like]: `%${text}%` } },
-                { url: text }
             ]
         }
     }
+    if (isAdmin){
+        delete query.where
+    }
 
+    if(slugCate){
+        query.include = {
+            model: db.Category, 
+            where: {
+                slug:slugCate
+            }}
+    }
+ 
     return await db.Blog.findAndCountAll(query)
 }
 

@@ -3,6 +3,10 @@ const db = require("../models")
 const blogService = require("../service/blog")
 const paginate = require('express-paginate');
 const schema = require("../service/schema")
+const ultrilSevice = require('../service/ulltil')
+
+
+
 const allcategoriesShow = async (req, res) => {
     const catgories = await catgoriesServices.findAll()
     res.render('admin/categories/categories', { catgories })
@@ -77,35 +81,61 @@ const deleteTopic = async (req, res) => {
 }
 
 const findAllBlogBySlugcatgories = async (req, res) => {
-    const { text, limit, } = req.query
-    const { slug } = req.params
-    const categorie = await catgoriesServices.findOne(slug)
-    console.log(categorie)
-    const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
-    if (blogs.length === 0 | !categorie) {
+    // const { text, limit, } = req.query
+    // const { slug } = req.params
+    // const categorie = await catgoriesServices.findOne(slug)
+    // console.log(categorie)
+    // const blogs = await blogService.findManyByCategories(text, limit, req.skip, slug)
+    // if (blogs.length === 0 | !categorie) {
 
-        res.status(404).render('layout/404')
-        return
+    //     res.status(404).render('layout/404')
+    //     return
+    // } else {
+    //     const schemaBreadcum = schema.breadcrumbBlogCate(categorie)
+
+    //     const itemCount = blogs.count;
+    //     const pageCount = Math.ceil(blogs.count / req.query.limit);
+    //     // res.send({
+    //     //     blogs: blogs.rows,
+    //     //     pageCount,
+    //     //     itemCount,
+    //     //     currentPage: req.query.page,
+    //     //     pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+    //     // })
+    //     res.render('blog/category', {
+    //         blogs: blogs.rows,
+    //         categorie,
+    //         pageCount,
+    //         itemCount,
+    //         currentPage: req.query.page,
+    //         schemaBreadcum,
+    //         pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+    //     });
+
+    // }
+    const { slug } = req.params
+    const { text, } = req.query
+    const page = req.query.page || 1
+    const categorie = await catgoriesServices.findOne(slug)
+    const blogs = await blogService.findMany(text,page, false, slug)
+    if (blogs.length === 0) {
+
+        res.render('layout/404')
     } else {
         const schemaBreadcum = schema.breadcrumbBlogCate(categorie)
-
         const itemCount = blogs.count;
-        const pageCount = Math.ceil(blogs.count / req.query.limit);
-        // res.send({
-        //     blogs: blogs.rows,
-        //     pageCount,
-        //     itemCount,
-        //     currentPage: req.query.page,
-        //     pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
-        // })
+        const pageCount = Math.ceil(itemCount / 36);
+        let url= `${req.baseUrl}${req.path}`
+        url = ultrilSevice.xoaDauSlashCuoiCung(url) + "?page="
+        const pages = ultrilSevice.pagination(page, pageCount, url); 
         res.render('blog/category', {
             blogs: blogs.rows,
             categorie,
             pageCount,
             itemCount,
-            currentPage: req.query.page,
+            currentPage: page,
             schemaBreadcum,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+            pages: pages,
         });
 
     }

@@ -126,7 +126,9 @@
                                         <img class="w-1/1 rounded-8" src="<%=blog.thumbnail%>" alt=" <%=blog.title%>">
                                       </div>
                                       <div class="blogCard__content mt-20">
+                                        <%if (blog.Category) {%>
                                         <div class="blogCard__category"><%=blog.Category.name%></div>
+                                        <%}%>
                                         <h4 class="blogCard__title text-20 lh-15 fw-500 mt-5">
                                             <a href="/<%=blog.slug%>">
                                                 <%=blog.title%>

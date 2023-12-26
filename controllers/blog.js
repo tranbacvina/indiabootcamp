@@ -6,37 +6,29 @@ const db = require("../models");
 const schema = require('../service/schema')
 const mediaService = require("../service/media")
 const moment = require("moment-timezone");
+const ultrilSevice = require('../service/ulltil')
 
 const allBlogAdmin = async (req, res) => {
-    const { text, limit, } = req.query
-    const query = {
-        limit: limit,
-        offset: req.query.skip,
-        order: [['id', 'DESC']],
-        include: { model: db.Category },
-    }
-    if (text) {
-        query['where'] = {
-            [Op.or]: [
+    const { text, } = req.query
+    const page = req.query.page || 1
+    
+    const blogs = await serviceBlog.findMany(text,page,true)
 
-                { name: { [Op.like]: `%${text}%` } },
-                { url: text }
-            ]
-        }
-    }
-    const blogs = await db.Blog.findAndCountAll(query)
     if (blogs.length === 0) {
 
         res.render('layout/404')
     } else {
         const itemCount = blogs.count;
-        const pageCount = Math.ceil(blogs.count / req.query.limit);
+        const pageCount = Math.ceil(itemCount / 36);
+        let url= `${req.baseUrl}${req.path}`
+        url = ultrilSevice.xoaDauSlashCuoiCung(url) + "?page="
+        const pages = ultrilSevice.pagination(page, pageCount, url); 
         res.render('admin/blog', {
             blogs: blogs.rows,
             pageCount,
             itemCount,
-            currentPage: req.query.page,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+            currentPage: page,
+            pages: pages,
         });
 
     }
@@ -251,20 +243,43 @@ const oneBlogPublic = async (req, res) => {
 }
 
 const allBlogPublic = async (req, res) => {
-    const { text, limit, } = req.query
-    const blogs = await serviceBlog.findMany(text, limit, req.skip)
+    // const { text, limit, } = req.query
+    // const blogs = await serviceBlog.findMany(text, limit, req.skip)
+    // if (blogs.length === 0) {
+
+    //     res.render('layout/404')
+    // } else {
+    //     const itemCount = blogs.count;
+    //     const pageCount = Math.ceil(blogs.count / req.query.limit);
+    //     res.render('blog/all', {
+    //         blogs: blogs.rows,
+    //         pageCount,
+    //         itemCount,
+    //         currentPage: req.query.page,
+    //         pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+    //     });
+
+    // }
+    const { text, } = req.query
+    const page = req.query.page || 1
+    
+    const blogs = await serviceBlog.findMany(text,page, false)
+
     if (blogs.length === 0) {
 
         res.render('layout/404')
     } else {
         const itemCount = blogs.count;
-        const pageCount = Math.ceil(blogs.count / req.query.limit);
+        const pageCount = Math.ceil(itemCount / 36);
+        let url= `${req.baseUrl}${req.path}`
+        url = ultrilSevice.xoaDauSlashCuoiCung(url) + "?page="
+        const pages = ultrilSevice.pagination(page, pageCount, url); 
         res.render('blog/all', {
             blogs: blogs.rows,
             pageCount,
             itemCount,
-            currentPage: req.query.page,
-            pages: paginate.getArrayPages(req)(10, pageCount, req.query.page),
+            currentPage: page,
+            pages: pages,
         });
 
     }
