@@ -44,6 +44,7 @@
     "node-cron": "^3.0.1",
     "nodemon": "^2.0.22",
     "redis": "^4.2.0",
+    "rss": "^1.2.2",
     "sequelize": "^6.19.0",
     "sequelize-cursor-pagination": "^3.0.2",
     "sequelize-slugify": "^1.6.1",
