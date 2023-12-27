@@ -89,8 +89,11 @@ async function getAll(fetTopicData, parent_id) {
     return data;
   }
 
-
+  const Feed = require('feed').Feed;
   const ultil = require('./service/ulltil')
+  const { writeFile } = require('fs').promises;
+const { /* createReadStream, */ createWriteStream } = require('fs');
+const DOMAIN = process.env.DOMAIN
   const main = async () => {
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
@@ -123,13 +126,96 @@ async function getAll(fetTopicData, parent_id) {
   // const topic = scriptContents.itemListElement[scriptContents.itemListElement.length -1]
   // console.log({ text: topic.name, href: getlastpart(topic.item) })
 
-  const myURL = new URL('https://www.udemy.com/course/helm-masterclass-50-practical-demos-for-kubernetes-devops/');
-  console.log(myURL.pathname);
+  // const myURL = new URL('https://www.udemy.com/course/helm-masterclass-50-practical-demos-for-kubernetes-devops/');
+  // console.log(myURL.pathname);
     // for ( let i of courses) {
  
     // }
   // await ultil.hand_coursetoTopics(courses)
   // await db.course_topic.destroy({where: { course_id :3103}})
+  const blog = await db.Blog.findAll({
+    limit: 10,
+    order:[['id', 'DESC']]
+   })
+
+   const course = await db.course.findAll({
+    limit: 30,
+    order: [['id', 'DESC']],
+    where:{
+      TopicId: {
+        [Op.not]: null
+      }
+    }
+   })
+
+
+    const feed = new Feed({
+      title: "Full Bootcamp",
+      description: "Khoá Học Udemy - Unica - Gitiho 50k - Chia sẻ khoá học miễn phí Online",
+      id: DOMAIN,
+      link: DOMAIN,
+      language: "vi", // optional, used only in RSS 2.0, possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
+      image: "https://fullbootcamp.com/img/redketchup/favicon-32x32.png",
+      favicon: "https://fullbootcamp.com/img/redketchup/favicon-32x32.png",
+     
+      author: {
+        name: "Full Bootcamp",
+        email: "fullbootcamp@gmail.com",
+        link: DOMAIN
+      }
+    });
+
+    blog.forEach(post => {
+      feed.addItem({
+        title: post.title,
+        id: `${DOMAIN}/${post.slug}`,
+        link: `${DOMAIN}/${post.slug}`,
+        description: post.description,
+        content: post.content,
+        author: [
+          {
+            name: "Full Bootcamp",
+            email: "fullbootcamp@gmail.com",
+            link: DOMAIN
+          },
+         
+        ],
+     
+        date: post.createdAt,
+        image: `https://fullbootcamp.com${post.thumbnail}`
+      });
+    });
+
+    course.forEach(post => {
+      feed.addItem({
+        title: post.name,
+        id: `${DOMAIN}/${post.slug}`,
+        link: `${DOMAIN}/${post.slug}`,
+        description: post.description,
+        content: post.description_log,
+        author: [
+          {
+            name: "Full Bootcamp",
+            email: "fullbootcamp@gmail.com",
+            link: DOMAIN
+          },
+         
+        ],
+     
+        date: post.createdAt,
+        image: `https://fullbootcamp.com${post.thumbnail}`
+      });
+    });
+
+    const path = `./sitemaps/rss.xml`;
+    const rss2 = feed.rss2()
+  // Write the RSS XML content to the file
+  writeFile(path, rss2)
+    .then(() => {
+      console.log(`RSS feed generated and saved to ${path}`);
+    })
+    .catch((err) => {
+      console.error('Error writing RSS feed:', err);
+    });
 }
-  
   main();
