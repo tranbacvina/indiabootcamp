@@ -7,7 +7,7 @@ const cheerio = require("cheerio");
 const Sequelize = require('sequelize');
 const { gotScraping } = require('got-scraping');
 require('dotenv').config()
-
+const moment = require('moment-timezone')
 const hand_coursetoTopics = async (links) => {
         const promises = []
         for (let link of links) {
@@ -182,7 +182,7 @@ const DOMAIN = process.env.DOMAIN
          
         ],
      
-        date: post.createdAt,
+        date: moment().format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
         image: `https://fullbootcamp.com${post.thumbnail}`
       });
     });
@@ -203,8 +203,8 @@ const DOMAIN = process.env.DOMAIN
          
         ],
      
-        date: post.createdAt,
-        image: `https://fullbootcamp.com${post.thumbnail}`
+        date: moment().format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
+        image: `https://fullbootcamp.com${post.image}`
       });
     });
 
