@@ -6,6 +6,7 @@ const axios = require('axios')
 const cheerio = require("cheerio");
 const Sequelize = require('sequelize');
 const { gotScraping } = require('got-scraping');
+require('dotenv').config()
 
 const hand_coursetoTopics = async (links) => {
         const promises = []

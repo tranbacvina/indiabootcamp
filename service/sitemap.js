@@ -8,7 +8,7 @@ const {
 } = require('sitemap');
 const db = require('../models')
 const { Op } = require("sequelize");
-
+require('dotenv').config()
 const DOMAIN = process.env.DOMAIN
 
 
