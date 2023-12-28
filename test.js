@@ -96,7 +96,14 @@ async function getAll(fetTopicData, parent_id) {
   const ultil = require('./service/ulltil')
   const { writeFile } = require('fs').promises;
 const { /* createReadStream, */ createWriteStream } = require('fs');
-const DOMAIN = process.env.DOMAIN
+const { google } = require("googleapis");
+const util = require("util");
+require('dotenv').config();
+const CLIENT_ID = process.env.CLIENT_ID
+const CLIENT_SECRET = process.env.CLIENT_SECRET
+const REDIRECT_URI = process.env.REDIRECT_URI
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN
+
   const main = async () => {
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
@@ -136,70 +143,111 @@ const DOMAIN = process.env.DOMAIN
     // }
   // await ultil.hand_coursetoTopics(courses)
   // await db.course_topic.destroy({where: { course_id :3103}})
-  const blog = await db.Blog.findAll({
-    limit: 10,
-    order:[['id', 'DESC']]
-   })
+//   const blog = await db.Blog.findAll({
+//     limit: 10,
+//     order:[['id', 'DESC']]
+//    })
 
-   const course = await db.course.findAll({
-    limit: 30,
-    order: [['id', 'DESC']],
-    where:{
-      TopicId: {
-        [Op.not]: null
-      }
-    }
-   })
+//    const course = await db.course.findAll({
+//     limit: 30,
+//     order: [['id', 'DESC']],
+//     where:{
+//       TopicId: {
+//         [Op.not]: null
+//       }
+//     }
+//    })
 
-   var feed = new RSS({
-    title: 'Full Bootcamp',
-    description: 'Khoá Học Udemy - Unica - Gitiho 50k - Chia sẻ khoá học miễn phí Online',
-    feed_url: 'https://fullbootcamp.com/sitemaps/rss.xml',
-    site_url: 'https://fullbootcamp.com',
-    image_url: 'https://fullbootcamp.com/img/redketchup/favicon-32x32.png',
-    docs: 'https://fullbootcamp.com/',
-    managingEditor: 'Full Bootcamp',
-    webMaster: 'Full Bootcamp',
-    copyright: '2024 Full Bootcamp',
-    language: 'vi',
-    categories: ['Category 1','Category 2','Category 3'],
-    pubDate: 'May 20, 2012 04:00:00 GMT',
-    ttl: '60',
+//    var feed = new RSS({
+//     title: 'Full Bootcamp',
+//     description: 'Khoá Học Udemy - Unica - Gitiho 50k - Chia sẻ khoá học miễn phí Online',
+//     feed_url: 'https://fullbootcamp.com/sitemaps/rss.xml',
+//     site_url: 'https://fullbootcamp.com',
+//     image_url: 'https://fullbootcamp.com/img/redketchup/favicon-32x32.png',
+//     docs: 'https://fullbootcamp.com/',
+//     managingEditor: 'Full Bootcamp',
+//     webMaster: 'Full Bootcamp',
+//     copyright: '2024 Full Bootcamp',
+//     language: 'vi',
+//     categories: ['Category 1','Category 2','Category 3'],
+//     pubDate: 'May 20, 2012 04:00:00 GMT',
+//     ttl: '60',
 
-});
+// });
 
 
-    blog.forEach(post => {
-      feed.item({
-        title: post.title,
-        id: `${DOMAIN}/${post.slug}`,
-        url:`${DOMAIN}/${post.slug}`,
-        description: post.description,
-        content: post.content,
-        date: moment().format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
-      });
-    });
+//     blog.forEach(post => {
+//       feed.item({
+//         title: post.title,
+//         id: `${DOMAIN}/${post.slug}`,
+//         url:`${DOMAIN}/${post.slug}`,
+//         description: post.description,
+//         content: post.content,
+//         date: moment().format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
+//       });
+//     });
 
-    course.forEach(post => {
-      feed.item({
-        title: post.name,
-        id: `${DOMAIN}/${post.slug}`,
-        url:`${DOMAIN}/${post.slug}`,
-        description: post.description,
-        content: post.content,
-        date: moment().format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
-      });
-    });
+//     course.forEach(post => {
+//       feed.item({
+//         title: post.name,
+//         id: `${DOMAIN}/${post.slug}`,
+//         url:`${DOMAIN}/${post.slug}`,
+//         description: post.description,
+//         content: post.content,
+//         date: moment().format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
+//       });
+//     });
 
-    const path = `./sitemaps/rss.xml`;
-    const rss2 = feed.xml()
-  // Write the RSS XML content to the file
-  writeFile(path, rss2)
-    .then(() => {
-      console.log(`RSS feed generated and saved to ${path}`);
-    })
-    .catch((err) => {
-      console.error('Error writing RSS feed:', err);
-    });
+//     const path = `./sitemaps/rss.xml`;
+//     const rss2 = feed.xml()
+//   // Write the RSS XML content to the file
+//   writeFile(path, rss2)
+//     .then(() => {
+//       console.log(`RSS feed generated and saved to ${path}`);
+//     })
+//     .catch((err) => {
+//       console.error('Error writing RSS feed:', err);
+//     });
+
+  const oauth2Client = new google.auth.OAuth2(
+    CLIENT_ID,
+    CLIENT_SECRET,
+    REDIRECT_URI
+  );
+
+  // generate a url that asks permissions for Blogger and Google Calendar scopes
+  // const scopes = [
+  //   'https://www.googleapis.com/auth/blogger',
+  //   'https://www.googleapis.com/auth/calendar'
+  // ];
+
+  // const url = oauth2Client.generateAuthUrl({
+  //   // 'online' (default) or 'offline' (gets refresh_token)
+  //   access_type: 'offline',
+
+  //   // If you only need one scope you can pass it as a string
+  //   scope: scopes
+  // });
+  // console.log(url)
+  // const {tokens} = await oauth2Client.getToken('4/0AfJohXlp3j_bfoQAh9y2Bk3UuFqteekp3Z-8Qd6G0aHLdXSHaZ_fm0yci-n1lQOCItn11g')
+  // console.log(tokens)
+  oauth2Client.setCredentials({
+    refresh_token: '1//0eWq4BUhRf3ODCgYIARAAGA4SNwF-L9IrzydzozWXVsjSmGGT7adMn5aux6P6jMPNA_-nMyvVDLGBfHXS1tY4WbZF3Wk6etxf1os'
+  });
+  const blogger = google.blogger({
+    version: 'v3',
+    auth: oauth2Client
+  });
+  const params = {
+    blogId: '5255657091143814201'
+  };
+  const res = await blogger.posts.insert({blogId: params.blogId,requestBody: {
+    title: 'Hello from the googleapis npm module!',
+    content:
+      'Visit https://github.com/google/google-api-nodejs-client to learn more!',
+  },});
+  console.log(res.data)
 }
+
+
   main();
