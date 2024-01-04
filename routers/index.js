@@ -13,7 +13,7 @@ const IP = require('ip');
 // Routers.use("*", middleware.checkUser)
 const blog = require('./blog')
 const schema = require("../service/schema")
-
+const db = require("../models")
 const courseController = require("../controllers/course")
 const sitemapController = require("../controllers/sitemap")
 
@@ -33,9 +33,10 @@ Routers.use((req, res, next) => {
   next();
 });
 
-Routers.get("/", (req, res) => {
+Routers.get("/", async (req, res) => {
   const schemaHome = schema.home()
-  res.render("landing_Page/landing",{schemaHome});
+  const blogs = await db.Blog.findAll({limit: 4, order: [["id","DESC"]], attributes: ['id', 'title', 'description', 'thumbnail', 'slug']})
+  res.render("landing_Page/landing",{schemaHome, blogs});
 });
 
 Routers.use("/course", course)

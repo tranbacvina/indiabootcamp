@@ -209,11 +209,11 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN
 //       console.error('Error writing RSS feed:', err);
 //     });
 
-  const oauth2Client = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    REDIRECT_URI
-  );
+  // const oauth2Client = new google.auth.OAuth2(
+  //   CLIENT_ID,
+  //   CLIENT_SECRET,
+  //   REDIRECT_URI
+  // );
 
   // generate a url that asks permissions for Blogger and Google Calendar scopes
   // const scopes = [
@@ -231,22 +231,28 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN
   // console.log(url)
   // const {tokens} = await oauth2Client.getToken('4/0AfJohXlp3j_bfoQAh9y2Bk3UuFqteekp3Z-8Qd6G0aHLdXSHaZ_fm0yci-n1lQOCItn11g')
   // console.log(tokens)
-  oauth2Client.setCredentials({
-    refresh_token: '1//0eWq4BUhRf3ODCgYIARAAGA4SNwF-L9IrzydzozWXVsjSmGGT7adMn5aux6P6jMPNA_-nMyvVDLGBfHXS1tY4WbZF3Wk6etxf1os'
-  });
-  const blogger = google.blogger({
-    version: 'v3',
-    auth: oauth2Client
-  });
-  const params = {
-    blogId: '5255657091143814201'
-  };
-  const res = await blogger.posts.insert({blogId: params.blogId,requestBody: {
-    title: 'Hello from the googleapis npm module!',
-    content:
-      'Visit https://github.com/google/google-api-nodejs-client to learn more!',
-  },});
-  console.log(res.data)
+  // oauth2Client.setCredentials({
+  //   refresh_token: '1//0eWq4BUhRf3ODCgYIARAAGA4SNwF-L9IrzydzozWXVsjSmGGT7adMn5aux6P6jMPNA_-nMyvVDLGBfHXS1tY4WbZF3Wk6etxf1os'
+  // });
+  // const blogger = google.blogger({
+  //   version: 'v3',
+  //   auth: oauth2Client
+  // });
+  // const params = {
+  //   blogId: '5255657091143814201'
+  // };
+  // const res = await blogger.posts.insert({blogId: params.blogId,requestBody: {
+  //   title: 'Hello from the googleapis npm module!',
+  //   content:
+  //     'Visit https://github.com/google/google-api-nodejs-client to learn more!',
+  // },});
+  // console.log(res.data)
+
+    const parse = new URL('https://543543.udemy.com/course/hoidanit-react-basic-ultimate/');
+      var url = parse.origin + parse.pathname;
+      url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
+      url = url.replace(/\/$/, '');
+      console.log(url)
 }
 
 
