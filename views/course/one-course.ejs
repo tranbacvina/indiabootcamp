@@ -23,6 +23,12 @@
     <meta property="og:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
     <meta property="og:image" content="<%=course.image%>" />
     <meta property="og:locale" content="vi_VN" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@fullbootcamp" />
+    <meta name="twitter:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %>" />
+    <meta name="twitter:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta name="twitter:image" content="<%=course.image%>" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

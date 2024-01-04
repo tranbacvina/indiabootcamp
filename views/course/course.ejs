@@ -31,7 +31,9 @@
         content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
     <meta property="og:image"
         content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
-    <meta property="og:locale" content="vi_VN" />
+    
+    
+        <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
