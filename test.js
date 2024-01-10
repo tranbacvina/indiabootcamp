@@ -248,11 +248,19 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN
   // },});
   // console.log(res.data)
 
-    const parse = new URL('https://543543.udemy.com/course/hoidanit-react-basic-ultimate/');
-      var url = parse.origin + parse.pathname;
-      url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
-      url = url.replace(/\/$/, '');
-      console.log(url)
+    // const parse = new URL('https://543543.udemy.com/course/hoidanit-react-basic-ultimate/');
+    //   var url = parse.origin + parse.pathname;
+    //   url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
+    //   url = url.replace(/\/$/, '');
+    //   console.log(url)
+    const courseUnica = db.course.findAll({
+      where: {
+        url: {
+          [Op.like]: '%unica%'
+        }
+        
+      }
+    })
 }
 
 
