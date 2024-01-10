@@ -15,11 +15,24 @@ const oneCourseLink = async (link) => {
         },
         attributes: ["id","name","image","price","priceus","priceindia","is_practice_test_course","url","slug","originprice"]
     }
-    if(link.includes('udemy')) {
-        query.where.url= link
-    }
-    const course = await db.course.findOne(query);
-    return course
+    // if(link.includes('udemy')) {
+    //     query.where.url= link
+    // }
+    let course = await db.course.findAll(query);
+    course =JSON.parse(JSON.stringify(course, null, 2))
+   // Lọc các mục trong mảng courseData có URL chính xác là "https://www.udemy.com/course/cau-truc-du-lieu-va-giai-thuat-thuc-chien-voi-leetcode"
+    const filteredCourses = course.filter(course => {
+        const urlsArray = course.url.split(', ');
+        return urlsArray.includes(link);
+    });
+    console.log(filteredCourses)
+   if(filteredCourses.length > 0){
+    return filteredCourses[0]
+   } else {
+    return undefined
+
+   }
+
 }
 const oneCourseID = async (id) => {
     return await db.course.findOne({

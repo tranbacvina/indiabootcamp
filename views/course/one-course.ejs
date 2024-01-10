@@ -6,11 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %></title>
+    <title>Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %></title>
     <link rel="canonical" href="<%=canonicalURL%>" />
         
-    <meta name="title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %>" />
-    <meta name="description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta name="title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %>" />
+    <meta name="description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Chỉ ' + (course.price / 1000) + 'k' %> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -19,15 +19,15 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %>" />
-    <meta property="og:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta property="og:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %>" />
+    <meta property="og:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Chỉ ' + (course.price / 1000) + 'k' %> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
     <meta property="og:image" content="<%=course.image%>" />
     <meta property="og:locale" content="vi_VN" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@fullbootcamp" />
-    <meta name="twitter:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí':'Chỉ 50k '%>- <%= locals.formattedDate %>" />
-    <meta name="twitter:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Giá Chỉ 50k '%> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta name="twitter:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %>" />
+    <meta name="twitter:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Chỉ ' + (course.price / 1000) + 'k' %> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
     <meta name="twitter:image" content="<%=course.image%>" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

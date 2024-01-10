@@ -31,13 +31,7 @@ const base_url = async (link) => {
       url = url.replace(/\/$/, '');
       return url;
     } 
-    if (link.includes("udemy.com")){
-      const parse = new URL(link);
-      var url = parse.origin + parse.pathname;
-      url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
-      url = url.replace(/\/$/, '');
-      return url;
-    }
+
     
       const parse = new URL(link);
       var url = parse.origin + parse.pathname;
