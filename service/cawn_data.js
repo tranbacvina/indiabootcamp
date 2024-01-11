@@ -30,19 +30,19 @@ const base_url = async (link) => {
       url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
       url = url.replace(/\/$/, '');
       return url;
-    } 
+    }
 
-    if (link.includes("udemy.com")){
+    if (link.includes("udemy.com")) {
       const parse = new URL(link);
       var url = parse.origin + parse.pathname;
       url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
       url = url.replace(/\/$/, '');
       return url;
     }
-      const parse = new URL(link);
-      var url = parse.origin + parse.pathname;
-      return url;
-    
+    const parse = new URL(link);
+    var url = parse.origin + parse.pathname;
+    return url;
+
 
 
   } catch (error) {
@@ -67,11 +67,7 @@ const scrapingUdemy = async (link) => {
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course`, {
-    headers: {
-      'Authorization': 'Bearer KXQLyTEfXW9uBWSHjf81rfzBELwOFowQ+hzKys9btDQ:uqTwJUji3daRFP/SmTQkUiyg5wP/OYJh/XG2dkIsOIw',
-    }
-  }
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course?persist_locale=&locale=vi_VN`, 
   )
   const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
   return { udemydata: udemydata.data, sections: sections.data }
@@ -82,16 +78,25 @@ const udemy = async (uri) => {
   const urlfixshare_udemy = await base_url(uri)
   const patch = urlfixshare_udemy.split('/')[4];
   try {
-    const course = await oneCourseLink(urlfixshare_udemy)
+    let course = await oneCourseLink(urlfixshare_udemy)
+    const { udemydata, sections } = await cawnUdemy(patch)
+    const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
 
     if (course) {
       if (course.is_practice_test_course) {
         return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
       }
+      const updateCourse = await db.course.update({
+        name: udemydata.title,
+        sections: sections.curriculum_context.data,
+        price: 50000,
+        originprice:udemydata.price_detail.amount
+
+      }, {where : {id: course.id}})
+      course = await oneCourseLink(urlfixshare_udemy)
       return { success: true, data: course }
+
     } else {
-      const { udemydata, sections } = await cawnUdemy(patch)
-      const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
 
       if (udemydata.is_practice_test_course) {
         return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này" }
@@ -137,17 +142,17 @@ const cawnUnica = async (link) => {
     const originprice = parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
 
     const breadcrumb = $(".breadcumb-detail-course").children('a')
-        let parentTopic
-        let topic
-        if (breadcrumb.length == 3) {
-            parentTopic = {name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href')}
-            topic = {name: $(breadcrumb[2]).text(), href: $(breadcrumb[2]).attr('href')}
-        }
+    let parentTopic
+    let topic
+    if (breadcrumb.length == 3) {
+      parentTopic = { name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href') }
+      topic = { name: $(breadcrumb[2]).text(), href: $(breadcrumb[2]).attr('href') }
+    }
 
-        if (breadcrumb.length == 2) {
-            parentTopic = null
-            topic = {name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href')}
-        }
+    if (breadcrumb.length == 2) {
+      parentTopic = null
+      topic = { name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href') }
+    }
 
     return {
       name,
@@ -194,7 +199,7 @@ const unica = async (uri) => {
 
       const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice)
 
-     
+
       return { success: true, data: newCourse }
     }
 
@@ -229,7 +234,7 @@ const cawnGitio = async (link) => {
     })
 
     const originprice = parseInt($('.sale-price-display-js:first').text().replace(/[,.đ]/g, ''))
-    
+
 
     return {
       name,
@@ -270,7 +275,7 @@ const gitiho = async (uri) => {
         whatyouwilllearn,
         requirements, sections,
         originprice, } = await cawnGitio(urlfixshare_udemy)
-      
+
       const newCourse = await createNewCourse(name, urlfixshare_udemy, description, image, price, is_practice_test_course, description_log, whatyouwilllearn, requirements, sections, originprice)
       if (newCourse.is_practice_test_course) {
         return { success: false, data: newCourse, messenger: "Không hỗ trợ khoá học này" }

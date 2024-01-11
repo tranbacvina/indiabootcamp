@@ -85,6 +85,8 @@
 
 .tingle-modal-box__content {
   padding: 3rem 3rem;
+  max-height: 450px;
+  overflow-y: scroll;
 }
 
 .tingle-modal-box__footer {
