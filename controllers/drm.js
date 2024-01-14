@@ -1,10 +1,10 @@
 const { gotScraping } = require('got-scraping');
 
-const handlerDRM = async (req,res) => {
-    const {url, referer, media_license_token} = req.body
-    const datas = req.files.datas[0].buffer;
-    try {
-    const response = await gotScraping.post('https://www.udemy.com/media-license-server/validate-auth-token',{
+const handlerDRM = async (req, res) => {
+  const { url, referer, media_license_token } = req.body
+  const datas = req.files.datas[0].buffer;
+  try {
+    const response = await gotScraping.post('https://www.udemy.com/media-license-server/validate-auth-token', {
       searchParams: {
         'drm_type': 'widevine',
         'auth_token': media_license_token
@@ -25,17 +25,18 @@ const handlerDRM = async (req,res) => {
         'sec-fetch-site': 'same-origin',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
       },
-      body: datas, 
-  
-    } 
-      )
-      console.log(response.body) 
-      res.send(response.body)
-    } catch (error) {
-      console.log(error)
-      res.send(error)
-
+      body: datas,
+      responseType: 'buffer'
     }
-  }
+    )
+    console.log(response.body)
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.send(response.body); // Send the binary data as the 
+  } catch (error) {
+    console.log(error)
+    res.send(error)
 
-  module.exports ={handlerDRM}
+  }
+}
+
+module.exports = { handlerDRM }
