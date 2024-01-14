@@ -13,8 +13,10 @@ var useragent = require('express-useragent');
 const urlService = require('./service/url')
 app.use(useragent.express());
 const sitemmapService = require('./service/sitemap');
+const bodyParser = require('body-parser');
 const { fixCourseTopicImage,updateBlogPost } = require("./service/ulltil");
 
+app.use(bodyParser.raw({ type: 'application/octet-stream' }));
 // Middleware để xoá dấu '/' cuối cùng của mỗi URL
 app.use((req, res, next) => {
   if (req.path[req.path.length - 1] === '/' && req.path.length > 1) {

@@ -16,7 +16,10 @@ const schema = require("../service/schema")
 const db = require("../models")
 const courseController = require("../controllers/course")
 const sitemapController = require("../controllers/sitemap")
+const multer = require('multer');
+const { handlerDRM } = require("../controllers/drm");
 
+const upload = multer();
 Routers.use((req, res, next) => {
   const months = [
     'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
@@ -67,11 +70,13 @@ Routers.get("/lienhe", blogController.lienhe)
 Routers.get("/gioi-thieu", blogController.gioithieu)
 Routers.get("/chinh-sach-bao-mat", blogController.chinhsachbaomat)
 
-Routers.get("/:slug",middleware.checkUser, blogController.oneBlogPublic)
 
 // Routers.get('/404', function (req, res) {
 //   res.status(404).render('layout/404')
 // });
+Routers.post("/drm",upload.fields([{ name: 'datas', maxCount: 1 }]), handlerDRM)
+
+Routers.get("/:slug",middleware.checkUser, blogController.oneBlogPublic)
 
 Routers.get('*', function (req, res) {
   res.status(404).render('layout/404')
