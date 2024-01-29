@@ -33,20 +33,20 @@ const check = async (req, res) => {
         }
 
         switch (expression[0]) {
-            // case "unica.vn/book":
-            //     promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ Book Unica" })
-            //     break;
+            case "unica.vn/book":
+                promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ Book Unica" })
+                break;
 
-            // case "unica.vn":
-            //     promises.push(cawn_data.unica(link))
-            //     break;
+            case "unica.vn":
+                promises.push(cawn_data.unica(link))
+                break;
             
             case "udemy.com":
                 promises.push(cawn_data.udemy(link))
                 break;
-            // case "gitiho.com/khoa-hoc":
-            //     promises.push(cawn_data.gitiho(link))
-            //     break;
+            case "gitiho.com/khoa-hoc":
+                promises.push(cawn_data.gitiho(link))
+                break;
             default:
                 promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
 
