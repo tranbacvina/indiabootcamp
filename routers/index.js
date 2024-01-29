@@ -38,8 +38,8 @@ Routers.use((req, res, next) => {
 
 Routers.get("/", async (req, res) => {
   const schemaHome = schema.home()
-  const blogs = await db.Blog.findAll({limit: 4, order: [["id","DESC"]], attributes: ['id', 'title', 'description', 'thumbnail', 'slug']})
-  res.render("landing_Page/landing",{schemaHome, blogs});
+  // const blogs = await db.Blog.findAll({limit: 4, order: [["id","DESC"]], attributes: ['id', 'title', 'description', 'thumbnail', 'slug']})
+  res.render("landing_Page/landing",{schemaHome});
 });
 
 Routers.use("/course", course)

@@ -968,52 +968,6 @@
                     </div>
                 </section>
 
-                <section class="layout-pt-lg layout-pb-lg">
-                    <div data-anim-wrap="" class="container animated">
-                        <div data-anim-child="slide-left delay-1"
-                            class="row y-gap-20 justify-between items-center is-in-view">
-                            <div class="col-lg-6">
-
-                                <div class="sectionTitle ">
-
-                                    <h2 class="sectionTitle__title ">Blog</h2>
-
-                                    <p class="sectionTitle__text ">Chia sẻ kiến thức thủ thuật</p>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-auto">
-
-                                <a href="/blog" class="button -icon -purple-3 text-purple-1">
-                                    Xem tất cả bài viết
-                                    <i class="icon-arrow-top-right text-13 ml-10"></i>
-                                </a>
-
-                            </div>
-                        </div>
-
-                        <div class="row y-gap-30 pt-60">
-                            <% for(let i of blogs) { %>
-                                <div class="col-lg-3 col-md-6">
-                                    <a href="/<%=i.slug%>">
-                                        <div data-anim-child="slide-left delay-2" class="blogCard -type-1 is-in-view">
-                                            <div class="blogCard__image">
-                                                <img src="<%=i.thumbnail%>" alt="image">
-                                            </div>
-                                            <div class="blogCard__content mt-20">
-                                                <h4 class="blogCard__title text-17 lh-15 mt-5">
-                                                    <%=i.title%>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <%}%>
-                        </div>
-                    </div>
-                </section>
 
                 <section class="layout-pt-lg layout-pb-lg mb-90 section-bg">
                     <div class="section-bg__item">
