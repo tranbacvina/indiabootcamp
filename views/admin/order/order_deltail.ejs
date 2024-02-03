@@ -273,14 +273,14 @@
                                                                                 <%= item.id %>
                                                                             </td>
                                                                             <td role="cell">
-                                                                                <a href="/admin/course/<%= item.course.id %>""
+                                                                                <a href="/admin/course/<%= item.course?.id %>""
                                                                                                                             rel="
                                                                                     noopener noreferrer">
-                                                                                    <%= item.course.name %>
+                                                                                    <%= item.course?.name %>
                                                                                 </a>
                                                                             </td>
                                                                             <td role="cell" class="urlcourse">
-                                                                                <%= item.course.url%>
+                                                                                <%= item.course?.url%>
                                                                             </td>
                                                                             <td role="cell">
                                                                                 <%if ( item.isOneDrive) {%>
@@ -330,7 +330,7 @@
 
                                                                             </td>
                                                                             <td role="cell">
-                                                                                <%= item.course.price.toLocaleString('it-IT',
+                                                                                <%= item.course?.price.toLocaleString('it-IT',
                                                                                     {style : 'currency' , currency
                                                                                     : 'VND' }); %>
                                                                             </td>
