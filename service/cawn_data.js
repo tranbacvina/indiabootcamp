@@ -81,7 +81,7 @@ const udemy = async (uri) => {
     let course = await oneCourseLink(urlfixshare_udemy)
     const { udemydata, sections } = await cawnUdemy(patch)
     const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
-
+    console.log('is_practice_test_course',udemydata.is_practice_test_course)
     if (course) {
       if (course.is_practice_test_course) {
         return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
