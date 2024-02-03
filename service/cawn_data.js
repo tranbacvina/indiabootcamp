@@ -67,9 +67,11 @@ const scrapingUdemy = async (link) => {
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,is_practice_test_course?persist_locale=&locale=vi_VN`, 
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=is_practice_test_course,price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,?persist_locale=&locale=vi_VN`, 
   )
   const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
+
+  console.log('is_practice_test_course >>>>>>',udemydata.data)
   return { udemydata: udemydata.data, sections: sections.data }
 }
 
@@ -81,25 +83,28 @@ const udemy = async (uri) => {
     let course = await oneCourseLink(urlfixshare_udemy)
     const { udemydata, sections } = await cawnUdemy(patch)
     const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
-    console.log('is_practice_test_course',udemydata.is_practice_test_course)
+    
     if (course) {
+
       if (course.is_practice_test_course) {
-        return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
+        return { success: false, data: course, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
       }
+
       const updateCourse = await db.course.update({
         name: udemydata.title,
         sections: sections.curriculum_context.data,
         price: 50000,
-        originprice:udemydata.price_detail.amount
-
+        originprice:udemydata.price_detail.amount,
+        is_practice_test_course: udemydata.is_practice_test_course
       }, {where : {id: course.id}})
+
       course = await oneCourseLink(urlfixshare_udemy)
       return { success: true, data: course }
 
     } else {
 
       if (udemydata.is_practice_test_course) {
-        return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này" }
+        return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
       }
 
       const newCourse = await createNewCourse(udemydata.title, urlfixshare_udemy, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements, sections.curriculum_context.data, udemydata.price_detail.amount)
