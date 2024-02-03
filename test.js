@@ -253,14 +253,7 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN
     //   url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
     //   url = url.replace(/\/$/, '');
     //   console.log(url)
-    const courseUnica = db.course.findAll({
-      where: {
-        url: {
-          [Op.like]: '%unica%'
-        }
-        
-      }
-    })
+    console.log(moment().subtract(2, 'd').format("DD/MM/YYYY"))
 }
 
 

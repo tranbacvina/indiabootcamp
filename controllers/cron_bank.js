@@ -3,6 +3,7 @@ const moment = require("moment-timezone");
 const momo = require("../service/momo");
 const botTelegram = require("../service/telegram_noti");
 const vietcombank = require("../service/vietcombank")
+const mbbank = require("./mbbank")
 const sharedrive = require("../service/sharedrive")
 
 const check_regex_bank = (str) => {
@@ -126,16 +127,31 @@ const cronVietcombank = async () => {
         }
     }
 };
+const cronMB = async () => {
+    console.log('check bank mb')
+    const fromdate = moment().subtract(2, 'd').format("DD/MM/YYYY");
+    const todate = moment().format("DD/MM/YYYY");
+    const lsgdMB = await mbbank.getTransactions(
+        fromdate,
+        todate,
+    );
+    if (lsgdMB !== null) {
+        for (let i of lsgdMB) {
+            const { creditAmount, description } = i;
+            /// Check nội dung chuyển khoản, nếu match với đơn hàng cú pháp thì hoàn thành đơn, gửi email + gửi tin nhắn về telegram
+            await handle_transactions(converToNumber(creditAmount), description);
+        }
+    }
 
+};
 
 const cron = async () => {
-    // try {
-    //     // await cronMB()
-    //     // await cronMOMO();
-    //     await cronMOMOv2();
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    try {
+        await cronMB()
+        
+    } catch (error) {
+        console.log(error);
+    }
     try {
         await cronVietcombank();
     } catch (error) {

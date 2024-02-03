@@ -127,12 +127,12 @@
                                                                             <a href="/admin/order/<%= course.order.id %>"
                                                                                 class="text-purple-1"
                                                                                 rel=" noopener noreferrer">
-                                                                                <%= course.course.name %>
+                                                                                <%= course.course.name ? course.course.name : '' %>
                                                                             </a>
                                                                         </td>
                                                                         <td class="align-middle">
                                                                             <a href="<%= course.course.url %>">
-                                                                                <%= course.course.url %>
+                                                                                <%= course.course.url ? course.course.url : ''%>
                                                                             </a>
                                                                         </td>
                                                                         <td class="align-middle">
