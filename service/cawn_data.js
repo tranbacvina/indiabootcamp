@@ -131,7 +131,7 @@ const cawnUnica = async (link) => {
     const name = $('h1').children().text()
     const description = $("div[itemprop='description']").text().trim().replace(/^\s+|\s+$/g, '');
     const image = `https://unica.vn/${$("meta[property='og:image']").attr("content")}`;
-    const price = 50000
+    const price = 99000
     const description_log = $('#u-des-course').html()
     const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
     const sections = []
