@@ -105,6 +105,12 @@ const REDIRECT_URI = process.env.REDIRECT_URI
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN
 
   const main = async () => {
+    const course = await db.course.findOne({
+      where:{
+        id:6282
+      }
+    })
+    console.log(course)
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
   //     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));
@@ -253,7 +259,7 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN
     //   url = url.replace(/\/\/[^.]*\.udemy\.com/, '//www.udemy.com');
     //   url = url.replace(/\/$/, '');
     //   console.log(url)
-    console.log(moment().subtract(2, 'd').format("DD/MM/YYYY"))
+    // console.log(moment().subtract(2, 'd').format("DD/MM/YYYY"))
 }
 
 
