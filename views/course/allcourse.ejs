@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        Tất cả khoá học Full Bootcamp
+        All courses Full Udemy
     </title>
     <link rel="canonical" href="<%=canonicalURL%>" />
 
-    <meta name="title" content="Tất cả khoá học Full Bootcamp" />
-    <meta name="description" content="Danh sách khoá học của Full Bootcamp" />
+    <meta name="title" content="All courses Full Udemy" />
+    <meta name="description" content="List of courses on Full Udemy" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -21,8 +21,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="Tất cả khoá học Full Bootcamp" />
-    <meta property="og:description" content="Danh sách khoá học của Full Bootcamp" />
+    <meta property="og:title" content="All courses Full Udemy" />
+    <meta property="og:description" content="List of courses on Full Udemy" />
     <meta property="og:image" content="https://fullbootcamp.com/1662989050474fb-ogimg.png" />
     <meta property="og:locale" content="vi_VN" />
     <!-- Google fonts -->
@@ -75,7 +75,7 @@
                                 <div data-anim="slide-up delay-1" class="is-in-view">
 
                                     <h1 class="page-header__title">
-                                        Tất cả khoá học
+                                        All courses
                                     </h1>
 
                                 </div>
@@ -83,7 +83,7 @@
                                 <div data-anim="slide-up delay-2" class="is-in-view">
 
                                     <p class="page-header__text">
-                                        Các khoá học của fullbootcamp
+                                        List of courses on Full Udemy
                                     </p>
 
                                 </div>
@@ -123,15 +123,15 @@
 
                                             <div class="coursesCard-footer__price">
                                                 <div>
-                                                    <%= item.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                                        currency : 'VND' }); %>
+                                                    <%= item.originprice?.toLocaleString('en-US', {style : 'currency' ,
+                                                        currency : 'USD' }); %>
                                                 </div>
                                                 <div>
-                                                    <%if (item.price==0) {%>
-                                                        Miễn Phí
+                                                    <%if (item.priceus==0) {%>
+                                                        Free
                                                         <%} else {%>
-                                                            <%= item.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                                currency : 'VND' }); %>
+                                                            <%= (item.priceus / 100 ).toLocaleString('en-US', {style : 'currency' ,
+                                                                currency : 'USD' }); %>
                                                                 <%}%>
                                                 </div>
                                             </div>

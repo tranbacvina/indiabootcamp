@@ -28,27 +28,27 @@ const check = async (req, res) => {
         const regex = /(udemy.com|unica.vn\/book|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
         const expression = link.match(regex);
         if (expression == null) {
-            promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+            promises.push({ success: false, data: '', messenger: "Error, not supported for this course." })
             continue
         }
 
         switch (expression[0]) {
-            case "unica.vn/book":
-                promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ Book Unica" })
-                break;
+            // case "unica.vn/book":
+            //     promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ Book Unica" })
+            //     break;
 
-            case "unica.vn":
-                promises.push(cawn_data.unica(link))
-                break;
+            // case "unica.vn":
+            //     promises.push(cawn_data.unica(link))
+            //     break;
             
             case "udemy.com":
                 promises.push(cawn_data.udemy(link))
                 break;
-            case "gitiho.com/khoa-hoc":
-                promises.push(cawn_data.gitiho(link))
-                break;
+            // case "gitiho.com/khoa-hoc":
+            //     promises.push(cawn_data.gitiho(link))
+            //     break;
             default:
-                promises.push({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })
+                promises.push({ success: false, data: '', messenger: "Error, not supported for this course." })
 
         }
     }
@@ -84,7 +84,7 @@ const cawnNameCourseChuaGui = async (req, res) => {
     try {
         const { id } = req.query
         const orderItemChuaGui = await findManyCourse_ChuaGui(id)
-        const names = orderItemChuaGui.map(item => item.course.name.replace(/[<>:"\/\\|?*#&.']+/g, ''))
+        const names = orderItemChuaGui.map(item => item.course.name.replace(/[<>:"\/\\|?*#&']+/g, ''))
         const cawn_data = await givenamereturndrive(names)
         const result = orderItemChuaGui.map((item, index) => { return { orderData: item, cawnData: {dbitem: cawn_data[index]}  } })
         res.send(result)
@@ -214,7 +214,6 @@ const publicall = async (req, res) => {
     const page = req.query.page || 1
 
     const course = await findManyCourseTopicV2(text, page, )
-
 
     if (course.count === 0) {
         res.render('layout/404')

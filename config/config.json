@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "vn_bootcampshop",
-    "password": "fySRBwtyhhAhNpDi",
-    "database": "vn_bootcampshop",
+    "username": "us2",
+    "password": "FAX3c7hCs3zx5DpH",
+    "database": "us2",
     "host": "185.111.159.193",
     "dialect": "mysql"
   },
@@ -14,9 +14,9 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "vn_bootcampshop",
-    "password": "fySRBwtyhhAhNpDi",
-    "database": "vn_bootcampshop",
+    "username": "us2",
+    "password": "FAX3c7hCs3zx5DpH",
+    "database": "us2",
     "host": "185.111.159.193",
     "dialect": "mysql"
   }

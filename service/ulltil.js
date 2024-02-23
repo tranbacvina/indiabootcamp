@@ -147,6 +147,7 @@ async function handlerTopic(fetTopicData, parent_id) {
 
 const dropDownHandTopic = (data, level = 0, parentTopic) => {
   let datas = [];
+  if(!data) return datas
   data.forEach(item => {
     let row = '';
     if (level > 0) {

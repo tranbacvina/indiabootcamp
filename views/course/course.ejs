@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
     <title>
-        <%=topicOne.seotitle ? topicOne.seotitle : "Khoá học Online " + topicOne.name %> 50K - <%= locals.formattedDate
+        <%=topicOne.seotitle ? topicOne.seotitle : "Online courses " + topicOne.name %> $3 - <%= locals.formattedDate
                 %>
     </title>
 
     <link rel="canonical" href="<%=canonicalURL%>" />
 
     <meta name="title"
-        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Online courses ' + topicOne.name %> $3 - <%= locals.formattedDate %>" />
     <meta name="description"
         content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
@@ -26,14 +26,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
     <meta property="og:title"
-        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Khoá học Online ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Online courses ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
     <meta property="og:description"
         content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
     <meta property="og:image"
         content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
     
     
-        <meta property="og:locale" content="vi_VN" />
+        <meta property="og:locale" content="en_US" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,7 +113,7 @@
                                 <div class="breadcrumbs__content">
 
                                     <div class="breadcrumbs__item ">
-                                        <a href="/">Trang chủ</a>
+                                        <a href="/">Home</a>
                                     </div>
                                     <% if (breadcrumb) {%>
                                         <% for (let item of breadcrumb.parents) {%>

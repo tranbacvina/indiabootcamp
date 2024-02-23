@@ -162,6 +162,7 @@ const createvnapi = async (req, res) => {
         } 
 
         const discountedPrice = price - price * discount;
+        const discountedPriceus = priceus - priceus * discount;
 
         let neworder = await db.order.create(
             {
@@ -169,7 +170,7 @@ const createvnapi = async (req, res) => {
                 price: discountedPrice,
                 priceck: 0,
                 priceindia,
-                priceus,
+                priceus: discountedPriceus,
                 status: "Chua thanh toan",
                 orderItems: items,
                 uuid: uuidv4()
@@ -293,8 +294,8 @@ const getorders = async (req, res) => {
 
 const cstripe = async (req, res) => {
     try {
-        const uuid = req.body.uuid
-        const orderItems = await order.findOne(uuid)
+        const uuid = req.params.uuid
+        const orderItems = await order.orderUUID(uuid)
         const line_items = orderItems.orderItems.map((item) => {
             return {
                 quantity: 1,
@@ -328,6 +329,11 @@ const stripeSuccess = async (req, res) => {
     const orderdata = await order.findOne(orderid)
     res.render('order/order_success', { order: orderdata });
 }
+const coinBaseSuccess = async (req, res) => {
+    const uuid = req.params.uuid
+    const orderdata = await order.orderUUID(uuid)
+    res.render('order/order_success', { order: orderdata });
+}
 
 const updateOrder = async (req, res) => {
     const { id } = req.params
@@ -354,4 +360,4 @@ const needdowwnload = async (req, res) => {
     links = links.map(item => { return item.course.url })
     res.send(links)
 }
-module.exports = { needdowwnload, createvnapi, updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }
+module.exports = {coinBaseSuccess, needdowwnload, createvnapi, updateOrder, createindia, oneOrder, getuuid, tracking, getorders, cstripe, stripeSuccess, createVN }

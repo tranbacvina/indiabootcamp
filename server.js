@@ -1,12 +1,11 @@
 const express = require("express");
 const app = express();
-const port = 3020;
+const port = 4020;
 const cookieParser = require('cookie-parser')
 const Routers = require("./routers");
 const { sequelize } = require("./models");
 const cors = require("cors");
 var cron = require('node-cron');
-const cronBank = require('./controllers/cron_bank')
 const paginate = require('express-paginate');
 const stripe = require("./service/stripe")
 var useragent = require('express-useragent');
@@ -14,9 +13,12 @@ const urlService = require('./service/url')
 app.use(useragent.express());
 const sitemmapService = require('./service/sitemap');
 const bodyParser = require('body-parser');
-const { fixCourseTopicImage,updateBlogPost } = require("./service/ulltil");
+const { fixCourseTopicImage, updateBlogPost } = require("./service/ulltil");
+const coinbase = require("./controllers/coinbase")
+
 
 app.use(bodyParser.raw({ type: 'application/octet-stream' }));
+
 // Middleware để xoá dấu '/' cuối cùng của mỗi URL
 app.use((req, res, next) => {
   if (req.path[req.path.length - 1] === '/' && req.path.length > 1) {
@@ -28,17 +30,34 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  let canonicalURL = ''; 
-    if (req.query.page == 1 || req.query.page == null) {
-         canonicalURL = `https://${req.host}${req.path}`;
-    } else {
-        canonicalURL = urlService.getPageQuery(`https://${req.hostname}${req.originalUrl}`);
-    }
+  let canonicalURL = '';
+  if (req.query.page == 1 || req.query.page == null) {
+    canonicalURL = `https://${req.host}${req.path}`;
+  } else {
+    canonicalURL = urlService.getPageQuery(`https://${req.hostname}${req.originalUrl}`);
+  }
   res.locals.canonicalURL = canonicalURL;
   next();
 })
 
+function rawBody(req, res, next) {
+	req.setEncoding('utf8');
+
+	var data = '';
+
+	req.on('data', function (chunk) {
+		data += chunk;
+	});
+
+	req.on('end', function () {
+		req.rawBody = data;
+
+		next();
+	});
+}
+
 app.post("/webhookstripe", express.raw({ type: 'application/json' }), stripe.webhookStipe);
+app.post("/webhookcoinbase", rawBody, coinbase.webhookCoinbase);
 
 
 app.use(paginate.middleware(20, 56));
@@ -67,9 +86,9 @@ app.use("/", Routers);
 
 
 
-cron.schedule('* * * * *', async () => {
-  await cronBank.cron()
-});
+// cron.schedule('* * * * *', async () => {
+//   await cronBank.cron()
+// });
 
 cron.schedule('0 1 * * *', async () => {
   await sitemmapService.blogSitemap()
@@ -83,7 +102,7 @@ cron.schedule('0 1 * * *', async () => {
 });
 
 app.listen(port, async () => {
-  console.log(`Server is online port Fullbootcamp.com http://localhost:${port}`);
+  console.log(`Server is online port FUllUdemy.com http://localhost:${port}`);
 
   try {
     await sequelize.authenticate();

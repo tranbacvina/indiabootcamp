@@ -1,6 +1,7 @@
 const Routers = require("express").Router();
 const { check } = require('express-validator');
 const order = require("../controllers/order")
+const coinbase = require("../controllers/coinbase")
 
 
 Routers.post("/createapi", [
@@ -20,7 +21,11 @@ Routers.post("/createvnapi", [
     order.createvnapi
 ])
 Routers.get('/success', order.stripeSuccess);
-Routers.post("/cstripe", order.cstripe)
+Routers.get('/complete/:uuid', order.coinBaseSuccess);
+// Tạo thanh toán stripe
+Routers.post("/cstripe/:uuid", order.cstripe)
+// Tạo thanh toán coinbase
+Routers.post("/cscoinbase/:uuid", coinbase.createCharge)
 Routers.get("/:uuid", order.getuuid)
 Routers.get("/", order.tracking)
 

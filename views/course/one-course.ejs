@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %></title>
+    <title>Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+        currency : 'USD' }) %> - <%= locals.formattedDate %></title>
     <link rel="canonical" href="<%=canonicalURL%>" />
         
-    <meta name="title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %>" />
-    <meta name="description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Chỉ ' + (course.price / 1000) + 'k' %> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta name="title" content="Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+    currency : 'USD' }) %> - <%= locals.formattedDate %>" />
+    <meta name="description" content="Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+    currency : 'USD' }) %> - <%= locals.formattedDate %> - High-quality, reputable courses... study right at Full Udemy" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
@@ -19,15 +22,19 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%=canonicalURL%>" />
-    <meta property="og:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %>" />
-    <meta property="og:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Chỉ ' + (course.price / 1000) + 'k' %> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta property="og:title" content="Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+    currency : 'USD' }) %> - <%= locals.formattedDate %>" />
+    <meta property="og:description" content="Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+    currency : 'USD' }) %> - High-quality, reputable courses... study right at Full Udemy" />
     <meta property="og:image" content="<%=course.image%>" />
-    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@fullbootcamp" />
-    <meta name="twitter:title" content="Khoá Học <%= course.name %> <%=course.price == 0 ? 'Miễn Phí': 'Chỉ ' + (course.price / 1000) + 'k' %> - <%= locals.formattedDate %>" />
-    <meta name="twitter:description" content="Khoá học <%= course.name %> Online <%=course.price == 0 ? 'Miễn Phí':'Chỉ ' + (course.price / 1000) + 'k' %> - Khoá học uy tín, chất lượng... học ngay tại Full Bootcamp" />
+    <meta name="twitter:title" content="Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+    currency : 'USD' }) %>" />
+    <meta name="twitter:description" content="Course <%= course.name %> <%=course.price == 0 ? 'Free': 'Only ' + (course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+    currency : 'USD' }) %> - High-quality, reputable courses... study right at Full Udemy" />
     <meta name="twitter:image" content="<%=course.image%>" />
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,7 +134,7 @@
                                     <div class="breadcrumbs__content">
 
                                         <div class="breadcrumbs__item ">
-                                            <a href="/">Trang chủ</a>
+                                            <a href="/">Home</a>
                                         </div>
                                       <% if (breadcrumb) {%>
                                         <% for (let item of breadcrumb.parents) {%>
@@ -146,7 +153,7 @@
                                         <%} %>
                                         <% if (!breadcrumb & course.Topics.length === 0) {%>
                                             <div class="breadcrumbs__item ">
-                                              <a href="/course">Khoá học</a>
+                                              <a href="/course">Course</a>
                                           </div>
                                           <%}%>
                                         <div class="breadcrumbs__item ">
@@ -203,44 +210,42 @@
                                                 <% if (course.price !== 0) { %>
                                                 <div class="d-flex justify-between items-end mb-30">
                                                     <div class="text-24 lh-1 text-dark-1 fw-500">
-                                                        <%=course.price.toLocaleString('it-IT', {style : 'currency' ,
-                                                            currency : 'VND' })%>
+                                                        <%=(course.priceus / 100).toLocaleString('en-US', {style : 'currency' ,
+                                                        currency : 'USD' })%>
                                                     </div>
-                                                    <div class="lh-1 line-through"><%=course.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                                        currency : 'VND' })%></div>
+                                                    <div class="lh-1 line-through"><%=course.originprice?.toLocaleString('en-US', {style : 'currency' ,
+                                                        currency : 'USD' })%></div>
                                                     <!-- <div class="lh-1 line-through">$76.00</div> -->
                                                 </div>
                                                 <form id="regForm" action="/order/createvn" method="POST"
                                                     class="contact-form ">
-                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Email nhận khoá
-                                                        học:
+                                                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Email for receiving the course:
                                                     </label>
                                                     <input type="text" name="email" id="email" placeholder="abc@gmail.com"
                                                         oninput="this.className = ''" required>
                                                     <input type="hidden" name="courseID" id="courseID"
                                                         value="<%=course.id%>">
                                                     <button type="submit" id="" onclick=""
-                                                        class="button -md -purple-1 text-white w-1/1 mt-20">Mua
-                                                        ngay</button>
+                                                        class="button -md -purple-1 text-white w-1/1 mt-20">Buy Now</button>
     
                                                 </form>
                                                 <%} else {%>
                                                     <div class="d-flex justify-between items-center mb-30">
                                                         <div class="text-24 lh-1 text-dark-1 fw-500">
-                                                            Miễn phí
+                                                            Free
                                                         </div>
                                                         <!-- <div class="lh-1 line-through">$76.00</div> -->
                                                     </div>
                                                     <a class="button -md -green-1 text-dark-1 w-1/1"
                                                     href="<%= course.sharelinkfree %>" target="_blank"
-                                                    >Nhận ngay!</a>
+                                                    >Get Now!</a>
                                                 <%}%>
                                                 <div class="layout-pt-md">
     
                                                     <div class="d-flex justify-between py-8 ">
                                                         <div class="d-flex items-center text-dark-1">
                                                             <div class="icon-video-file"></div>
-                                                            <div class="ml-10">Đầy Đủ Bài Giảng</div>
+                                                            <div class="ml-10">Full Lectures</div>
                                                         </div>
                                                         <!-- <div>Cam kết video bài giảng giống mô tả</div> -->
                                                     </div>
@@ -248,7 +253,7 @@
                                                     <div class="d-flex justify-between py-8 border-top-light">
                                                         <div class="d-flex items-center text-dark-1">
                                                             <div class="icon-puzzle"></div>
-                                                            <div class="ml-10">Học Online Tiện Lợi</div>
+                                                            <div class="ml-10">Convenient Online Learning</div>
                                                         </div>
                                                         <!-- <div>Học online trên drive bằng điện thoại hoặc máy tính</div> -->
                                                     </div>
@@ -256,21 +261,21 @@
                                                     <div class="d-flex justify-between py-8 border-top-light">
                                                         <div class="d-flex items-center text-dark-1">
                                                             <div class="icon-clock-2"></div>
-                                                            <div class="ml-10">Kích Hoạt Nhanh 2-5 Phút</div>
+                                                            <div class="ml-10">Quick Activation 2-5 Minutes</div>
                                                         </div>
                                                         <!-- <div>Nhận được khóa học trong vòng 3-5 phút ngay trên website -->
                                                     </div>
-                                                                                                    <div class="d-flex justify-between py-8 border-top-light">
+                                                        <div class="d-flex justify-between py-8 border-top-light">
                                                         <div class="d-flex items-center text-dark-1">
                                                             <div class="icon-badge"></div>
-                                                            <div class="ml-10">Thanh toán tự động</div>
+                                                            <div class="ml-10">Automatic payment</div>
                                                         </div>
                                                         <!-- <div>MOMO hoặc VIETCOMBANK</div> -->
                                                     </div>
                                                     <div class="d-flex justify-between py-8 border-top-light">
                                                         <div class="d-flex items-center text-dark-1">
                                                             <div class="icon-translate"></div>
-                                                            <div class="ml-10">Được phép tải xuống</div>
+                                                            <div class="ml-10">Allowed to download</div>
                                                         </div>
                                                         <!-- <div></div> -->
                                                     </div>
@@ -313,25 +318,25 @@
                                 <div class="col-lg-8">
                                     <div class="page-nav-menu -line js-sticktop">
                                     <div class="d-flex x-gap-30">
-                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#overview" class="pb-12 page-nav-menu__link is-active">Tổng quan</a></h2>
-                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#course-content" class="pb-12 page-nav-menu__link">Nội dung khoá học</a></h2>
-                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#reviews" class="pb-12 page-nav-menu__link">Đánh giá</a></h2>
+                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#overview" class="pb-12 page-nav-menu__link is-active">Overview</a></h2>
+                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#course-content" class="pb-12 page-nav-menu__link">Course Content</a></h2>
+                                        <h2 class="text-14 fw-500 text-dark-1"><a href="#reviews" class="pb-12 page-nav-menu__link">Reviews</a></h2>
                                     </div>
                                     </div>
                     
                                     <div id="overview" class="pt-60 lg:pt-40 to-over">
-                                    <h3 class="text-18 fw-500">Mô tả</h3>
+                                    <h3 class="text-18 fw-500">Description</h3>
                     
                                     <div class="show-more mt-30 js-show-more">
                                         <div class="show-more__content">
                                             <%- course.description_log %>
                                         </div>
                     
-                                        <button class="show-more__button text-purple-1 fw-500 underline mt-30">Xem thêm</button>
+                                        <button class="show-more__button text-purple-1 fw-500 underline mt-30">Show more</button>
                                     </div>
                     
                                     <div class="mt-60">
-                                        <h3 class="text-20 mb-30">Bạn sẽ học được gì</h3>
+                                        <h3 class="text-20 mb-30">What you'll learn</h3>
                                         <div class="row x-gap-100 justfiy-between">
                                             <% for (let item of course.whatyouwilllearn) { %>
                                                 <div class="col-md-6 y-gap-20">
@@ -361,7 +366,7 @@
                                     </div>
                     
                                     <div class="mt-60">
-                                        <h3 class="text-20">Yêu cầu</h3>
+                                        <h3 class="text-20">Requirements</h3>
                                         <ul class="ul-list y-gap-15 pt-30">
                                             <% for (let item of course.requirements) { %>
                                                 <li>
@@ -373,7 +378,7 @@
                                     </div>
                                     <% if (course.sections) {%>
                                     <div id="course-content" class="pt-60 lg:pt-40">
-                                        <h2 class="text-20 fw-500">Nội dung khoá học</h2>
+                                        <h2 class="text-20 fw-500">Content</h2>
                         
                                         <div class="d-flex justify-between items-center mt-30">
                                             <div class=""><%=course.sections.sections.length%> sections</div>
@@ -429,11 +434,11 @@
                                     <div id="reviews" class="pt-60 lg:pt-40">
                                     <div class="blogPost -comments">
                                         <div class="blogPost__content">
-                                        <h2 class="text-20 fw-500">Đánh giá của học viên</h2>
+                                        <h2 class="text-20 fw-500">Reviews</h2>
                                         <div class="row x-gap-10 y-gap-10 pt-30">
                                             <div class="col-md-4">
                                             <div class="d-flex items-center justify-center flex-column py-50 text-center bg-light-6 rounded-8">
-                                                <div class="<%= !ratings.avg ? 'text-20' : 'text-60' %>  lh-11 text-dark-1 fw-500"><%= !ratings.avg ? 'Chưa có đánh giá' : ratings.avg.toFixed(1)  %></div>
+                                                <div class="<%= !ratings.avg ? 'text-20' : 'text-60' %>  lh-11 text-dark-1 fw-500"><%= !ratings.avg ? 'No reviews yet' : ratings.avg.toFixed(1)  %></div>
                                                 <div class="d-flex x-gap-5 mt-10">
                                                     <% for (let item = 1;item <= Math.floor(ratings.avg); item ++ ) {%>
                                                         <div class="icon-star text-11 text-yellow-1"></div>
@@ -522,7 +527,7 @@
                                             </div>
                                         </div>
                     
-                                        <h2 class="text-20 fw-500 mt-60 lg:mt-40">Bình luận khách hàng</h2>
+                                        <h2 class="text-20 fw-500 mt-60 lg:mt-40">Customer reviews</h2>
                                         <ul class="comments__list mt-30">
                                             <% if (course.ratings) { %>
                                                 <% for (let item of course.ratings) {%>
@@ -537,7 +542,7 @@
                                                         <h4 class="text-17 fw-500 lh-15 ">
                                                             <%=item.email%>
                                                             <span class="text-13 text-light-1 fw-400">
-                                                                <%=item.createdAt.toLocaleDateString('vi-VN', { 
+                                                                <%=item.createdAt.toLocaleDateString('en-US', { 
                                                                     year: 'numeric', 
                                                                     month: 'numeric', 
                                                                     day: 'numeric', 
@@ -570,11 +575,11 @@
                     
                                     <div class="respondForm pt-60">
                                         <h3 class="text-20 fw-500">
-                                        Viết Bình Luận
+                                            Write a Comment
                                         </h3>
 
                                         <form class="contact-form respondForm__form row y-gap-30 pt-30" id="commentsForm" method="POST" action="/comments/course/<%=course.id%>">
-                                        <h4 class="text-16 fw-500">Bạn đánh giá khoá học này thế nào?</h4>
+                                        <h4 class="text-16 fw-500">How do you rate this course?</h4>
                                           <div class="d-flex x-gap-10 pt-10">
                                             <div id="rating">
                                               <input type="radio" id="star5" name="star" value="5" required/>
@@ -600,12 +605,12 @@
                                             <input type="email" name="email" id="emailComments" required placeholder="abc@gmail.com">
                                         </div>
                                         <div class="col-12">
-                                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Nội dung</label>
+                                            <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Content</label>
                                             <textarea name="comments" id="comments" required placeholder="Message" rows="8"></textarea>
                                         </div>
                                         <div class="col-12">
                                             <button type="submit" name="submit" id="submit" class="button -md -purple-1 text-white">
-                                            Đăng Bình Luận
+                                                Post
                                             </button>
                                         </div>
                                         </form>
@@ -623,7 +628,7 @@
             
                           <div class="sectionTitle ">
             
-                            <h2 class="sectionTitle__title ">Khoá học liên quan</h2>
+                            <h2 class="sectionTitle__title ">Related courses</h2>
             
                           </div>
             
@@ -654,10 +659,11 @@
                 
                                     <div class="coursesCard-footer">
                                         <div class="coursesCard-footer__price">
-                                        <div><%=i.originprice?.toLocaleString('it-IT', {style : 'currency' ,
-                                            currency : 'VND' })%></div>
-                                        <div><%=i.price.toLocaleString('it-IT', {style : 'currency' ,
-                                            currency : 'VND' })%></div>
+                                        <div><%=i.originprice?.toLocaleString('en-US', {style : 'currency' ,
+                                            currency : 'USD' }) %></div>
+
+                                        <div><%=i.priceus.toLocaleString('en-US', {style : 'currency' ,
+                                            currency : 'USD' }) %></div>
                                         </div>
                                     </div>
                                 </div>
@@ -691,10 +697,10 @@
 
                                 <div class="sectionTitle -light">
 
-                                    <h2 class="sectionTitle__title ">Đăng ký get khoá học Udemy - Unica - Gitiho giá chỉ 50k!
+                                    <h2 class="sectionTitle__title ">Register to get Udemy courses for only 3$
                                     </h2>
 
-                                    <p class="sectionTitle__text ">Get khoá học giá rẻ ngay trước khi bị fix.
+                                    <p class="sectionTitle__text ">Get courses at a cheap price now before they get fixed
                                     </p>
 
                                 </div>
@@ -704,9 +710,7 @@
 
                         <div class="row mt-30 justify-center">
                             <div class="col-auto">
-                                <a href="/#getCourseHere" class="button -md -green-1 text-dark-1">Get khoá học
-                                    cho
-                                    tôi</a>
+                                <a href="/#getCourseHere" class="button -md -green-1 text-dark-1">Get courses for me</a>
                             </div>
                         </div>
                     </div>
@@ -728,22 +732,22 @@
                         email, courseID
                     })
                     console.log(createOrder.data)
-                    fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.price });
+                    fbq('track', 'Purchase', { currency: "USD", value: createOrder.data.priceus / 100 });
                     const itemsForGtag = createOrder.data.orderItems.map(item => {
                         return {
                             item_id: item.course.id,
                             item_name: item.course.name,
-                            price: item.course.price,
+                            price: item.course.priceus / 100,
                             quantity: 1
                         }
                     })
                     gtag("event", "purchase", {
                         transaction_id: createOrder.data.uuid,
-                        value: createOrder.data.price,
-                        currency: "VND",
+                        value: createOrder.data.priceus / 100,
+                        currency: "USD",
                         items: itemsForGtag
                     });
-                    toastr.success(`Tạo đơn hàng ${email} thành công!`)
+                    toastr.success(`Order created successfully for ${email}!`)
                     window.location.href = `/order/${createOrder.data.uuid}`
                 } catch (error) {
                     toastr.error(error)

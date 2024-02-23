@@ -27,7 +27,7 @@ Routers.use((req, res, next) => {
   ];
   
   const currentDate = new Date();
-  const currentMonth = months[currentDate.getMonth()];
+  const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
   
   const formattedDate = `${currentMonth}/${currentYear}`;
@@ -43,7 +43,7 @@ Routers.get("/", async (req, res) => {
 });
 
 Routers.use("/course", course)
-Routers.use("/tim-kiem", courseController.timKiemPage)
+Routers.use("/search", courseController.timKiemPage)
 Routers.use("/comments", comments)
 Routers.use("/blog", blog)
 Routers.use("/topic", topic)

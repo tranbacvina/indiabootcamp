@@ -154,7 +154,7 @@ const findManyCourseTopicV2 = async (text, page, topic) => {
         limit: limit,
         offset: skip,
         order: [['updatedAt', 'DESC']],
-        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
+        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'priceus', 'originprice', 'url'],
         include: [{ model: db.rating }]
     }
     if (text) {
@@ -333,16 +333,19 @@ const update = async (id, name, url, slug, price, priceus, priceindia, TopicId, 
         }, include: { model: db.Topic }
 
     })
-    await db.course_topic.destroy({where: {
-        course_id: id
-    }})
+    if(TopicId) {
+        await db.course_topic.destroy({where: {
+            course_id: id
+        }})
+    
+        let parentTopic = await ulltil.getTopicWithParents(TopicId)
+        console.log(parentTopic)
+        parentTopic = [...parentTopic.parents.map(item => item.id),TopicId]
+        console.log(parentTopic)
+    
+        await course.setTopics(parentTopic)
+    }
 
-    let parentTopic = await ulltil.getTopicWithParents(TopicId)
-    console.log(parentTopic)
-    parentTopic = [...parentTopic.parents.map(item => item.id),TopicId]
-    console.log(parentTopic)
-
-    await course.setTopics(parentTopic)
 
     return updateCourse
 }

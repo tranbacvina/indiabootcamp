@@ -1,4 +1,5 @@
 const DOMAIN = process.env.DOMAIN
+const NAME = 'Full Udemy'
 
 const breadcumbCourse = (parent, course) => {
   if (parent == null) {
@@ -9,13 +10,13 @@ const breadcumbCourse = (parent, course) => {
         "@type": "ListItem",
         "position": 1,
         "name": 'course',
-        "item": `${process.env.DOMAIN}/course`
+        "item": `${DOMAIN}/course`
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": course.name,
-        "item": `${process.env.DOMAIN}/course/${course.slug}`
+        "item": `${DOMAIN}/course/${course.slug}`
       }]
     }
     return schema
@@ -33,7 +34,7 @@ const breadcumbCourse = (parent, course) => {
       "@type": "ListItem",
       "position": rawItemlists.slice(-1)[0].position + 1,
       "name": course.name,
-      "item": `${process.env.DOMAIN}/course/${course.slug}`
+      "item": `${DOMAIN}/course/${course.slug}`
     }]
   }
 
@@ -46,14 +47,14 @@ const breadcumbCourseTopic = (breadcrumb) => {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `${process.env.DOMAIN}/topic/${item.name}`
+      "item": `${DOMAIN}/topic/${item.name}`
     }
   })
   rawItemlists = [...rawItemlists, {
     "@type": "ListItem",
     "position": rawItemlists.slice(-1)[0]?.position + 1 || 1,
     "name": breadcrumb.category.name,
-    "item": `${process.env.DOMAIN}/topic/${breadcrumb.category.slug}`
+    "item": `${DOMAIN}/topic/${breadcrumb.category.slug}`
   }]
   const schemaBreadcum = {
     "@context": "https://schema.org",
@@ -132,10 +133,10 @@ const home = () => {
   const schema = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    "name": "Full Bootcamp",
-    "logo": "https://fullbootcamp.com/img/redketchup/apple-touch-icon.png",
+    "name": NAME,
+    "logo": "https://fulludemy.com/img/redketchup/apple-touch-icon.png",
     "description": "Website hộ trợ tải khoá học Udemy giá rẻ",
-    "url": "https:/fullbootcamp.com/",
+    "url": DOMAIN,
     "telephone": "0946645803",
     "address": {
       "@type": "PostalAddress",
@@ -193,13 +194,13 @@ const createStrucDataCourses = (courses) => {
       "position": index + 1,
       "item": {
         "@type": "Course",
-        "url": `${process.env.DOMAIN}/course/${item.slug}`,
+        "url": `${DOMAIN}/course/${item.slug}`,
         "name": item.name,
         "description": item.description,
         "provider": {
           "@type": "EducationalOrganization",
-          "name": "Full Bootcamp",
-          "sameAs": "https://fullbootcamp.com/"
+          "name": NAME,
+          "sameAs": `${DOMAIN}`
         },
         "hasCourseInstance": {
           "@type": "CourseInstance",
@@ -233,7 +234,7 @@ const createStrucDataOneCourse = (course, ratings) => {
     "description": course.description,
     "provider": {
       "@type": "EducationalOrganization",
-      "name": "Full Bootcamp",
+      "name": NAME,
       "sameAs": DOMAIN
     }
     ,
@@ -278,13 +279,13 @@ const blogPage = (blog) => {
     "articleBody": blog.content,
     "author": {
       "@type": "EducationalOrganization",
-      "url": process.env.DOMAIN,
-      "name": "Full Bootcamp"
+      "url": DOMAIN,
+      "name": NAME
     },
     "publisher": {
       "@type": "EducationalOrganization",
-      "url": process.env.DOMAIN,
-      name: "Full Bootcamp"
+      "url": DOMAIN,
+      name: NAME
     }
   }
   return schema
