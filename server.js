@@ -91,11 +91,13 @@ app.use("/", Routers);
 // });
 
 cron.schedule('0 1 * * *', async () => {
+  
+  await updateBlogPost()
+  await fixCourseTopicImage()
+
   await sitemmapService.blogSitemap()
   await sitemmapService.courseSitemap()
   await sitemmapService.topicSitemap()
-  await updateBlogPost()
-  await fixCourseTopicImage()
 }, {
   scheduled: true,
   timezone: "Asia/Ho_Chi_Minh"
