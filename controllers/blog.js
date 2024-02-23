@@ -289,19 +289,8 @@ const lienhe = async (req, res) => {
     res.render('blog/lienhe')
 }
 const gioithieu = async (req, res) => {
-    const blog = await db.Blog.findOne({
-        where: {
-            slug: 'gioi-thieu'
-
-        },
-
-    })
-    if (blog) {
-        res.render('blog/page', { blog: blog, })
-    }
-    else {
-        res.render('layout/404')
-    }
+    res.render('blog/about')
+    
 }
 const chinhsachbaomat = async (req, res) => {
     const blog = await db.Blog.findOne({

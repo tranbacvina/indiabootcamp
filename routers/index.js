@@ -66,8 +66,8 @@ Routers.get("/myip", (req, res) => {
 Routers.get('/sitemap.xml', sitemapController.mainSitemap);
 
 Routers.get('/sitemaps/:sitemap', sitemapController.fileSitemap);
-Routers.get("/lienhe", blogController.lienhe)
-Routers.get("/gioi-thieu", blogController.gioithieu)
+Routers.get("/contact", blogController.lienhe)
+Routers.get("/about", blogController.gioithieu)
 Routers.get("/chinh-sach-bao-mat", blogController.chinhsachbaomat)
 
 
