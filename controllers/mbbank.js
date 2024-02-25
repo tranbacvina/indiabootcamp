@@ -160,7 +160,7 @@ const getLSGD = async (req, res) => {
     const begin = req.query.fromdate || default_date;
     const end = req.query.todate || default_date;
     const  transactionHistoryList = await getTransactions(begin, end);
-   
+    console.log(transactionHistoryList)
     res.render('admin/bank/mbbank', { begin: begin, end: end, data: transactionHistoryList, })
 
 };

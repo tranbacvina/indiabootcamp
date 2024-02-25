@@ -215,7 +215,7 @@ const getuuid = async (req, res) => {
             "accountNo": "1282012345666",
             "accountName": "DO NGOC THANG",
             "acqId": "970422",
-            "addInfo": `bootcamp ${orderid.id}`,
+            "addInfo": `BOOTCAMP${orderid.id}`,
             "amount": `${orderid.price}`,
             "template": "qr_only"
         })

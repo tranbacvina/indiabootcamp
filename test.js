@@ -103,14 +103,16 @@ const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = process.env.REDIRECT_URI
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN
-
+const check_regex_bank = (str) => {
+  var pattern = /(bootcamp)\s([0-9]{0,})|(bootcamp)([0-9]{0,})/i;
+  var result = pattern.test(str);
+  var match = str.match(pattern);
+  return { result, match };
+};
   const main = async () => {
-    const course = await db.course.findOne({
-      where:{
-        id:6282
-      }
-    })
-    console.log(course)
+    const Description = 'bootcamp 3432432'
+    const { result, match } = check_regex_bank(Description);
+    console.log( result, match)
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
   //     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));
