@@ -10,7 +10,7 @@ async function getTopicWithParents(topicID) {
   if (!topic) {
     return null; // Trả về null nếu không tìm thấy category
   }
-  if (topic.parent_id == null) {
+  if (topic.parent_id == null || topic.parent_id == topic.id) {
     return {
       category: topic,
       parents: []
@@ -19,9 +19,12 @@ async function getTopicWithParents(topicID) {
   const parents = [];
   let currentTopicId = topic.parent_id;
 
+  let topicIDS = new Set()
+  topicIDS.add(currentTopicId)
+
   while (currentTopicId !== 0) {
     const parentTopic = await db.Topic.findOne({ where: { id: currentTopicId } });
-    if (!parentTopic || topic.parent_id == topic.id) {
+    if (!parentTopic ) {
 
       break; // Dừng nếu không tìm thấy parent category
     }
@@ -33,9 +36,10 @@ async function getTopicWithParents(topicID) {
 
     });
 
-    if (parentTopic.parent_id == parentTopic.id) {
+    if (parentTopic.parent_id == parentTopic.id || topicIDS.has(parentTopic.id)) {
       break
     }
+    topicIDS.add(parentTopic.id)
     currentTopicId = parentTopic.parent_id;
   }
 
