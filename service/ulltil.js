@@ -20,7 +20,6 @@ async function getTopicWithParents(topicID) {
   let currentTopicId = topic.parent_id;
 
   let topicIDS = new Set()
-  topicIDS.add(currentTopicId)
 
   while (currentTopicId !== 0) {
     const parentTopic = await db.Topic.findOne({ where: { id: currentTopicId } });
@@ -42,7 +41,7 @@ async function getTopicWithParents(topicID) {
     topicIDS.add(parentTopic.id)
     currentTopicId = parentTopic.parent_id;
   }
-
+  console.log('parents >', parents)
   return {
     category: topic,
     parents: parents.reverse(), // Đảo ngược thứ tự để có thứ tự từ gốc đến category

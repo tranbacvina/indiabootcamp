@@ -104,15 +104,21 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = process.env.REDIRECT_URI
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN
 const check_regex_bank = (str) => {
-  var pattern = /(bootcamp)\s([0-9]{0,})|(bootcamp)([0-9]{0,})/i;
+  var pattern = /(bootcamp)\s(\d+)\s*(\d*)|bootcamp(\d+)\s*(\d*)/i;
   var result = pattern.test(str);
   var match = str.match(pattern);
   return { result, match };
 };
   const main = async () => {
-    const Description = 'bootcamp 3432432'
+    let Description = 'CUSTOMER MBVCB.5378041801.085939.BOOTCAMP7430.CT tu 0071000937323 HO DAC HA toi 1282012345666 DO NGOC THANG tai MB - Ma GD ACSP tb085939'
     const { result, match } = check_regex_bank(Description);
-    console.log( result, match)
+
+    console.log(result, match)
+    if (result) {
+        const OrderID = match[5] ? `${match[4]}${match[5]}` : match[4];
+        console.log(typeof(Number(OrderID)))
+
+      }
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
   //     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));

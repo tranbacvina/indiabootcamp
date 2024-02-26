@@ -7,7 +7,7 @@ const mbbank = require("./mbbank")
 const sharedrive = require("../service/sharedrive")
 
 const check_regex_bank = (str) => {
-    var pattern = /(bootcamp)\s([0-9]{0,})|(bootcamp)([0-9]{0,})/i;
+    var pattern = /(bootcamp)\s(\d+)\s*(\d*)|bootcamp(\d+)\s*(\d*)/i;
     var result = pattern.test(str);
     var match = str.match(pattern);
     return { result, match };
@@ -16,7 +16,7 @@ const check_regex_bank = (str) => {
 const handle_transactions = async (Amount, Description) => {
     const { result, match } = check_regex_bank(Description);
     if (result) {
-        const OrderID = match[2] || match[4];
+        const OrderID = match[5] ? `${match[4]}${match[5]}` : match[4];
         const creditAmount = Amount;
 
         const OrderDetail = await db.order.findOne({
