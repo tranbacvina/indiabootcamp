@@ -110,15 +110,7 @@ const check_regex_bank = (str) => {
   return { result, match };
 };
   const main = async () => {
-    let Description = 'CUSTOMER MBVCB.5378041801.085939.BOOTCAMP7430.CT tu 0071000937323 HO DAC HA toi 1282012345666 DO NGOC THANG tai MB - Ma GD ACSP tb085939'
-    const { result, match } = check_regex_bank(Description);
-
-    console.log(result, match)
-    if (result) {
-        const OrderID = match[5] ? `${match[4]}${match[5]}` : match[4];
-        console.log(typeof(Number(OrderID)))
-
-      }
+   const course = db.course.findOne({where: {id :6282}})
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
   //     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));

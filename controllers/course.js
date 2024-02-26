@@ -240,7 +240,7 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
-    if (!course) {
+    if (!course || course.is_practice_test_course) {
         res.status(404).render("layout/404")
         return
     }

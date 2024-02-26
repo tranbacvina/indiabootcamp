@@ -153,16 +153,21 @@ const topicSlugGetCoursesV2 = async (req, res) => {
     const skip = (limit * page) - limit
     console.log(req.baseUrl,req.path)
     const courses = await db.course.findAndCountAll({
+
         limit,
         offset: skip,
+        where:{
+            'is_practice_test_course': false
+
+        },
         include:{
             model: db.Topic,
             where: {
-                slug
+                slug,
             }
         },
         order:[['updatedAt', 'DESC']],
-        attributes: ['id','name','slug','description','image','price','originprice','updatedAt']
+        attributes: ['id','name','slug', 'is_practice_test_course','description','image','price','originprice','updatedAt']
     })
     const itemCount = courses.count;
     const pageCount = Math.ceil(itemCount / req.query.limit);

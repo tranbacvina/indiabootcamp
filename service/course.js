@@ -154,16 +154,21 @@ const findManyCourseTopicV2 = async (text, page, topic) => {
         limit: limit,
         offset: skip,
         order: [['updatedAt', 'DESC']],
-        attributes: ['name', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
-        include: [{ model: db.rating }]
+        attributes: ['name','is_practice_test_course', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
+        include: [{ model: db.rating }],
+        where: {
+            is_practice_test_course: false,
+        }
     }
     if (text) {
         query['where'] = {
+            
+            is_practice_test_course: false,
             [Op.or]: [
 
                 { name: { [Op.like]: `%${text}%` } },
                 { url: text }
-            ]
+            ],
         }
     }
     if (topic) {

@@ -6,9 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>
-        <%= blog.seotitle !==null ? blog.seotitle : blog.title%>
-    </title>
+    <title><%= blog.seotitle !==null ? blog.seotitle : blog.title%></title>
     <meta name="title" content="<%= blog.seotitle !== null ?  blog.seotitle : blog.title %>" />
     <meta name="description" content="<%= blog.description %>" />
     <link rel="canonical" href="<%=canonicalURL%>" />
