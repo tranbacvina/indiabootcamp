@@ -203,25 +203,25 @@ const getuuid = async (req, res) => {
     // res.send(qrcode.data)
 
     if (orderid  ) {
-        // const vietcombank =  axios.post('https://api.vietqr.io/v2/generate', {
-        //     "accountNo": "0141000836982",
-        //     "accountName": "TRAN DUY BAC",
-        //     "acqId": "970436",
-        //     "addInfo": `bootcamp ${orderid.id}`,
-        //     "amount": `${orderid.price}`,
-        //     "template": "qr_only"
-        // })
-         const mbbank = await axios.post('https://api.vietqr.io/v2/generate', {
-            "accountNo": "1282012345666",
-            "accountName": "DO NGOC THANG",
-            "acqId": "970422",
-            "addInfo": `BOOTCAMP${orderid.id}`,
+        const vietcombank = await axios.post('https://api.vietqr.io/v2/generate', {
+            "accountNo": "0141000836982",
+            "accountName": "TRAN DUY BAC",
+            "acqId": "970436",
+            "addInfo": `bootcamp ${orderid.id}`,
             "amount": `${orderid.price}`,
             "template": "qr_only"
         })
+        //  const mbbank = await axios.post('https://api.vietqr.io/v2/generate', {
+        //     "accountNo": "1282012345666",
+        //     "accountName": "DO NGOC THANG",
+        //     "acqId": "970422",
+        //     "addInfo": `BOOTCAMP${orderid.id}`,
+        //     "amount": `${orderid.price}`,
+        //     "template": "qr_only"
+        // })
 
         // const qrcode = await Promise.all([vietcombank, mbbank])
-        res.render('order/oneOrder', { order: orderid, qrcode: mbbank.data })
+        res.render('order/oneOrder', { order: orderid, qrcode: vietcombank.data })
     } else {
         res.render('layout/404')
     }

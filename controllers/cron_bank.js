@@ -146,17 +146,17 @@ const cronMB = async () => {
 };
 
 const cron = async () => {
-    try {
-        await cronMB()
-        
-    } catch (error) {
-        console.log(error);
-    }
     // try {
-    //     await cronVietcombank();
+    //     await cronMB()
+        
     // } catch (error) {
     //     console.log(error);
     // }
+    try {
+        await cronVietcombank();
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 module.exports = {
