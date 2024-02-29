@@ -86,10 +86,10 @@ const cawnUdemy = async (uri) => {
   return { udemydata: udemydata.data, sections: sections.data }
 }
 
-const udemy = async (uri) => {
-  const urlfixshare_udemy = await base_url(uri.url)
+const udemy = async (course) => {
+  const urlfixshare_udemy = await base_url(course.url)
   const patch = urlfixshare_udemy.split('/')[4];
-  // const fixURL = new URL(uri.uri).origin + '/course/' + patch
+  // const fixURL = new URL(course.course).origin + '/course/' + patch
   try {
 
 
@@ -113,8 +113,8 @@ const udemy = async (uri) => {
       await topics.save()
 
       console.log('add course to topic', topics.name)
-      uri.TopicId = topics.id
-      await uri.save()
+      course.TopicId = topics.id
+      await course.save()
 
       const [primary_subcategory, cprimary_subcategory] = await db.Topic.findOrCreate(
         {
@@ -151,7 +151,7 @@ const udemy = async (uri) => {
       primary_subcategory.parent_id = primary_category.id
       await primary_subcategory.save()
 
-      await uri.setTopics([topics.id, primary_category.id, primary_subcategory.id])
+      await course.setTopics([topics.id, primary_category.id, primary_subcategory.id])
     } catch (error) {
       console.log(error)
     }
@@ -160,8 +160,8 @@ const udemy = async (uri) => {
     try {
       const directory = './public/uploads/courses/udemy'
       const image = await downloadImage(udemydata.image_480x270, directory)
-      uri.image = `/uploads/courses/udemy/${image}`
-      await uri.save()
+      course.image = `/uploads/courses/udemy/${image}`
+      await course.save()
     } catch (error) {
       console.log(error)
     }

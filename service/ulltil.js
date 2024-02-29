@@ -89,21 +89,21 @@ function maskEmail(email) {
 
 const hand_coursetoTopics = async (courses) => {
   const promises = []
-  for (let link of courses) {
-    console.log(link.url)
+  for (let course of courses) {
+    console.log(course.url)
 
     const regex = /(udemy.com|unica.vn|kt.city\/course|gitiho.com\/khoa-hoc)/g;
-    const expression = link.url.match(regex);
+    const expression = course.url.match(regex);
     if (expression == null) { continue }
     switch (expression[0]) {
       case "unica.vn":
-        await cawn_data_test.unica(link)
+        await cawn_data_test.unica(course)
         break;
       case "udemy.com":
-        await cawn_data_test.udemy(link)
+        await cawn_data_test.udemy(course)
         break;
       case "gitiho.com/khoa-hoc":
-        await cawn_data_test.gitiho(link)
+        await cawn_data_test.gitiho(course)
         break;
       default:
         console.log({ success: false, data: '', messenger: "Lỗi, Không hỗ trợ khoá học này" })

@@ -86,7 +86,7 @@
 
                                                 <div class="row layout-pt-md">
 
-                                                    <div class="col-6 shopCompleted-footer ">
+                                                    <!-- <div class="col-6 shopCompleted-footer ">
                                                         <form method="POST" action="/order/cstripe/<%=order.uuid%>">
                                                             <button type="submit" class="button -md -green-1 text-dark-1 fw-700 w-1/1">Pay with Visa, Mastercard
                                                                 <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
@@ -94,8 +94,8 @@
                                                             </button>
                                                         </form>
                     
-                                                    </div> 
-                                                    <div class="col-6 shopCompleted-footer ">
+                                                    </div>  -->
+                                                    <div class="col-12 shopCompleted-footer ">
                                                         <form method="POST" action="/order/cscoinbase/<%=order.uuid%>">
                                                             <button type="submit" class="button -md -coinbase-1 fw-700 w-1/1">Pay with Crypto
                                                                 <%=(order.priceus / 100).toLocaleString('en-US', { maximumFractionDigits: 2,
