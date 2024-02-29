@@ -1212,7 +1212,7 @@
         </path>
         </svg> Check Out`
         try {
-            toastr.success('Creating an order, please wai')
+            toastr.success('Creating an order, please wait')
 
             const createOrder = await axios.post('/order/createvnapi', {
                 email, items
@@ -1226,7 +1226,7 @@
                 return {
                     item_id: item.id,
                     item_name: item.name,
-                    price: item.price,
+                    price: item.priceus / 100,
                     quantity: 1
                 }
             })
@@ -1234,21 +1234,21 @@
                 return {
                     content_id: item.id,
                     content_name: item.name,
-                    price: item.price,
+                    price: item.priceus / 100,
                     quantity: 1
                 }
             })
             gtag("event", "purchase", {
                 transaction_id: createOrder.data.order.uuid,
-                value: createOrder.data.order.price,
-                currency: "VND",
+                value: createOrder.data.order.priceus / 100,
+                currency: "USD",
                 items: itemsForGtag
             });
-            fbq('track', 'Purchase', { currency: "VND", value: createOrder.data.order.price });
+            fbq('track', 'Purchase', { currency: "USD", value: createOrder.data.order.priceus / 100 });
             ttq.track('PlaceAnOrder', {
                 content_type: 'product',
-                currency: "VND",
-                value: createOrder.data.order.price,
+                currency: "USD",
+                value: createOrder.data.order.priceus / 100,
                 contents: itemsForTikTok,
 
             })
