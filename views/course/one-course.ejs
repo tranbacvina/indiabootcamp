@@ -662,7 +662,7 @@
                                         <div><%=i.originprice?.toLocaleString('en-US', {style : 'currency' ,
                                             currency : 'USD' }) %></div>
 
-                                        <div><%=i.priceus.toLocaleString('en-US', {style : 'currency' ,
+                                        <div><%=(i.priceus/100).toLocaleString('en-US', {style : 'currency' ,
                                             currency : 'USD' }) %></div>
                                         </div>
                                     </div>
