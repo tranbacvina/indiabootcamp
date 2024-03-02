@@ -155,7 +155,7 @@ const solveCaptcha = async () => {
 
     // return res.data.captcha;
 
-    const res = await axios.post("https://mggtd.com/solve_captcha_v3", {
+    const res = await axios.post("http://ai.mggtd.com/captcha_v4", {
         "image": Captcha, "model": "vcb"
     })
     console.log(res.data)
@@ -254,6 +254,7 @@ const getHistories = async (fromdate, todate, pageIndex) => {
     }
 };
 
+// doLogin()
 module.exports = {
     getHistories,
 };
