@@ -110,17 +110,18 @@ const check_regex_bank = (str) => {
   return { result, match };
 };
   const main = async () => {
-   const course = await db.course.update(
+   const course = await db.course.findOne(
+ 
     {
-      is_practice_test_course : true,
-      
-    },
-    {
-      where: {id :6902}
-    }
+      where: {id :2140},
     
-
+    include: [
+      {model: db.Topic}
+    ]
+  },
     )
+
+    console.log(course)
   //   try {
   //     const fetTopicData = await db.Topic.findAll();
   //     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));

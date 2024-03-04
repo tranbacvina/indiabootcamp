@@ -94,7 +94,7 @@ const topicSlugGetCourses = async (req, res) => {
         console.log(req.baseUrl)
 
         const results = await Promise.all([topic.findOne(slug),  courseService.findManyCourseTopicV2(text, page, slug)])
-
+       
         const topicOne = results[0]
 
         if (!topicOne) {
@@ -105,7 +105,7 @@ const topicSlugGetCourses = async (req, res) => {
         let course = results[1]
 
         if(course.count == 0) {
-            await topic.removeTopic(topicOne.id)
+            // await topic.removeTopic(topicOne.id)
             res.redirect('/404')
             return
         }

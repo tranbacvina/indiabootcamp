@@ -157,7 +157,12 @@ const findManyCourseTopicV2 = async (text, page, topic) => {
         attributes: ['name','is_practice_test_course', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
         include: [{ model: db.rating }],
         where: {
-            is_practice_test_course: false,
+            [Op.or]: [
+                {is_practice_test_course: false},
+                {is_practice_test_course: null}
+
+            ]
+            
         }
     }
     if (text) {
@@ -343,9 +348,7 @@ const update = async (id, name, url, slug, price, priceus, priceindia, TopicId, 
     }})
 
     let parentTopic = await ulltil.getTopicWithParents(TopicId)
-    console.log(parentTopic)
     parentTopic = [...parentTopic.parents.map(item => item.id),TopicId]
-    console.log(parentTopic)
 
     await course.setTopics(parentTopic)
 
