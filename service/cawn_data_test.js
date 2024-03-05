@@ -54,10 +54,10 @@ const getlastpart = (url) => {
 }
 
 const scrapingUdemy = async (link) => {
-  const uri =`${link}/?persist_locale=&locale=en_US`
+  const uri = `${link}/?persist_locale=&locale=en_US`
   const response = await gotScraping({
     url: link,
- 
+
   });
 
   let $ = cheerio.load(response.body);
@@ -78,7 +78,8 @@ const cawnUdemy = async (uri) => {
     , {
       headers: {
         'Authorization': 'Bearer F5v5Hn+ROX+wpND4rbn2D7nA4dvHD6dJRJ0T0T9sicc:lq6TEeOxY9Vk1b2A3MHnh63AadNEudbR0EMFObbYfkE',
-      }}
+      }
+    }
   )
 
 
@@ -95,9 +96,9 @@ const udemy = async (uri) => {
 
     const { udemydata, sections } = await cawnUdemy(patch)
     try {
-      const { requirements, whatyouwilllearn,topic } = await scrapingUdemy(urlfixshare_udemy)
+      const { requirements, whatyouwilllearn, topic } = await scrapingUdemy(urlfixshare_udemy)
 
-  
+
 
 
       const [topics, created] = await db.Topic.findOrCreate(
@@ -147,7 +148,7 @@ const udemy = async (uri) => {
       primary_category.name = udemydata.primary_category.title
       await primary_category.save()
       console.log('add primary_subcategory to primary_category', primary_category.name)
-      
+
       primary_subcategory.parent_id = primary_category.id
       await primary_subcategory.save()
 
@@ -177,39 +178,73 @@ const cawnUnica = async (link) => {
     const get_web = await axios.get(link);
     let $ = cheerio.load(get_web.data);
 
-    const name = $('h1').children().text()
-    const description = $("div[itemprop='description']").text();
+    const name = $('h1').text()
+    const description = $('h1').next().text()
     const image = `https://unica.vn/${$("meta[property='og:image']").attr("content")}`;
-    const price = 50000
-    const description_log = $('#u-des-course').html()
-    const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
+    const price = 99000
+    const description_log = $('.mark').html()
+
+
+    const targetDiv = $('div:contains("Bạn sẽ học được")').filter((index, element) => {
+      return $(element).text().trim() === 'Bạn sẽ học được';
+    });
+    const whatyouwilllearn = targetDiv.next().find('p').map((index, element) => $(element).text().trim()).get();
+
+    const noidungDiv = $('div:contains("Nội dung khóa học")').filter((index, element) => {
+      return $(element).text().trim() === 'Nội dung khóa học';
+    }).next().next().children();
     const sections = []
-    const panel = $('.panel').map((i, e) => {
-      const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
+    const panel = noidungDiv.map((i, e) => {
+      if (i == 0 || i % 2 == 0) {
+        const t = $(e).find('.flex-auto')
 
-      const items = $(e).find('.panel-body').find('.col').map((i, e) => {
+        const title = t.text().trim().replace(/\n/g, '')
+        const tid = t.parent().attr('data-collapse-toggle')
 
-        const title = $(e).find('.title').text().trim().replace(/\n/g, '')
-        const content_summary = $(e).find('.time').text().trim().replace(/\n/g, '')
 
-        return { title, content_summary };
-      }).get()
-      sections.push({ title, items, lecture_count: items.length });
+        const items = $(`#${tid}`).children().map((i, e) => {
+          let title = $(e).find('.text-sm').text().trim().replace(/\s\s/g, '')
+          const content_summary = $(e).find('.min-w-12').text().trim()
+          return { title, content_summary }
+        }).get()
+
+
+
+
+        sections.push({ title, items, lecture_count: items.length });
+      }
+
     })
-    const originprice = parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
-    const breadcrumb = JSON.parse($('script[type="application/ld+json"]').html())
+    console.log(sections)
+    const originprice = parseInt($('.price-sale:first').text().replace(/[,.đ]/g, ''))
 
-    let topic = {
-      text: breadcrumb.itemListElement[breadcrumb.itemListElement.length - 1].name,
-      href: getlastpart(breadcrumb.itemListElement[breadcrumb.itemListElement.length - 1].item)
+
+    // let breadcrumb = $(".breadcumb-detail-course").children('a')
+
+    let breadcrumb = $('[aria-label="Breadcrumb"]').find('ol').children()
+    let parentTopic
+    let topic
+    if (breadcrumb.length == 3) {
+      parentTopic = {
+        name: $(breadcrumb[1]).find('a').text().trim(),
+        href: $(breadcrumb[1]).find('a').attr('href')
+      }
+      topic = {
+        name: $(breadcrumb[2]).find('a').text().trim(),
+        href: $(breadcrumb[2]).find('a').attr('href')
+      }
     }
 
-    let parent = null
-
-    if (breadcrumb.itemListElement.length == 3) {
-      parent = breadcrumb.itemListElement[1]
-      parent = { text: parent.name, href: getlastpart(parent.item) }
+    if (breadcrumb.length == 2) {
+      parentTopic = null
+      topic = {
+        name: $(breadcrumb[1]).find('a').text().trim(),
+        href: $(breadcrumb[1]).find('a').attr('href')
+      }
     }
+
+
+
     return {
       name,
       description,
@@ -219,9 +254,9 @@ const cawnUnica = async (link) => {
       description_log,
       whatyouwilllearn,
       requirements: [],
-      sections,
-      originprice,
-      topic, parent
+      sections: { sections },
+      originprice,topic,
+      parentTopic, 
     }
   } catch (error) {
     console.log(error)
@@ -244,9 +279,9 @@ const unica = async (uri) => {
       requirements,
       sections,
       originprice,
-      topic, parent
+      topic, parentTopic
     } = await cawnUnica(urlfixshare_udemy)
-    console.log(topic, parent)
+    console.log(topic, parentTopic)
     // uri.originprice = originprice
     // uri.sections = {sections: sections}
     let setofTopic = []
@@ -265,13 +300,13 @@ const unica = async (uri) => {
 
     setofTopic = [...setofTopic, ctopic.id]
 
-    if (parent !== null) {
+    if (parentTopic !== null) {
       const [cparent, createdparent] = await db.Topic.findOrCreate(
         {
           where: { slug: parent.href },
           defaults: {
-            name: parent.text,
-            slug: parent.href
+            name: parentTopic.text,
+            slug: parentTopic.href
 
           }
         }

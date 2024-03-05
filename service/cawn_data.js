@@ -128,39 +128,72 @@ const cawnUnica = async (link) => {
     const get_web = await axios.get(link);
     let $ = cheerio.load(get_web.data);
 
-    const name = $('h1').children().text()
-    const description = $("div[itemprop='description']").text().trim().replace(/^\s+|\s+$/g, '');
+    const name = $('h1').text()
+    const description = $('h1').next().text()
     const image = `https://unica.vn/${$("meta[property='og:image']").attr("content")}`;
     const price = 99000
-    const description_log = $('#u-des-course').html()
-    const whatyouwilllearn = $('.title-learn').map((i, e) => { return $(e).text().trimStart().replace(/[\t\n]/gm, '') }).get()
+    const description_log = $('.mark').html()
+
+
+    const targetDiv = $('div:contains("Bạn sẽ học được")').filter((index, element) => {
+      return $(element).text().trim() === 'Bạn sẽ học được';
+  });
+  const whatyouwilllearn = targetDiv.next().find('p').map((index, element) => $(element).text().trim()).get();
+
+  const noidungDiv =  $('div:contains("Nội dung khóa học")').filter((index, element) => {
+    return $(element).text().trim() === 'Nội dung khóa học';
+  }).next().next().children();
     const sections = []
-    const panel = $('.panel').map((i, e) => {
-      const title = $(e).find('.panel-title').text().trim().replace(/\n/g, '')
+    const panel = noidungDiv.map((i, e) => {
+      if(i == 0 || i % 2 == 0) {
+      const t = $(e).find('.flex-auto')
+      
+        const title = t.text().trim().replace(/\n/g, '')
+        const tid = t.parent().attr('data-collapse-toggle')
+  
+        
+        const items = $(`#${tid}`).children().map((i,e) => {
+          let title = $(e).find('.text-sm').text().trim().replace(/\s\s/g, '')
+          const content_summary = $(e).find('.min-w-12').text().trim()
+          return { title, content_summary }
+        }).get()
+  
+        
+    
+  
+        sections.push({ title, items, lecture_count: items.length });
+      }
 
-      const items = $(e).find('.panel-body').find('.col').map((i, e) => {
-
-        const title = $(e).find('.title').text().trim().replace(/\n/g, '')
-        const content_summary = $(e).find('.time').text().trim().replace(/\n/g, '')
-
-        return { title, content_summary };
-      }).get()
-      sections.push({ title, items, lecture_count: items.length });
     })
-    const originprice = parseInt($('.big-price:first').text().replace(/[,.đ]/g, ''))
+    console.log(sections)
+    const originprice = parseInt($('.price-sale:first').text().replace(/[,.đ]/g, ''))
 
-    const breadcrumb = $(".breadcumb-detail-course").children('a')
+
+    // let breadcrumb = $(".breadcumb-detail-course").children('a')
+
+    let breadcrumb = $('[aria-label="Breadcrumb"]').find('ol').children()
     let parentTopic
     let topic
     if (breadcrumb.length == 3) {
-      parentTopic = { name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href') }
-      topic = { name: $(breadcrumb[2]).text(), href: $(breadcrumb[2]).attr('href') }
+      parentTopic = { 
+        name: $(breadcrumb[1]).find('a').text().trim(), 
+       href: $(breadcrumb[1]).find('a').attr('href') 
+      }
+      topic = { 
+        name: $(breadcrumb[2]).find('a').text().trim(), 
+        href: $(breadcrumb[2]).find('a').attr('href') 
+      }
     }
 
     if (breadcrumb.length == 2) {
       parentTopic = null
-      topic = { name: $(breadcrumb[1]).text(), href: $(breadcrumb[1]).attr('href') }
+      topic = { 
+        name: $(breadcrumb[1]).find('a').text().trim(), 
+        href: $(breadcrumb[1]).find('a').attr('href') 
+      }
     }
+
+  
 
     return {
       name,
@@ -300,5 +333,5 @@ const gitiho = async (uri) => {
 };
 
 module.exports = {
-  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho
+  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho,cawnUnica
 };
