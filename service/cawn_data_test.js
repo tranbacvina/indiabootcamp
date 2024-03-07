@@ -227,11 +227,11 @@ const cawnUnica = async (link) => {
     if (breadcrumb.length == 3) {
       parentTopic = {
         name: $(breadcrumb[1]).find('a').text().trim(),
-        href: $(breadcrumb[1]).find('a').attr('href')
+        href: getlastpart($(breadcrumb[1]).find('a').attr('href'))
       }
       topic = {
         name: $(breadcrumb[2]).find('a').text().trim(),
-        href: $(breadcrumb[2]).find('a').attr('href')
+        href: getlastpart($(breadcrumb[2]).find('a').attr('href'))
       }
     }
 
@@ -243,7 +243,7 @@ const cawnUnica = async (link) => {
       }
     }
 
-
+    console.log(parentTopic, topic)
 
     return {
       name,
@@ -303,7 +303,7 @@ const unica = async (uri) => {
     if (parentTopic !== null) {
       const [cparent, createdparent] = await db.Topic.findOrCreate(
         {
-          where: { slug: parent.href },
+          where: { slug: parentTopic.href },
           defaults: {
             name: parentTopic.text,
             slug: parentTopic.href
@@ -502,5 +502,5 @@ async function downloadImage(url, directory) {
   }
 }
 module.exports = {
-  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho, downloadImage
+  getDriveUdemy, udemy, givenamereturndrive, unica, gitiho, downloadImage,cawnUnica
 };

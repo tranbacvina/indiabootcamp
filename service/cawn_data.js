@@ -194,7 +194,7 @@ const cawnUnica = async (link) => {
     }
 
   
-
+console.log(parentTopic, topic)
     return {
       name,
       description,

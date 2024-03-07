@@ -7,7 +7,11 @@ const { where } = require("sequelize");
 const schema = require('../service/schema')
 
 const allTopicShow = async (req, res) => {
-    const fetTopicData = await topic.findAll()
+    const fetTopicData = await topic.findAll({
+        order: [
+            ['name', 'DESC']
+        ]
+    })
     const rows = JSON.parse(JSON.stringify(fetTopicData, null, 2));
     const topics = await ulltilService.handlerTopic(rows, 0);
    

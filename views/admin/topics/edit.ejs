@@ -146,6 +146,8 @@
                                                             <label class="text-16 lh-1 fw-500 text-dark-1 mb-10">Parent
                                                                 Topic*</label>
                                                                 <select name="parent_id">
+                                                                    <option value="0">  </option>
+
                                                                     <%for (let i of dropDownHandTopic) {%>
                                                                     
                                                                     <option value="<%=i.id%>" <%= i.id == topic.parent_id ? 'selected' : '' %> > <%=i.text%> </option>
