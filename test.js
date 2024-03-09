@@ -3,7 +3,7 @@ const db = require('./models')
 const main= async () => {
   const courses = await db.course.findAll({
     where: {
-      url: 'https://unica.vn/hoc-ve-chan-dung'
+      url: 'https://unica.vn/khoa-hoc-lam-youtube-bat-dong-san-pro'
     }
   })
   await cawn_data.hand_coursetoTopics(courses)
