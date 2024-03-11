@@ -4,7 +4,12 @@ const handlerDRM = async (req, res) => {
   const { url, referer, media_license_token } = req.body
   const datas = req.files.datas[0].buffer;
   try {
-    const response = await gotScraping.post('https://www.udemy.com/media-license-server/validate-auth-token', {
+    const response = await gotScraping.post({
+
+      url:'https://fullbootcamp.udemy.com/media-license-server/validate-auth-token', 
+      proxyUrl: 'http://alobabyday:123456_country-id@geo.iproyal.com:12321'}, 
+      
+      {
       searchParams: {
         'drm_type': 'widevine',
         'auth_token': media_license_token
