@@ -86,10 +86,12 @@ const udemy = async (uri) => {
     let course = await oneCourseLink(urlfixshare_udemy)
     const { udemydata, sections } = await cawnUdemy(patch)
     const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
-    
+
+    if(udemydata.locale.english_title === 'Vietnamese') return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này (Vietnamese)" }
+
     if (course) {
 
-      if (course.is_practice_test_course) {
+      if (course.is_practice_test_course || udemydata.is_practice_test_course) {
         return { success: false, data: course, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
       }
 
@@ -106,9 +108,7 @@ const udemy = async (uri) => {
 
     } else {
 
-      if (udemydata.is_practice_test_course) {
-        return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
-      }
+    
 
       const newCourse = await createNewCourse(udemydata.title, urlfixshare_udemy, udemydata.headline, udemydata.image_480x270, 50000, udemydata.is_practice_test_course, udemydata.description, whatyouwilllearn, requirements, sections.curriculum_context.data, udemydata.price_detail.amount)
 
