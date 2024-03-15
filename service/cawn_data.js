@@ -51,19 +51,7 @@ const base_url = async (link) => {
 
 };
 
-const scrapingUdemy = async (link) => {
-  const response = await gotScraping({
-    url: link,
 
-  });
-  let $ = cheerio.load(response.body);
-  const requirements = $("h2.requirements--title--2wsPe").next().children().map((i, e) => { return $(e).text() }).get()
-  const whatyouwilllearn = $(".what-you-will-learn--objectives-list-two-column-layout--rZLJy").children().map((i, e) => { return $(e).text() }).get()
-
-  const data = { requirements, whatyouwilllearn }
-
-  return data
-}
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
@@ -72,10 +60,12 @@ const cawnUdemy = async (uri) => {
       'Authorization': 'Bearer F5v5Hn+ROX+wpND4rbn2D7nA4dvHD6dJRJ0T0T9sicc:lq6TEeOxY9Vk1b2A3MHnh63AadNEudbR0EMFObbYfkE', }
     }
   )
-  const sections = await axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
+  const sections =  axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
+  
+  const reqObj =  axios.get(`https://www.udemy.com/api-2.0/courses/${udemydata.data.id}/?fields[course]=prerequisites,objectives`)
 
-  console.log('is_practice_test_course >>>>>>',udemydata.data)
-  return { udemydata: udemydata.data, sections: sections.data }
+  const promise = await  Promise.all([sections,reqObj])
+  return { udemydata: udemydata.data, sections: promise[0].data, requirements: promise[1].data.prerequisites, whatyouwilllearn: promise[1].data.objectives}
 }
 
 const udemy = async (uri) => {
@@ -84,9 +74,7 @@ const udemy = async (uri) => {
   const patch = urlfixshare_udemy.split('/')[4];
   try {
     let course = await oneCourseLink(urlfixshare_udemy)
-    const { udemydata, sections } = await cawnUdemy(patch)
-    const { requirements, whatyouwilllearn } = await scrapingUdemy(urlfixshare_udemy)
-
+    const { udemydata, sections,requirements,whatyouwilllearn } = await cawnUdemy(patch)
     if(udemydata.locale.english_title === 'Vietnamese') return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này (Vietnamese)" }
 
     if (course) {

@@ -1,14 +1,7 @@
-const cawn_data = require("./service/ulltil")
+const cawn_data = require("./service/cawn_data")
 const db = require('./models')
 const main= async () => {
-  const course = await db.course.findOne({
-    where:{
-      id:6365
-    }
-  })
-
-  course.is_practice_test_course = true
-  await course.save()
+  await cawn_data.udemy('https://www.udemy.com/course/build-a-microservices-app-with-dotnet-and-nextjs-from-scratch/')
 }
 
 main()
