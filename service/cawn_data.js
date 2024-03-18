@@ -75,11 +75,12 @@ const udemy = async (uri) => {
   try {
     let course = await oneCourseLink(urlfixshare_udemy)
     const { udemydata, sections,requirements,whatyouwilllearn } = await cawnUdemy(patch)
-    if(udemydata.locale.english_title === 'Vietnamese') return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này (Vietnamese)" }
+    if(udemydata.locale.english_title === 'Vietnamese'  ) return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này (Vietnamese)" }
+    if( udemydata.is_practice_test_course) return { success: false, data: udemydata, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
 
     if (course) {
 
-      if (course.is_practice_test_course || udemydata.is_practice_test_course) {
+      if (course.is_practice_test_course) {
         return { success: false, data: course, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
       }
 
