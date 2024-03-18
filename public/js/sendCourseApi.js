@@ -144,7 +144,7 @@ const renderGoogleOneDriveFC = (OneDrives, DriveFolders, email, orderIdItemChuaG
 }
 
 const downloadAllCourse = async (e) => {
-    const URI = 'http://udemy.fullbootcamp.com/'
+    const URI = 'https://udemy.fullbootcamp.com/'
     const id = e.getAttribute("idOrder")
     let links = await axios.get(`/admin/order/needdowwnload/${id}`)
     links = links.data
@@ -157,7 +157,7 @@ const downloadAllCourse = async (e) => {
 }
 
 const downloadAllCoursev2 = async (e) => {
-    const URI2 = 'http://udemy.fullbootcamp.com/nonbussines'
+    const URI2 = 'https://udemy.fullbootcamp.com/nonbussines'
     const id = e.getAttribute("idOrder")
     let links = await axios.get(`/admin/order/needdowwnload/${id}`)
     links = links.data
@@ -170,7 +170,7 @@ const downloadAllCoursev2 = async (e) => {
 }
 
 const downloadAllCoursev3 = async (e) => {
-    const URI2 = 'http://udemy.fullbootcamp.com/3'
+    const URI2 = 'https://udemy.fullbootcamp.com/3'
     const id = e.getAttribute("idOrder")
     let links = await axios.get(`/admin/order/needdowwnload/${id}`)
     links = links.data
@@ -184,7 +184,7 @@ const downloadAllCoursev3 = async (e) => {
 }
 
 const downloadAllCoursev4 = async (e) => {
-    const URI2 = 'http://udemy.fullbootcamp.com/4'
+    const URI2 = 'https://udemy.fullbootcamp.com/4'
     const id = e.getAttribute("idOrder")
     let links = await axios.get(`/admin/order/needdowwnload/${id}`)
     links = links.data
