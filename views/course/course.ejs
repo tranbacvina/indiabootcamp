@@ -10,10 +10,8 @@
 
     <link rel="canonical" href="<%=canonicalURL%>" />
 
-    <meta name="title"
-        content="<% if (topicOne.seotitle) { %><%= topicOne.seotitle %><% } else { %>Khoá học Online <%= topicOne.name %> 50K<% } %> - <%= locals.formattedDate %>" />
-    <meta name="description"
-        content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
+    <meta name="title" content="<% if (topicOne.seotitle) { %><%= topicOne.seotitle %><% } else { %>Khoá học Online <%= topicOne.name %> 50K<% } %> - <%= locals.formattedDate %>" />
+    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
