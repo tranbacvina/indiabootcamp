@@ -6,10 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Primary Meta Tags -->
-    <title>
-        <%=topicOne.seotitle ? topicOne.seotitle : "Khoá học Online " + topicOne.name %> 50K - <%= locals.formattedDate
-                %>
-    </title>
+    <title><% if (topicOne.seotitle) { %><%= topicOne.seotitle %><% } else { %>Khoá học Online <%= topicOne.name %> 50K<% } %> - <%= locals.formattedDate %></title>
 
     <link rel="canonical" href="<%=canonicalURL%>" />
 
