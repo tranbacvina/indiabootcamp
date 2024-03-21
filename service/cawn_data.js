@@ -55,9 +55,9 @@ const base_url = async (link) => {
 
 const cawnUdemy = async (uri) => {
   const udemydata = await axios.get(
-    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=is_practice_test_course,price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,?persist_locale=&locale=en_US`, {
+    `https://www.udemy.com/api-2.0/courses/${uri}/?fields[course]=is_practice_test_course,price_detail,price,title,context_info,primary_category,primary_subcategory,avg_rating_recent,visible_instructors,locale,estimated_content_length,num_subscribers,image_480x270,description,is_in_any_ufb_content_collection,url,headline,?persist_locale=&locale=vi_VN`, {
       headers: { 
-      'Authorization': 'Bearer F5v5Hn+ROX+wpND4rbn2D7nA4dvHD6dJRJ0T0T9sicc:lq6TEeOxY9Vk1b2A3MHnh63AadNEudbR0EMFObbYfkE', }
+      'Authorization': 'Bearer TeXL+at7QAq597GU6e+rf2HKxrDebHrRkLJQ1iCQB70:i2/jv676IlsR8ZP/bMTG4W80LRSVSqwH7OkiOSrotTQ', }
     }
   )
   const sections =  axios.get(`https://www.udemy.com/api-2.0/course-landing-components/${udemydata.data.id}/me/?components=curriculum_context`)
