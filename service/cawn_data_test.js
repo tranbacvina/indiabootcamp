@@ -239,7 +239,7 @@ const cawnUnica = async (link) => {
       parentTopic = null
       topic = {
         name: $(breadcrumb[1]).find('a').text().trim(),
-        href: $(breadcrumb[1]).find('a').attr('href')
+        href: getlastpart($(breadcrumb[1]).find('a').attr('href'))
       }
     }
 
@@ -289,7 +289,7 @@ const unica = async (uri) => {
       {
         where: { slug: topic.href },
         defaults: {
-          name: topic.text,
+          name: topic.name,
           slug: topic.href
 
         }
@@ -305,7 +305,7 @@ const unica = async (uri) => {
         {
           where: { slug: parentTopic.href },
           defaults: {
-            name: parentTopic.text,
+            name: parentTopic.name,
             slug: parentTopic.href
 
           }
