@@ -162,9 +162,17 @@ const findManyCourseTopicV2 = async (text, page, topic) => {
         attributes: ['name','is_practice_test_course', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
         include: [{ model: db.rating }],
         where: {
-            is_practice_test_course:{
-                [Op.not]: true,
-            }
+            [Op.and]:[
+                {is_practice_test_course:{
+                    [Op.not]: true,
+                }},
+                {
+                    url:{
+                        [Op.notLike]: ['%udemy%']
+                    }
+                }
+            ]
+            
             
         }
     }

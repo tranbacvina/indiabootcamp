@@ -217,7 +217,7 @@ const publicall = async (req, res) => {
 
 
     if (course.count === 0) {
-        res.render('layout/404')
+        res.status(404).redirect('/404')
     } else {
         const schemaCourses = schema.createStrucDataCourses(course.rows)
         const itemCount = course.count;
@@ -240,8 +240,10 @@ const publicall = async (req, res) => {
 const onePublic = async (req, res) => {
     const { slug } = req.params;
     const course = await oneCourseSlug(slug);
-    if (!course || course.is_practice_test_course) {
-        res.status(404).render("layout/404")
+    let url = course.url
+    console.log(url)
+    if (!course || course.is_practice_test_course || url.includes('udemy')) {
+        res.status(404).redirect('/404')
         return
     }
     

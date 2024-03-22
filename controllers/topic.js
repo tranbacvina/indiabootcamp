@@ -110,7 +110,7 @@ const topicSlugGetCourses = async (req, res) => {
 
         if(course.count == 0) {
             // await topic.removeTopic(topicOne.id)
-            res.redirect('/404')
+            res.status(404).redirect('/404')
             return
         }
 
