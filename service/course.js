@@ -104,14 +104,19 @@ const findMany = async (text, page) => {
         offset: skip,
         order: [['id', 'DESC']],
         include: { model: db.Topic },
-        attributes: ['image', 'id', 'name', 'url', 'slug', 'price', 'originprice', 'description']
+        attributes: ['image', 'id', 'name','is_practice_test_course', 'url', 'slug', 'price', 'originprice', 'description']
     }
     if (text) {
         query['where'] = {
-            [Op.or]: [
+            [Op.and]: [{[Op.or]: [
                 { name: { [Op.like]: `%${text}%` } },
-                { url: { [Op.like]: `%${text}%` } }
-            ]
+                { url: { [Op.like]: `%${text}%` } },
+                
+               
+            ]},  {is_practice_test_course: {
+                [Op.not]: true,
+            }}], 
+            
         }
     }
 
@@ -157,11 +162,9 @@ const findManyCourseTopicV2 = async (text, page, topic) => {
         attributes: ['name','is_practice_test_course', 'slug', 'image', 'updatedAt', 'description', 'price', 'originprice', 'url'],
         include: [{ model: db.rating }],
         where: {
-            [Op.or]: [
-                {is_practice_test_course: false},
-                {is_practice_test_course: null}
-
-            ]
+            is_practice_test_course:{
+                [Op.not]: true,
+            }
             
         }
     }

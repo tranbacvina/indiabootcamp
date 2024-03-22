@@ -3,10 +3,11 @@ const db = require('./models')
 const main= async () => {
   const course = await db.course.findOne({
     where:{
-      url: 'https://unica.vn/trang-diem-ca-nhan-pro-tai-nha'
+      id: 6902
     }
   })
-  await cawn_data.unica(course)
+  course.is_practice_test_course = true
+  await course.save()
 }
 
 main()

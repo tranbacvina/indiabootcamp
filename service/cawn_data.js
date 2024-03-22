@@ -80,8 +80,8 @@ const udemy = async (uri) => {
 
     if (course) {
 
-      if (course.is_practice_test_course) {
-        return { success: false, data: course, messenger: "Không hỗ trợ khoá học này, liên hệ admin để tư vấn Mua Giftcode" }
+      if (course.is_practice_test_course  && udemydata.locale.english_title === 'Vietnamese') {
+        return { success: false, data: course, messenger: "Không hỗ trợ khoá học này" }
       }
 
       const updateCourse = await db.course.update({
@@ -89,7 +89,6 @@ const udemy = async (uri) => {
         sections: sections.curriculum_context.data,
         price: 50000,
         originprice:udemydata.price_detail.amount,
-        is_practice_test_course: udemydata.is_practice_test_course
       }, {where : {id: course.id}})
 
       course = await oneCourseLink(urlfixshare_udemy)
