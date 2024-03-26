@@ -163,7 +163,13 @@
                                                             value="<%= JSON.stringify(course.whatyouwilllearn )%>"
                                                             name="whatyouwilllearn">
                                                     </div>
-
+                                                    <div class="col-12">
+                                                        <label
+                                                            class="text-16 lh-1 fw-500 text-dark-1 mb-10">sections</label>
+                                                        <input type="text" class="" id="sections"
+                                                            value="<%= JSON.stringify(course.sections? )%>"
+                                                            name="sections">
+                                                    </div>
                                                     <div class="col-12">
                                                         <label
                                                             class="text-16 lh-1 fw-500 text-dark-1 mb-10">requirements</label>
@@ -411,8 +417,18 @@
 
     <!-- JavaScript -->
     <%- include('../../layout/footerjs'); %>
+    <script>
+        function dump_json(rsp) {
+            return "using dump_json: " + JSON.stringify(rsp,null,2);
+        }
+    </script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+        <script src="/js/prism.js"></script>
+        <script>
+            Prism.plugins.jsonphighlight.registerAdapter(function(rsp) {
+                return "using registerAdapter: " + JSON.stringify(rsp,null,2);
+            })
+        </script>
         <script src="/js/ckeditor.js"></script>
         <script>
             $(".js-select2").select2({

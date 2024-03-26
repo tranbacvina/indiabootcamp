@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+    <title>
+        <%=topicOne.seotitle ? topicOne.seotitle : "Online courses " + topicOne.name %> $3 - <%= locals.formattedDate
+                %>
+    </title>
+
+    <link rel="canonical" href="<%=canonicalURL%>" />
+
+    <meta name="title"  content="<%=topicOne.seotitle ? topicOne.seotitle : 'Online courses ' + topicOne.name %> $3 - <%= locals.formattedDate %>" />
+    <meta name="description" content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/redketchup/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/redketchup/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/redketchup/favicon-16x16.png">
+    <link rel="manifest" href="/img/redketchup/site.webmanifest">
+    <meta content="INDEX,FOLLOW" name="robots" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%=canonicalURL%>" />
+    <meta property="og:title"
+        content="<%=topicOne.seotitle ? topicOne.seotitle : 'Online courses ' + topicOne.name %> 50K - <%= locals.formattedDate %>" />
+    <meta property="og:description"
+        content="<%=topicOne.seodescription ? topicOne.seodescription : (childTopics.length > 0 ? 'Full khoá học ' + topicOne.name + ' Online chỉ 50k với các chủ đề ' + childTopics.slice(0, 5).map(item => item.name) : 'Tất cả Khoá học ' + topicOne.name + ' chất lượng, uý tin đồng giá 50k') %>" />
+    <meta property="og:image"
+        content="<%= course[0].image ? course[0].image : 'https://fullbootcamp.com/1662989050474fb-ogimg.png' %> " />
+    
+    
+        <meta property="og:locale" content="en_US" />
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/vendors.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/tingle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <script type="application/ld+json">
+        <%-JSON.stringify(schemaBreadcum)%>
+    </script>
+    <script type="application/ld+json">
+        <%-JSON.stringify(schemaCourses)%>
+    </script>
+    <%- include('../layout/analytics'); %>
+        <style>
+            .swiper-item-tag {
+                width: auto !important;
+            }
+
+            .list-tag .item-tag .title-tag {
+                padding: 12px;
+                border: 1px solid #e1e1e1;
+                border-radius: 5px;
+            }
+
+
+            .tag-btn-next {
+                right: -30px;
+            }
+
+            .tag-btn-prev {
+                left: -30px;
+            }
+
+            .tag-btn {
+                font-size: 40px;
+                position: absolute;
+                top: 50%;
+                z-index: 2;
+            }
+        </style>
+</head>
+
+<body class="preloader-visible" data-barba="wrapper">
+    <!-- preloader start -->
+    <div class="preloader js-preloader">
+        <div class="preloader__bg"></div>
+    </div>
+    <!-- preloader end -->
+
+
+    <main class="main-content  ">
+        <%- include('../layout/header'); %>
+            <div class="content-wrapper  js-content-wrapper">
+
+
+                <section data-anim="fade" class="breadcrumbs is-in-view">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="breadcrumbs__content">
+
+                                    <div class="breadcrumbs__item ">
+                                        <a href="/">Home</a>
+                                    </div>
+                                    <% if (breadcrumb) {%>
+                                        <% for (let item of breadcrumb.parents) {%>
+                                            <div class="breadcrumbs__item ">
+                                                <a href="/topic/<%=item.slug%>">
+                                                    <%=item.name%>
+                                                </a>
+                                            </div>
+                                            <%}%>
+                                                <div class="breadcrumbs__item ">
+                                                    <a href="/topic/<%=breadcrumb.category.slug%>">
+                                                        <%=breadcrumb.category.name%>
+                                                    </a>
+                                                </div>
+                                                <%}else {%>
+                                                    <div class="breadcrumbs__item ">
+                                                        <a href="/topic/<%=topicOne.slug%>">
+                                                            <%=topicOne.name%>
+                                                        </a>
+                                                    </div>
+                                                    <%}%>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="container pt-20">
+                    <h1 class="text-20 lh-1 text-dark-1 fw-500">
+                        <%=itemCount%> Service <%=topicOne.name%>
+                    </h1>
+                    <%if (locals.user) {%> <a class="text-purple-1" href="/admin/topic/<%=topicOne.id%>"
+                            rel="noopener noreferrer"> Sửa topic </a>
+                        <%}%>
+
+                            <%if(childTopics.length> 0) {%>
+                                <div class="relative pt-20">
+                                    <div class="swiper mySwiper overflow-hidden">
+                                        <div class="swiper-wrapper list-tag">
+                                            <% for (let i of childTopics) {%>
+                                                <div class="swiper-slide item-tag swiper-item-tag">
+                                                    <a type="button" href="/topic/<%= i.slug %>">
+                                                        <div style="background-color: white; padding: 5px 15px !important;"
+                                                            class="title-tag text-center ">
+                                                            <%= i.name %>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <%}%>
+                                        </div>
+                                        <div class="col-auto sm:d-none tag-btn-prev tag-btn">
+                                            <button class="d-flex items-center text-24 arrow-left-hover js-prev">
+                                                <i class="icon icon-arrow-left"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-auto sm:d-none tag-btn-next tag-btn">
+                                            <button class="d-flex items-center text-24 arrow-right-hover js-next">
+                                                <i class="icon icon-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
+                </div>
+
+
+                <section class="page-header -type-1">
+                    <div class="container">
+                        <div class="page-header__content">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <div data-anim="slide-up delay-1" class="is-in-view">
+
+                                        <h2 class="page-header__title">
+                                            <%=topicOne.seotitle ? topicOne.seotitle : topicOne.name%>
+                                        </h2>
+
+                                    </div>
+
+                                    <div data-anim="slide-up delay-2" class="is-in-view">
+
+                                        <p class="page-header__text">
+                                            <%=topicOne.seodescription%>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="layout-pb-md">
+                    <div data-anim="slide-up delay-2" class="container is-in-view">
+
+                        <div class="row y-gap-60 g-4">
+                            <% for (let item of course) { %>
+                                <div class="col-6 col-md-6 col-lg-4 col-xl-3">
+                                    <a href="/service/<%=item.slug%>" class="coursesCard -type-1 ">
+                                        <div class="courseCardBody">
+                                            <div class="relative">
+                                                <div class="coursesCard__image overflow-hidden rounded-8">
+                                                    <img class="w-1/1" src="<%= item.image %>" alt="image">
+                                                    <div class="coursesCard__image_overlay rounded-8"></div>
+                                                </div>
+                                                <div
+                                                    class="d-flex justify-between py-10 px-10 absolute-full-center z-3">
+
+                                                </div>
+                                            </div>
+
+                                            <h3 class="text-18 lh-15 text-dark-1">
+                                                <%= item.name %>
+                                            </h3>
+
+                                            <%if (item.ratings.avg> 0) { %>
+                                                <div class="d-flex items-center rattings">
+                                                    <div class="text-14 lh-1 text-yellow-1 mr-10">
+                                                        <%= item.ratings.avg ? item.ratings.avg : '' %>
+                                                    </div>
+                                                    <div class="d-flex x-gap-5 items-center">
+                                                        <% for (let star=1;star <=Math.floor(item.ratings.avg); star ++
+                                                            ) {%>
+                                                            <div class="icon-star text-11 text-yellow-1"></div>
+                                                            <%}%>
+                                                    </div>
+                                                </div>
+                                                <%}%>
+                                                    <p class="courseCardDescription">
+                                                        <%= item.description %>
+                                                    </p>
+                                                    <div class="coursesCard-footer">
+
+                                                        <div class="coursesCard-footer__price">
+                                                            <div>
+                                                                <%= item.originprice?.toLocaleString('it-IT', {style
+                                                                    : 'currency' , currency : 'VND' }); %>
+                                                            </div>
+                                                            <div>
+                                                                <%if (item.price==0) {%>
+                                                                    Miễn Phí
+                                                                    <%} else {%>
+                                                                        <%= item.price.toLocaleString('it-IT', {style
+                                                                            : 'currency' , currency : 'VND' }); %>
+                                                                            <%}%>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <% } %>
+
+                        </div>
+
+                        <div class="row justify-center pt-90 lg:pt-50">
+                            <div class="col-auto">
+                                <div class="pagination -buttons">
+                                    <% if (paginate.hasPreviousPages) { %>
+                                        <button class="pagination__button -prev">
+                                            <i class="icon icon-chevron-left"></i>
+                                        </button>
+                                        <%}%>
+
+                                            <div class="pagination__count">
+                                                <% pages.forEach(function(page) { %>
+                                                    <a href="<%=page.url%>"
+                                                        class="<%- currentPage == page.number ? '-count-is-active' : '' %> ">
+                                                        <%=page.number%>
+                                                    </a>
+                                                    <% }); %>
+                                            </div>
+                                            <% if (paginate.hasNextPages(pageCount)) { %>
+                                                <button class="pagination__button -next">
+                                                    <i class="icon icon-chevron-right"></i>
+                                                </button>
+                                                <%}%>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <%- include('../layout/footer'); %>
+            </div>
+
+    </main>
+
+    <%- include('../layout/footerjs'); %>
+
+</body>
+<script>
+    var swiperTag = new Swiper(".mySwiper", {
+        slidesPerView: "auto",
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.tag-btn-next',
+            prevEl: '.tag-btn-prev',
+        },
+
+    });
+</script>
+
+</html>

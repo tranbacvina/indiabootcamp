@@ -9,7 +9,11 @@ const orderUUID = async (uuid) => {
         include: {
             model: db.orderItem,
             include: {
-                model: db.course
+                model: db.course,
+                include: {
+                    model: db.Topic,
+                    
+                }
             }
         }
     })

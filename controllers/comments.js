@@ -26,14 +26,14 @@ const addCommentsToCourse = async (req,res) => {
         }
     })
     if (checkEmailisButCourse.length === 0) {
-        res.status(401).send('Chỉ có email đã mua khoá học mới có thể comments!')
+        res.status(401).send('Only registered customers can comment')
         return
     }
     const course = await db.course.findOne({
         where: { id: courseId}
     })
-    // await course.createRating({star, email, comments})
-    res.status(201).send( 'Đăng đánh giá thành công')
+    await course.createRating({star, email, comments})
+    res.status(201).send( 'Posted review successfully')
 }
 
 module.exports = { addCommentsToCourse}

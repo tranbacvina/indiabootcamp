@@ -62,7 +62,7 @@
                                                 </div>
 
                                                 <div data-anim="slide-up delay-2" class="is-in-view">
-                                                    <p class="page-header__text">The courses will be sent to your email within 2-4 working hours</p>
+                                                    <p class="page-header__text">The courses / Service will be sent to your email within 2-24 working hours</p>
                                                 </div>
 
                                             </div>
@@ -77,7 +77,7 @@
                                                 <div data-anim="slide-up delay-2"
                                                     class="is-in-view text-left layout-pt-sm">
                                                     <p class="page-header__text">Hello, <%=order.email%>
-                                                        Your order has been confirmed. The courses will be sent to your email within approximately 2 working hours after your payment!</p>
+                                                        Your order has been confirmed. The courses / Service will be sent to your email within approximately 2-24 working hours after your payment!</p>
                                                     <p class="page-header__text">
                                                         Full Bootcamp Team</p>
 
@@ -127,7 +127,7 @@
                                                         <a href="/" class="button -md -green-1 text-dark-1"> < Back</a>
                                                       </div>
                                                       <div class="col-auto">
-                                                        <a target="_blank" href="https://m.me/108479422217669" class="button -md -outline-green-1 text-green-1">CChat with Support/a>
+                                                        <a target="_blank" href="https://t.me/fullbootcampudemy" class="button -md -outline-green-1 text-green-1">Chat with Support/a>
                                                       </div>
                                                     </div>
                                                   </div>
@@ -169,7 +169,7 @@
 
                                         <div class="col-md-3 col-sm-6">
                                             <div class="shopCompleted-info__item">
-                                                <div class="subtitle">Giá</div>
+                                                <div class="subtitle">Price</div>
                                                 <div class="title text-purple-1 mt-5">
                                                     <%=(order.priceus / 100).toLocaleString('en-US', {
                                                         style: 'currency',
@@ -183,7 +183,7 @@
                                             <div class="shopCompleted-info__item">
                                                 <div class="subtitle">Status</div>
                                                 <div class="title text-purple-1 mt-5">
-                                                    <%= order.status %>
+                                                    <%= order.status == "Chua thanh toan" ? "Unpaid" : "Paid"  %>
 
                                                 </div>
                                             </div>
@@ -200,12 +200,12 @@
                                             <%=order.email%>
                                         </span>
                                         <div class="item mt-5">
-                                            <span class="text-18 lh-1 text-dark-1 fw-500 mb-10">Courses</span>
+                                            <span class="text-18 lh-1 text-dark-1 fw-500 mb-10">Courses / Service</span>
                                             <span class="text-18 lh-1 text-dark-1 fw-500 mb-10">Status</span>
                                         </div>
                                         <%for (let item of order.orderItems){ %>
                                             <div class="item p-3">
-                                                <span class=""><a href="/course/<%= item.course ? item.course.slug : 'None' %>" target="_blank"
+                                                <span class=""><a href="/<%= item.course.Topics.length == 0 ? 'course' : item.course.Topics[0].slug == 'service' ? 'service' : 'course'%>/<%= item.course ? item.course.slug : 'None' %>" target="_blank"
                                                         rel="<%= item.course ? item.course.name : 'None'%>">
                                                         <%= item.course ? item.course.name : 'None' %>
                                                     </a></span>
@@ -224,7 +224,9 @@
                                                                     rel="noopener noreferrer">Download</a>
                                                                 <%}%>
                                                                     <%} else {%>
-                                                                        <span>Currently downloading</span>
+                                                                        <span>
+                                                                            <%= item.course.Topics == 0 ? 'Currently downloading' : item.course.Topics[0].slug == 'service' ? 'Delivering' : 'Currently downloading'%>
+                                                                            </span>
                                                                         <%} %>
 
                                                 </span>

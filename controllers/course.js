@@ -287,8 +287,8 @@ const updateCourse = async (req, res) => {
     const { id } = req.params
     const {
         name, url, slug, price, priceus, priceindia, TopicId, whatyouwilllearn, requirements, description, description_log, image
-        , sharelinkfree } = req.body
-    const updateC = await update(id, name, url, slug, price, priceus, priceindia, TopicId, whatyouwilllearn, requirements, description, description_log, image, sharelinkfree)
+        , sharelinkfree, sections, description_sort } = req.body
+    const updateC = await update(id, name, url, slug, price, priceus, priceindia, TopicId, whatyouwilllearn, requirements, description, description_log, image, sharelinkfree, sections, description_sort)
     res.redirect(`/admin/course/${id}`)
 }
 

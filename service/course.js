@@ -320,13 +320,13 @@ const createCourse = async (name, url, slug, price, priceus, priceindia, topicId
     return newCourse
 }
 
-const update = async (id, name, url, slug, price, priceus, priceindia, TopicId, whatyouwilllearn, requirements, description, description_log, image, sharelinkfree) => {
-    console.log('update',TopicId)
+const update = async (id, name, url, slug, price, priceus, priceindia, TopicId, whatyouwilllearn, requirements, description, description_log, image, sharelinkfree, sections, description_sort) => {
     const converJsonwhatyouwilllearn = JSON.parse(whatyouwilllearn)
     const converJsonwhatrequirements = JSON.parse(requirements)
+    const converJsonwhatsections = JSON.parse(sections)
     const course = await db.course.findOne({ where: { id } })
     const updateCourse = await db.course.update({
-        id, name, url, slug, TopicId, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image, sharelinkfree
+        id, name, url, slug, TopicId, price, priceus, priceindia, whatyouwilllearn: converJsonwhatyouwilllearn, requirements: converJsonwhatrequirements, description, description_log, image, sharelinkfree,sections:converJsonwhatsections, description_sort
     }, {
         where: {
             id
